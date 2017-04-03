@@ -36,6 +36,9 @@
  * @filesource
  */
 
+
+file_exists('env.php') && require_once 'env.php';
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
