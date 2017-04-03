@@ -1,7 +1,7 @@
-<div class="container">
+<div class="quizview-container">
     <div class="row-center-xs">
-        <div class="col-xs-6">
-            <table style="width: 50%">
+        <div class="center">
+            <table class="quizview-table">
                 <tr>
                     <th>
                         <p>Quiz</p>
