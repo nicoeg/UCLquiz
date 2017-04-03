@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 
-    <link rel="stylesheet" href="/style/stylesheet.css">
+    <link rel="stylesheet" href="<?= base_url('style/stylesheet.css'); ?>">
 	<title>UCLquiz</title>
 </head>
 <body>
