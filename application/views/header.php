@@ -11,3 +11,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>UCLquiz</title>
 </head>
 <body>
+<header>
+    <img src="<?= base_url('images/ucl.jpg') ?>" alt="UCL Logo" class="logo">
+
+    <nav>
+        <a href="#">Opret en bruger</a>
+        <a href="#">Har du brug for hjælp?</a>
+    </nav>
+</header>
