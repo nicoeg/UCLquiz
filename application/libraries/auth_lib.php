@@ -17,6 +17,7 @@ class Auth_lib
 		if(isset($headers['Authorization'])) 
 		{
 			$authData = explode(' ', $headers['Authorization']);
+			
 
 			$userPass = base64_decode($authData[1]);
 
