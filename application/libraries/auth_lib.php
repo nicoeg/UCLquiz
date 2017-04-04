@@ -39,20 +39,20 @@ class Auth_lib
 
 		// print_r($userData);
 
-		// if($userData !== null) 
-		// {
-		// 	if(password_verify($password, $userData->password)) 
-		// 	{
-		// 		// $this->session->set_userdata(array(
-		// 		// 	'auth' => TRUE,
-		// 		// 	'email' => $email
-		// 		// ));
-		// 		return true;
-		// 	}
-		// }
+		if($userData !== null) 
+		{
+			if(password_verify($password, $userData->password)) 
+			{
+				// $this->session->set_userdata(array(
+				// 	'auth' => TRUE,
+				// 	'email' => $email
+				// ));
+				return true;
+			}
+			
+		}
 
 		// $this->ci->io->out(401, 'email-password-wrong');
-		return $userData;
 	}
 
 	public function get_error() 
