@@ -89,6 +89,15 @@ header {
             width: 50%;
             margin: 20px auto;
             display: block;
+            transition: all .3s;
+
+            &.loading {
+                background: $accent url(http://likegif.com/wp-content/uploads/2012/12/loader-gif-27.gif) no-repeat center;
+                color: $accent;
+                background-size: 35px;
+                border-radius: 100%;
+                width: 50px;
+            }
         }
 
         .forgot-login {
