@@ -2,20 +2,15 @@
 
 class User_Model extends CI_Model
 {
-	public function get() 
+	public function getUserByEmail(string $email)
 	{
-		$query = $this->db->get('users');
-		return $query->result();
-	}
+		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-	public function get_user_by_email($email) 
-	{
 		$query = $this->db
+			->get('users')
 			->where('email', $email)
-			->limit(1)
-			->get('users');
+			->limit(1);
 
 		return $query->row();
 	}
-	
 }

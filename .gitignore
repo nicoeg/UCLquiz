@@ -10,3 +10,4 @@ Homestead.yaml
 .env
 /nbproject/
 env.php
+application/models/User_Model.php
