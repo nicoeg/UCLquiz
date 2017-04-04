@@ -12,22 +12,33 @@ class User extends CI_controller
 
 	public function index() 
 	{
-		switch($_SERVER['REQUEST_METHOD']) 
-		{
-			case 'GET':
-				$this->auth->access();
-				$output = $this->User_model->get();
-				$status = 200;
-				break;
-			// case 'POST':
-			// 	$output = $this->user_create();
-			// 	$status = $this->status;
-			// 	break;
-			default: 
-				$status = 405;
-				$output = 'Not allowed';
+		
+		if ($this->auth->access()) {
+			redirect('quiz');
+		} else {
+			echo 'no access';
 		}
+		
 
-		$this->io->out($status, $output);
+
+
+
+
+		// if ($_SERVER['REQUEST_METHOD'] === 'GET') 
+		// {
+		// 	if (!empty($_GET['email'])) {
+		// 		echo 'hi';
+		// 	} else {
+		// 		redirect(base_url());
+		// 	}
+		// 	// $this->auth->access();
+		// 	// $output = $this->User_model->get();
+		// 	// $status = 200;
+		// }
+		// else {
+		// 	redirect(base_url());
+		// }
+		// // echo '<pre>';
+		// // print_r(getallheaders());
 	}
 }

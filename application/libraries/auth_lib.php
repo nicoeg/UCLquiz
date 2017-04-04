@@ -16,16 +16,13 @@ class Auth_lib
 
 		if(isset($headers['Authorization'])) 
 		{
-			$authData = explode(' ', $headers['Authorization']);
-			
+			$authData = explode(' ', $headers['Authorization']);	
 
 			$userPass = base64_decode($authData[1]);
 
 			$loginData = explode(':', $userPass);
 
-			$this->login($loginData[0], $loginData[1]);
-
-			return;
+			return $this->login($loginData[0], $loginData[1]);
 		}
 
 		$this->ci->io->out(401, 'no-auth-set');
@@ -43,6 +40,10 @@ class Auth_lib
 		{
 			if(password_verify($password, $userData->password)) 
 			{
+				$this->session->set_userdata(array(
+					'auth' => TRUE,
+					'email' => $email
+				));
 				return true;
 			}
 		}
