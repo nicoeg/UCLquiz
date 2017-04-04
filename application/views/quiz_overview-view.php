@@ -12,6 +12,7 @@
 				<th>Level</th>
 				<th>Course</th>
 				<th>Created by</th>
+				<th>Actions</th>
 			</tr>
 			<?php foreach($quizzes as $row) : ?>
 				<tr>
@@ -19,6 +20,11 @@
 					<td><?php echo $row->level; ?></td>
 					<td><?php echo $row->cID; ?></td>
 					<td><?php echo $row->uID; ?></td>
+					<td>
+						<?php
+						echo anchor('quiz/view/' . $row->id . '', 'View');
+						?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 	</table>

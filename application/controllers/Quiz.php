@@ -8,6 +8,11 @@ class Quiz extends CI_Controller
 		Parent::__construct();
 		$this->load->model('Quiz_model', 'quizModel');
 	}
+
+	/**
+	*  Overview of quizzes.
+	*
+	*/
 	
 	public function index()
 	{
@@ -15,11 +20,47 @@ class Quiz extends CI_Controller
 		$this->load->view('quiz_overview-view', $data);	
 	}
 
-	public function view($id = null)
+	/**
+	*  View a quiz by id.
+	*
+	*  @param int $id Id of quiz that is going to be viewed
+	*/
+
+	public function view(int $id = null)
 	{
-		$data['quiz'] = $this->quizModel->getQuizById($id);
-		echo '<pre>';
-		print_r($data['quiz']);
-		// $this->load->view('quiz_single-view', $data);	
+		$safeId = preg_replace('/[^0-9]/', '', $id);
+
+		if(filter_var($safeId, FILTER_VALIDATE_INT))
+		{
+			$data['quiz'] = $this->quizModel->getQuizById($safeId);
+
+			$this->load->view('quiz_single-view', $data);
+			return true;	
+		}
+
+		redirect('quiz', 'refresh');
+		return false;
+	}
+
+	/**
+	*  Deletes a quiz by id.
+	*
+	*  @param int $id Id of quiz that is going to be deleted
+	*/
+
+	private function delete(int $id = null)
+	{
+		$safeId = preg_replace('/[^0-9]/', '', $id);
+
+		if(filter_var($safeId, FILTER_VALIDATE_INT))
+		{
+			$data['quiz'] = $this->quizModel->delete($safeId);
+
+			$this->load->view('quiz_single-view', $data);
+			return true;	
+		}
+
+		redirect('quiz', 'refresh');
+		return false;	
 	}
 }
