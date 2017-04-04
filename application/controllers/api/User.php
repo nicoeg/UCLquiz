@@ -14,10 +14,21 @@ class User extends CI_controller
 	{
 		
 		if ($this->auth->access()) {
-			redirect('quiz');
+			// echo json_encode( array( 
+			// 	'redirect' => 'location:' . base_url(),
+			// 	'test' => 'test',
+			// 	) );
+			echo json_encode( array( 
+				'redirect' => base_url('quiz'),
+				'errors' => 'wrong username or ',
+				) );
 		} else {
-			echo 'no access';
+			echo json_encode( array( 
+				'redirect' => 'location:' . base_url(),
+				'error' => 'wrong username or password',
+				) );
 		}
+
 		
 
 

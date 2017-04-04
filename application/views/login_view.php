@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Login page</title>
-</head>
-<body>
 	<form>
 		<label for="email">Email</label>
 		<input type="email" name="email" id="email">
@@ -40,7 +33,16 @@
 				data: {keyName: data},
 				contentType : 'application/json',
 				success : function(response) {
-	                console.log(response);
+					response = jQuery.parseJSON(response);
+					if (response.error) {
+						$( "form" ).before( "<p>"+response.error+"</p>" );
+					}
+					else if( response.redirect ){
+						window.location.assign(response.redirect);
+						console.log(response.redirect);
+					}
+
+					console.log(response);
 	            },
 				error : function(xhr, status, error) {
 	                var err = eval("(" + xhr.responseText + ")");
@@ -51,5 +53,3 @@
 			// return false;
 		};
 	</script>
-</body>
-</html>

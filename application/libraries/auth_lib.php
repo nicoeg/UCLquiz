@@ -40,15 +40,15 @@ class Auth_lib
 		{
 			if(password_verify($password, $userData->password)) 
 			{
-				$this->session->set_userdata(array(
-					'auth' => TRUE,
-					'email' => $email
-				));
+				// $this->session->set_userdata(array(
+				// 	'auth' => TRUE,
+				// 	'email' => $email
+				// ));
 				return true;
 			}
 		}
 
-		$this->ci->io->out(401, 'email-password-wrong');
+		// $this->ci->io->out(401, 'email-password-wrong');
 		return false;
 	}
 
