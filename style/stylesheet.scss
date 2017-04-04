@@ -134,15 +134,19 @@ header {
     margin: auto;
     background: white;
     border-collapse: collapse;
-}
-th{
-    padding: 5px;
-    text-align: left;
-    border-bottom: 1px solid black;
-}
-tr, td{
-    padding: 5px;
-    border-bottom: 1px solid black;
+    th{
+        padding: 5px;
+        text-align: left;
+        border-vertical: 1px solid black;
+    }
+    tr:nth-child(even){
+        background: #f1f1f1
+    }
+    tr, td{
+        padding: 5px;
+        border: 1px solid black;
+    }
+    tr:not(:first-child):hover{background-color:#f6ad65;}
 }
 
 div.tab {
@@ -174,7 +178,7 @@ div.tab button.active {
 
 .tabcontent {
     display: none;
-    border: 1px solid black;
+    border: none;
     border-top: none;
     background: white;    
     width: 50%;
