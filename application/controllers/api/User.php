@@ -13,23 +13,27 @@ class User extends CI_controller
 	public function index() 
 	{
 		
-		if ($this->auth->access()) {
-			// echo json_encode( array( 
-			// 	'redirect' => 'location:' . base_url(),
-			// 	'test' => 'test',
-			// 	) );
-			echo json_encode( array( 
-				'redirect' => base_url('quiz'),
-				'errors' => 'wrong username or ',
-				) );
-		} else {
-			echo json_encode( array( 
-				'redirect' => 'location:' . base_url(),
-				'error' => 'wrong username or password',
-				) );
-		}
+		// if ($this->auth->access()) {
+		// 	// echo json_encode( array( 
+		// 	// 	'redirect' => 'location:' . base_url(),
+		// 	// 	'test' => 'test',
+		// 	// 	) );
+		// 	echo json_encode( array( 
+		// 		// 'redirect' => base_url('quiz'),
+		// 		'errors' => 'wrong username or ',
+		// 		) );
+		// } 
+		// 	else {
+		// 	echo json_encode( array( 
+		// 		// 'redirect' => 'location:' . base_url(),
+		// 		'error' => 'wrong username or password',
+		// 		) );
+		// }
 
-		
+		// echo json_encode( array( 
+		// 		// 'redirect' => 'location:' . base_url(),
+		// 		'error' => 'wrong username or password',
+		// 		) );
 
 
 
@@ -49,7 +53,8 @@ class User extends CI_controller
 		// else {
 		// 	redirect(base_url());
 		// }
-		// // echo '<pre>';
-		// // print_r(getallheaders());
+		echo '<pre>';
+		$this->auth->access();
+		print_r(getallheaders());
 	}
 }

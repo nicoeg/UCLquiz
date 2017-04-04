@@ -23,9 +23,10 @@ class Auth_lib
 			$loginData = explode(':', $userPass);
 
 			return $this->login($loginData[0], $loginData[1]);
+
 		}
 
-		$this->ci->io->out(401, 'no-auth-set');
+		// $this->ci->io->out(401, 'no-auth-set');
 		return false;
 
 	}
@@ -36,20 +37,22 @@ class Auth_lib
 
 		$userData = $this->ci->User_model->get_user_by_email($email);
 
-		if($userData !== null) 
-		{
-			if(password_verify($password, $userData->password)) 
-			{
-				// $this->session->set_userdata(array(
-				// 	'auth' => TRUE,
-				// 	'email' => $email
-				// ));
-				return true;
-			}
-		}
+		// print_r($userData);
+
+		// if($userData !== null) 
+		// {
+		// 	if(password_verify($password, $userData->password)) 
+		// 	{
+		// 		// $this->session->set_userdata(array(
+		// 		// 	'auth' => TRUE,
+		// 		// 	'email' => $email
+		// 		// ));
+		// 		return true;
+		// 	}
+		// }
 
 		// $this->ci->io->out(401, 'email-password-wrong');
-		return false;
+		return $userData;
 	}
 
 	public function get_error() 
