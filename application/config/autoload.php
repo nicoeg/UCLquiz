@@ -61,7 +61,6 @@ $autoload['packages'] = array();
 
 $autoload['libraries'] = array(
 	'session',
-	'form_validation',
 	'database',
 	'Io_lib' => 'io',
 	'Auth_lib' => 'auth',
