@@ -32,6 +32,7 @@ class Quiz extends CI_Controller
 
 		if(filter_var($safeId, FILTER_VALIDATE_INT))
 		{
+			$this->session->set_flashdata('storedId', $safeId);
 			$data['quiz'] = $this->quizModel->getQuizById($safeId);
 
 			$this->load->view('quiz_single-view', $data);
@@ -75,8 +76,6 @@ class Quiz extends CI_Controller
 			$uID   = 1;
 			$title = stripslashes($this->input->post('title'));
 
-			var_dump('test-no-if');
-
 			if(isset($cID) && isset($level) && isset($uID) && isset($title))
 			{
 				$data = [
@@ -86,12 +85,24 @@ class Quiz extends CI_Controller
 					'title' => $title,
 				];
 
-				var_dump('test');
-
 				$this->quizModel->set($data);
+				redirect('quiz', 'refresh');
 			}
 		}
 
 		$this->load->view('quiz_create-view');
+	}
+
+	public function created()
+	{
+		$this->load->library('form_validation');
+		$this->load->model('Question_model', 'questionModel');
+
+		$this->load->view('quiz_created-view');
+	}
+
+	public function update($id)
+	{
+
 	}
 }

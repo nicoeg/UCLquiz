@@ -28,7 +28,7 @@ class Quiz_model extends CI_Model
 				->limit(1)
 				->get($this->table);
 
-			return $query->result();
+			return $query->row();
 		}
 
 		return false;

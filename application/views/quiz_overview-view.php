@@ -6,6 +6,7 @@
 </head>
 <body>
 	<h1>Overview</h1>
+	<?php echo anchor('quiz/create', 'Create new quiz'); ?>
 	<table>
 			<tr>
 				<th>Title</th>
