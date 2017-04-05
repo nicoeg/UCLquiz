@@ -26,7 +26,7 @@
 </script>
 <div class="quizview-container">
     <div class="row-center-xs">
-        <div class="center">
+        <div class="box">
             <div class="tab">
                 <button class="tablinks" onclick="openTab(event, 'All')" id="tabopen">Alle</button>
                 <button class="tablinks" onclick="openTab(event, 'New')">Nye</button>
