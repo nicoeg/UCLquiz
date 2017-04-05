@@ -93,7 +93,7 @@ header {
   background-color: #F39B26; }
 
 .quizview-container {
-  margin: 150px; }
+  margin: 85px; }
 
 .quizview-table {
   width: 100%;
@@ -143,5 +143,41 @@ div.tab button.active {
   background: white;
   width: 50%;
   margin: auto; }
+
+.imagecontainer {
+  position: relative;
+  width: 50%;
+  box-shadow: 0px 0px 8px #888; }
+
+.imagecontainer:hover .overlay {
+  opacity: 0.7;
+  background-color: #f39233; }
+
+.quizimage {
+  display: block;
+  width: 150%;
+  height: auto; }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 150%;
+  opacity: 0.5;
+  transition: .5s ease;
+  background-color: #ACAF33; }
+
+.imagetext {
+  color: black;
+  font-size: 25px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%); }
 
 /*# sourceMappingURL=stylesheet.css.map */
