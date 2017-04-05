@@ -40,15 +40,17 @@ header {
     }
 }
 
+.main-container {
+    padding: 0;
+    margin: 85px auto;
+    background-color: #fff;
+    box-shadow: 0px 0px 8px #888;
+}
+
 .login-container {
     display: flex;
     justify-content: space-between;
-    padding: 0;
-    margin: 85px 0;
-    background-color: #fff;
-    box-shadow: 0px 0px 8px #888;
     overflow: hidden;
-
 
     form {
         min-width: 320px;
@@ -130,6 +132,69 @@ header {
 
 .button.primary {
     background-color: $accent;
+}
+
+.quiz-container {
+    width: 100%;
+    max-width: 800px;
+    min-height: 400px;
+    display: flex;
+    margin-bottom: 20px;
+
+    .question {
+        width: 50%;
+        padding: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h1 {
+            font-size: 30px;
+        }
+    }
+
+    .answers.videos {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        width: 50%;
+
+        .answer {
+            margin: 5px;
+            flex-basis: calc(50% - 10px);
+            background: #000000;
+        }
+    }
+
+    .answers.multiplechoice {
+        padding: 25px;
+
+        ol {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+
+            li {
+                padding: 10px 0;
+                cursor: pointer;
+                font-size: 17px;
+                transition: color .3s;
+
+                &.selected {
+                    color: $accent;
+                }
+            }
+        }
+    }
+}
+
+.quiz-actions {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .quizview-container{

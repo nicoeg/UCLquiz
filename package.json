@@ -1,0 +1,29 @@
+{
+  "name": "uclQuiz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules",
+    "hot": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "production": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicoeg/UCLquiz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicoeg/UCLquiz/issues"
+  },
+  "homepage": "https://github.com/nicoeg/UCLquiz#readme",
+  "devDependencies": {
+    "babel-preset-react": "^6.23.0",
+    "laravel-mix": "^0.10.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}

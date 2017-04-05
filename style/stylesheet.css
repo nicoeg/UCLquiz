@@ -26,13 +26,15 @@ header {
       header nav a:first-of-type {
         margin-left: 0; }
 
+.main-container {
+  padding: 0;
+  margin: 85px auto;
+  background-color: #fff;
+  box-shadow: 0px 0px 8px #888; }
+
 .login-container {
   display: flex;
   justify-content: space-between;
-  padding: 0;
-  margin: 85px 0;
-  background-color: #fff;
-  box-shadow: 0px 0px 8px #888;
   overflow: hidden; }
   .login-container form {
     min-width: 320px;
@@ -91,6 +93,51 @@ header {
 
 .button.primary {
   background-color: #F39B26; }
+
+.quiz-container {
+  width: 100%;
+  max-width: 800px;
+  min-height: 400px;
+  display: flex;
+  margin-bottom: 20px; }
+  .quiz-container .question {
+    width: 50%;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .quiz-container .question h1 {
+      font-size: 30px; }
+  .quiz-container .answers.videos {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 50%; }
+    .quiz-container .answers.videos .answer {
+      margin: 5px;
+      flex-basis: calc(50% - 10px);
+      background: #000000; }
+  .quiz-container .answers.multiplechoice {
+    padding: 25px; }
+    .quiz-container .answers.multiplechoice ol {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%; }
+      .quiz-container .answers.multiplechoice ol li {
+        padding: 10px 0;
+        cursor: pointer;
+        font-size: 17px;
+        transition: color .3s; }
+        .quiz-container .answers.multiplechoice ol li.selected {
+          color: #F39B26; }
+
+.quiz-actions {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 800px;
+  display: flex;
+  justify-content: space-between; }
 
 .quizview-container {
   margin: 150px; }

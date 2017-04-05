@@ -9,6 +9,18 @@ class Quiz extends CI_Controller
 		$this->load->model('Quiz_model', 'quizModel');
 	}
 
+    public function _remap($method, $params = [])
+    {
+        if (is_numeric($method)) {
+            return call_user_func_array(array($this, 'show'), [$method]);
+        }else if (method_exists($this, $method))
+        {
+            return call_user_func_array(array($this, $method), $params);
+        }
+
+        show_404();
+	}
+
 	/**
 	*  Overview of quizzes.
 	*
@@ -18,6 +30,13 @@ class Quiz extends CI_Controller
 	{
 		$data['quizzes'] = $this->quizModel->get();
 		$this->load->view('quiz_overview-view', $data);	
+	}
+
+    public function show($id)
+    {
+        $this->load->view('header');
+        $this->load->view('quiz_show');
+        $this->load->view('footer');
 	}
 
 	/**
