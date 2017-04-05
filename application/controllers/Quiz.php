@@ -16,8 +16,14 @@ class Quiz extends CI_Controller
 	
 	public function index()
 	{
-		$data['quizzes'] = $this->quizModel->get();
-		$this->load->view('quiz_overview-view', $data);	
+		if ($this->session->userdata('logged_in') === true) {
+			$data['quizzes'] = $this->quizModel->get();
+			$this->load->view('quiz_overview-view', $data);	
+		} else {
+			redirect(base_url());
+		}
+		
+		
 	}
 
 	/**

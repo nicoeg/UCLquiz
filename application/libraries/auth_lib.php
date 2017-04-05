@@ -43,10 +43,16 @@ class Auth_lib
 		{
 			if(password_verify($password, $userData->password)) 
 			{
-				// $this->session->set_userdata(array(
-				// 	'auth' => TRUE,
-				// 	'email' => $email
-				// ));
+
+				$newdata = array(
+                   'username'  => $userData->username,
+                   'email'     => $userData->email,
+                   'logged_in' => TRUE,
+                   'uid' 	   => $userData->id
+               	);
+
+				$this->ci->session->set_userdata($newdata);
+				
 				return true;
 			}
 			
