@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 <header>
-    <img src="<?= base_url('images/ucl.jpg') ?>" alt="UCL Logo" class="logo">
+    <a href="<?php echo base_url();?>"><img src="<?= base_url('images/ucl.jpg') ?>" alt="UCL Logo" class="logo"></a>
 
     <nav>
         <a href="#">Opret en bruger</a>
