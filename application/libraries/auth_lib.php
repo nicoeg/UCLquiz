@@ -16,19 +16,17 @@ class Auth_lib
 
 		if(isset($headers['Authorization'])) 
 		{
-			$authData = explode(' ', $headers['Authorization']);
-			
+			$authData = explode(' ', $headers['Authorization']);	
 
 			$userPass = base64_decode($authData[1]);
 
 			$loginData = explode(':', $userPass);
 
-			$this->login($loginData[0], $loginData[1]);
+			return $this->login($loginData[0], $loginData[1]);
 
-			return;
 		}
 
-		$this->ci->io->out(401, 'no-auth-set');
+		// $this->ci->io->out(401, 'no-auth-set');
 		return false;
 
 	}
@@ -39,16 +37,22 @@ class Auth_lib
 
 		$userData = $this->ci->User_model->get_user_by_email($email);
 
+		// print_r($userData);
+
 		if($userData !== null) 
 		{
 			if(password_verify($password, $userData->password)) 
 			{
+				// $this->session->set_userdata(array(
+				// 	'auth' => TRUE,
+				// 	'email' => $email
+				// ));
 				return true;
 			}
+			
 		}
 
-		$this->ci->io->out(401, 'email-password-wrong');
-		return false;
+		// $this->ci->io->out(401, 'email-password-wrong');
 	}
 
 	public function get_error() 
