@@ -162,7 +162,18 @@ header {
         .answer {
             margin: 5px;
             flex-basis: calc(50% - 10px);
-            background: #000000;
+
+            .button {
+                color: #333;
+                text-align: center;
+                background-color: #ececec;
+                border-radius: 0 0 5px 5px;
+                margin-top: -4px;
+            }
+
+            &.selected .button {
+                background-color: $accent;
+            }
         }
     }
 

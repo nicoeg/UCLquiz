@@ -36,6 +36,7 @@ class Quiz extends React.Component {
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this)
         this.handlePreviousQuestion = this.handlePreviousQuestion.bind(this)
+        this.handleFinish = this.handleFinish.bind(this)
         this.selectAnswer = this.selectAnswer.bind(this)
 
         this.initialize()
@@ -61,6 +62,10 @@ class Quiz extends React.Component {
         }
     }
 
+    handleFinish() {
+        //Ajax to finish
+    }
+
     selectAnswer(answer) {
         let answers = this.state.answers
         answers[this.state.currentQuestion] = answer
@@ -77,12 +82,19 @@ class Quiz extends React.Component {
 
         let question = this.state.questions[this.state.currentQuestion],
             currentAnswer = this.state.answers.indexOf(this.state.currentQuestion) ? this.state.answers[this.state.currentQuestion] : null,
-            answer
+            answer,
+            nextButton
 
         if (question.type == 1) {
             answer = <MultipleChoiceAnswer selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
         }else if (question.type == 2) {
             answer = <VideoAnswer selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
+        }
+
+        if (this.state.currentQuestion == this.state.questions.length - 1) {
+            nextButton = <div className="button primary" onClick={this.handleFinish}>Afslut</div>
+        }else {
+            nextButton = <div className="button primary next" onClick={this.handleNextQuestion}>Næste</div>
         }
 
         return(
@@ -98,7 +110,7 @@ class Quiz extends React.Component {
                 <div className="quiz-actions">
                     <div className="button primary previous" onClick={this.handlePreviousQuestion}>Forrige</div>
 
-                    <div className="button primary next" onClick={this.handleNextQuestion}>Næste</div>
+                    {nextButton}
                 </div>
             </div>
         )

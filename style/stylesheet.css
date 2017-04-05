@@ -115,8 +115,15 @@ header {
     width: 50%; }
     .quiz-container .answers.videos .answer {
       margin: 5px;
-      flex-basis: calc(50% - 10px);
-      background: #000000; }
+      flex-basis: calc(50% - 10px); }
+      .quiz-container .answers.videos .answer .button {
+        color: #333;
+        text-align: center;
+        background-color: #ececec;
+        border-radius: 0 0 5px 5px;
+        margin-top: -4px; }
+      .quiz-container .answers.videos .answer.selected .button {
+        background-color: #F39B26; }
   .quiz-container .answers.multiplechoice {
     padding: 25px; }
     .quiz-container .answers.multiplechoice ol {
