@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
 
 import MultipleChoiceQuestion from './QuestionTypes/MultipleChoiceQuestion'
 import VideoQuestion from './QuestionTypes/VideoQuestion'
@@ -9,6 +10,7 @@ class Quiz extends React.Component {
         super(props);
 
         this.state = {
+            quiz: { id: 1 },
             questions: [
                 {
                     type: 1,
@@ -64,7 +66,12 @@ class Quiz extends React.Component {
     }
 
     handleFinish() {
-        //Ajax to finish
+        /*axios.post('/api/quiz/6/finish', this.state.answers).then(response => {
+            //Get response with correct answers and display them
+            console.log(response);
+            this.setState({ finished: true })
+        })*/
+
         this.setState({ finished: true })
     }
 
