@@ -54,12 +54,12 @@ class Quiz_model extends CI_Model
 
 	public function set($data)
 	{
-		$cID   = $data['course'];
+		$cID   = $data['cID'];
 		$level = $data['level'];
 		$uID   = $data['uID'];
 		$title = trim(strip_tags($data['title']));
 
-		$query = $this->db->insert('quizzes', [
+		$this->db->insert($this->table, [
 			'cID'   => $cID,
 			'level' => $level,
 			'uID'   => $uID,

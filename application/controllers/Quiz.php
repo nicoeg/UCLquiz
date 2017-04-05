@@ -43,12 +43,12 @@ class Quiz extends CI_Controller
 	}
 
 	/**
-	*  Deletes a quiz by id.
+	*  Controller delete quiz by id.
 	*
 	*  @param int $id Id of quiz that is going to be deleted
 	*/
 
-	private function delete(int $id = null)
+	public function delete(int $id = null)
 	{
 		$safeId = preg_replace('/[^0-9]/', '', $id);
 
@@ -56,11 +56,42 @@ class Quiz extends CI_Controller
 		{
 			$data['quiz'] = $this->quizModel->delete($safeId);
 
-			$this->load->view('quiz_single-view', $data);
+			redirect('quiz', 'refresh');
 			return true;	
 		}
 
 		redirect('quiz', 'refresh');
 		return false;	
+	}
+
+	public function create()
+	{
+		$this->load->library('form_validation');
+
+		if($this->form_validation->run('create-quiz') == true)
+		{
+			$cID   = $this->input->post('course');
+			$level = $this->input->post('level');
+			$uID   = 1;
+			$title = stripslashes($this->input->post('title'));
+
+			var_dump('test-no-if');
+
+			if(isset($cID) && isset($level) && isset($uID) && isset($title))
+			{
+				$data = [
+					'cID'   => $cID,
+					'level' => $level,
+					'uID'   => $uID,
+					'title' => $title,
+				];
+
+				var_dump('test');
+
+				$this->quizModel->set($data);
+			}
+		}
+
+		$this->load->view('quiz_create-view');
 	}
 }

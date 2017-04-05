@@ -22,7 +22,8 @@
 					<td><?php echo $row->uID; ?></td>
 					<td>
 						<?php
-						echo anchor('quiz/view/' . $row->id . '', 'View');
+							echo anchor('quiz/view/' . $row->id . '', 'View');
+							echo anchor('quiz/delete/' . $row->id . '', 'Delete');
 						?>
 					</td>
 				</tr>
