@@ -11,3 +11,4 @@ Homestead.yaml
 /nbproject/
 env.php
 style/stylesheet.css.map
+/application/cache
