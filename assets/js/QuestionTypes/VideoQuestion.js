@@ -1,7 +1,7 @@
 import React from 'react'
 import YouTube from 'react-youtube'
 
-export default class VideoAnswer extends React.Component {
+export default class VideoQuestion extends React.Component {
     constructor(props) {
         super(props);
 

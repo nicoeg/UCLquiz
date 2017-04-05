@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import MultipleChoiceAnswer from './MultipleChoiceAnswer'
-import VideoAnswer from './VideoAnswer'
+import MultipleChoiceQuestion from './QuestionTypes/MultipleChoiceQuestion'
+import VideoQuestion from './QuestionTypes/VideoQuestion'
 
 class Quiz extends React.Component {
     constructor(props) {
@@ -31,7 +31,8 @@ class Quiz extends React.Component {
                 }
             ],
             answers: [],
-            currentQuestion: null
+            currentQuestion: null,
+            finished: false,
         }
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this)
@@ -64,6 +65,7 @@ class Quiz extends React.Component {
 
     handleFinish() {
         //Ajax to finish
+        this.setState({ finished: true })
     }
 
     selectAnswer(answer) {
@@ -80,15 +82,19 @@ class Quiz extends React.Component {
             return <div>Loading...</div>
         }
 
+        if (this.state.finished) {
+            return <div className="main-container quiz-container"><h1 className="finished">Tillykke, du er Færdig!</h1></div>
+        }
+
         let question = this.state.questions[this.state.currentQuestion],
             currentAnswer = this.state.answers.indexOf(this.state.currentQuestion) ? this.state.answers[this.state.currentQuestion] : null,
             answer,
             nextButton
 
         if (question.type == 1) {
-            answer = <MultipleChoiceAnswer selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
+            answer = <MultipleChoiceQuestion selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
         }else if (question.type == 2) {
-            answer = <VideoAnswer selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
+            answer = <VideoQuestion selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
         }
 
         if (this.state.currentQuestion == this.state.questions.length - 1) {

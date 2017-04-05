@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class MultipleChoiceAnswer extends React.Component {
+export default class MultipleChoiceQuestion extends React.Component {
     constructor(props) {
         super(props);
 

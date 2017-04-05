@@ -10359,8 +10359,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(218);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MultipleChoiceAnswer__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__VideoAnswer__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__QuestionTypes_MultipleChoiceQuestion__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__QuestionTypes_VideoQuestion__ = __webpack_require__(314);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10394,7 +10394,8 @@ var Quiz = function (_React$Component) {
                 answers: [{ id: 1, answer: "Rds3nIlLRdY" }, { id: 2, answer: "Jeiu7y-a220" }, { id: 3, answer: "w_q56nyIqiI" }, { id: 4, answer: "_RIQm3Ogkmk" }]
             }],
             answers: [],
-            currentQuestion: null
+            currentQuestion: null,
+            finished: false
         };
 
         _this.handleNextQuestion = _this.handleNextQuestion.bind(_this);
@@ -10433,6 +10434,7 @@ var Quiz = function (_React$Component) {
         key: 'handleFinish',
         value: function handleFinish() {
             //Ajax to finish
+            this.setState({ finished: true });
         }
     }, {
         key: 'selectAnswer',
@@ -10455,15 +10457,27 @@ var Quiz = function (_React$Component) {
                 );
             }
 
+            if (this.state.finished) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'main-container quiz-container' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h1',
+                        { className: 'finished' },
+                        'Tillykke, du er F\xE6rdig!'
+                    )
+                );
+            }
+
             var question = this.state.questions[this.state.currentQuestion],
                 currentAnswer = this.state.answers.indexOf(this.state.currentQuestion) ? this.state.answers[this.state.currentQuestion] : null,
                 answer = void 0,
                 nextButton = void 0;
 
             if (question.type == 1) {
-                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__MultipleChoiceAnswer__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
+                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__QuestionTypes_MultipleChoiceQuestion__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
             } else if (question.type == 2) {
-                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__VideoAnswer__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
+                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__QuestionTypes_VideoQuestion__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
             }
 
             if (this.state.currentQuestion == this.state.questions.length - 1) {
@@ -10517,174 +10531,8 @@ var Quiz = function (_React$Component) {
 __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Quiz, null), document.getElementById('quiz'));
 
 /***/ }),
-/* 126 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var MultipleChoiceAnswer = function (_React$Component) {
-    _inherits(MultipleChoiceAnswer, _React$Component);
-
-    function MultipleChoiceAnswer(props) {
-        _classCallCheck(this, MultipleChoiceAnswer);
-
-        var _this = _possibleConstructorReturn(this, (MultipleChoiceAnswer.__proto__ || Object.getPrototypeOf(MultipleChoiceAnswer)).call(this, props));
-
-        _this.state = { selectedAnswer: props.currentAnswer };
-
-        _this.selectAnswer = _this.selectAnswer.bind(_this);
-        return _this;
-    }
-
-    _createClass(MultipleChoiceAnswer, [{
-        key: 'selectAnswer',
-        value: function selectAnswer(id) {
-            this.setState({ selectedAnswer: id });
-
-            this.props.selectAnswer(id);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var answers = this.props.answers.map(function (answer) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'li',
-                    { key: answer.id,
-                        onClick: function onClick() {
-                            return _this2.selectAnswer(answer.id);
-                        },
-                        className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
-                    answer.answer
-                );
-            });
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'answers multiplechoice' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'ol',
-                    null,
-                    answers
-                )
-            );
-        }
-    }]);
-
-    return MultipleChoiceAnswer;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-/* harmony default export */ __webpack_exports__["a"] = (MultipleChoiceAnswer);
-
-/***/ }),
-/* 127 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_youtube__ = __webpack_require__(290);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_youtube___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_youtube__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var VideoAnswer = function (_React$Component) {
-    _inherits(VideoAnswer, _React$Component);
-
-    function VideoAnswer(props) {
-        _classCallCheck(this, VideoAnswer);
-
-        var _this = _possibleConstructorReturn(this, (VideoAnswer.__proto__ || Object.getPrototypeOf(VideoAnswer)).call(this, props));
-
-        _this.state = { selectedAnswer: props.currentAnswer, videos: {} };
-
-        _this.selectAnswer = _this.selectAnswer.bind(_this);
-        return _this;
-    }
-
-    _createClass(VideoAnswer, [{
-        key: 'selectAnswer',
-        value: function selectAnswer(id) {
-            this.setState({ selectedAnswer: id });
-
-            this.props.selectAnswer(id);
-        }
-    }, {
-        key: 'videoReady',
-        value: function videoReady(answer, event) {
-            var videos = this.state.videos;
-            videos[answer.id] = event.target;
-
-            this.setState({ videos: videos });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var videoOptions = {
-                width: '100%',
-                height: 'calc(100% - 50)',
-                playerVars: {
-                    controls: 0,
-                    autoplay: 0,
-                    modestbranding: 0,
-                    rel: 0,
-                    showinfo: 1
-                }
-            };
-
-            var answers = this.props.answers.map(function (answer) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { key: answer.id, className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_youtube___default.a, { videoId: answer.answer, opts: videoOptions, onReady: function onReady(event) {
-                            return _this2.videoReady(answer, event);
-                        } }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { onClick: function onClick() {
-                                return _this2.selectAnswer(answer.id);
-                            }, className: 'button' },
-                        answer.id == _this2.state.selectedAnswer ? 'Valgt' : 'Vælg'
-                    )
-                );
-            });
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'answers videos' },
-                answers
-            );
-        }
-    }]);
-
-    return VideoAnswer;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-/* harmony default export */ __webpack_exports__["a"] = (VideoAnswer);
-
-/***/ }),
+/* 126 */,
+/* 127 */,
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28795,6 +28643,174 @@ module.exports = exports['default'];
 
 module.exports = __webpack_require__(125);
 
+
+/***/ }),
+/* 313 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var MultipleChoiceQuestion = function (_React$Component) {
+    _inherits(MultipleChoiceQuestion, _React$Component);
+
+    function MultipleChoiceQuestion(props) {
+        _classCallCheck(this, MultipleChoiceQuestion);
+
+        var _this = _possibleConstructorReturn(this, (MultipleChoiceQuestion.__proto__ || Object.getPrototypeOf(MultipleChoiceQuestion)).call(this, props));
+
+        _this.state = { selectedAnswer: props.currentAnswer };
+
+        _this.selectAnswer = _this.selectAnswer.bind(_this);
+        return _this;
+    }
+
+    _createClass(MultipleChoiceQuestion, [{
+        key: 'selectAnswer',
+        value: function selectAnswer(id) {
+            this.setState({ selectedAnswer: id });
+
+            this.props.selectAnswer(id);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var answers = this.props.answers.map(function (answer) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { key: answer.id,
+                        onClick: function onClick() {
+                            return _this2.selectAnswer(answer.id);
+                        },
+                        className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
+                    answer.answer
+                );
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'answers multiplechoice' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'ol',
+                    null,
+                    answers
+                )
+            );
+        }
+    }]);
+
+    return MultipleChoiceQuestion;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (MultipleChoiceQuestion);
+
+/***/ }),
+/* 314 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_youtube__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_youtube___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_youtube__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var VideoQuestion = function (_React$Component) {
+    _inherits(VideoQuestion, _React$Component);
+
+    function VideoQuestion(props) {
+        _classCallCheck(this, VideoQuestion);
+
+        var _this = _possibleConstructorReturn(this, (VideoQuestion.__proto__ || Object.getPrototypeOf(VideoQuestion)).call(this, props));
+
+        _this.state = { selectedAnswer: props.currentAnswer, videos: {} };
+
+        _this.selectAnswer = _this.selectAnswer.bind(_this);
+        return _this;
+    }
+
+    _createClass(VideoQuestion, [{
+        key: 'selectAnswer',
+        value: function selectAnswer(id) {
+            this.setState({ selectedAnswer: id });
+
+            this.props.selectAnswer(id);
+        }
+    }, {
+        key: 'videoReady',
+        value: function videoReady(answer, event) {
+            var videos = this.state.videos;
+            videos[answer.id] = event.target;
+
+            this.setState({ videos: videos });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var videoOptions = {
+                width: '100%',
+                height: 'calc(100% - 50)',
+                playerVars: {
+                    controls: 0,
+                    autoplay: 0,
+                    modestbranding: 0,
+                    rel: 0,
+                    showinfo: 1
+                }
+            };
+
+            var answers = this.props.answers.map(function (answer) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { key: answer.id, className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_youtube___default.a, { videoId: answer.answer, opts: videoOptions, onReady: function onReady(event) {
+                            return _this2.videoReady(answer, event);
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { onClick: function onClick() {
+                                return _this2.selectAnswer(answer.id);
+                            }, className: 'button' },
+                        answer.id == _this2.state.selectedAnswer ? 'Valgt' : 'Vælg'
+                    )
+                );
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'answers videos' },
+                answers
+            );
+        }
+    }]);
+
+    return VideoQuestion;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (VideoQuestion);
 
 /***/ })
 /******/ ]);
