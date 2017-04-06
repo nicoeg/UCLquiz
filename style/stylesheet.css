@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
   font-size: 13px; }
@@ -19,15 +21,33 @@ input[type="text"], input[type="email"], input[type="password"], textarea {
   text-align: center; }
 
 header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
   background-color: #fff;
   padding: 10px 55px;
+  -webkit-box-shadow: 0px 1px 8px #888;
+  -moz-box-shadow: 0px 1px 8px #888;
   box-shadow: 0px 1px 8px #888; }
   header img {
     height: 50px; }
   header nav {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
     align-items: center; }
     header nav a {
       margin-left: 30px;
@@ -40,10 +60,20 @@ header {
   padding: 0;
   margin: 85px auto;
   background-color: #fff;
+  -webkit-box-shadow: 0px 0px 8px #888;
+  -moz-box-shadow: 0px 0px 8px #888;
   box-shadow: 0px 0px 8px #888; }
 
 .login-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
   overflow: hidden; }
   .login-container form {
@@ -70,11 +100,18 @@ header {
       width: 50%;
       margin: 20px auto;
       display: block;
+      -webkit-transition: all .3s;
+      -o-transition: all .3s;
+      -moz-transition: all .3s;
       transition: all .3s; }
       .login-container form .button.loading {
         background: #F39B26 url(http://likegif.com/wp-content/uploads/2012/12/loader-gif-27.gif) no-repeat center;
         color: transparent;
+        -moz-background-size: 35px;
+        -o-background-size: 35px;
         background-size: 35px;
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
         border-radius: 100%;
         width: 50px; }
     .login-container form .forgot-login {
@@ -87,6 +124,8 @@ header {
   color: #fff;
   padding: 15px;
   border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 12px;
@@ -99,31 +138,67 @@ header {
   width: 100%;
   max-width: 800px;
   min-height: 400px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
   margin-bottom: 20px; }
   .quiz-container .finished {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
     align-self: center;
     margin: 0 auto; }
   .quiz-container .question {
     width: 50%;
     padding: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
     align-items: center; }
     .quiz-container .question h1 {
       font-size: 30px; }
   .quiz-container .answers.videos {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    -ms-flex-direction: row;
     flex-direction: row;
     width: 50%; }
     .quiz-container .answers.videos .answer {
       margin: 5px;
+      -webkit-flex-basis: -webkit-calc(50% - 10px);
+      -ms-flex-preferred-size: calc(50% - 10px);
+      flex-basis: -moz-calc(50% - 10px);
       flex-basis: calc(50% - 10px); }
       .quiz-container .answers.videos .answer .button {
         color: #333;
         text-align: center;
         background-color: #ececec;
+        -webkit-border-radius: 0 0 5px 5px;
+        -moz-border-radius: 0 0 5px 5px;
         border-radius: 0 0 5px 5px;
         margin-top: -4px; }
       .quiz-container .answers.videos .answer.selected .button {
@@ -133,14 +208,31 @@ header {
   .quiz-container .answers.multiplechoice {
     padding: 25px; }
     .quiz-container .answers.multiplechoice ol {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+      -moz-box-orient: vertical;
+      -moz-box-direction: normal;
+      -ms-flex-direction: column;
       flex-direction: column;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -moz-box-pack: center;
+      -ms-flex-pack: center;
       justify-content: center;
       height: 100%; }
       .quiz-container .answers.multiplechoice ol li {
         padding: 10px 0;
         cursor: pointer;
         font-size: 17px;
+        -webkit-transition: color .3s;
+        -o-transition: color .3s;
+        -moz-transition: color .3s;
         transition: color .3s; }
         .quiz-container .answers.multiplechoice ol li.selected {
           color: #F39B26; }
@@ -151,7 +243,15 @@ header {
   width: 100%;
   margin: 0 auto;
   max-width: 800px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between; }
 
 .quizview-container {
@@ -161,24 +261,47 @@ header {
   width: 100%;
   margin: auto;
   background: white;
-  border-collapse: collapse; }
+  border-collapse: collapse;
+  /* tr:not(:first-child):hover {*/
+  /*     background-color: #f6ad65;*/
+  /* }*/ }
   .quizview-table th {
-    padding: 5px;
-    text-align: left;
-    border-vertical: 1px solid black; }
-  .quizview-table tr:nth-child(even) {
-    background: #f1f1f1; }
+    padding: 10px;
+    text-align: left; }
+  .quizview-table a {
+    color: #555;
+    text-decoration: none;
+    -webkit-transition: color 0.3s;
+    -o-transition: color 0.3s;
+    -moz-transition: color 0.3s;
+    transition: color 0.3s; }
+    .quizview-table a:hover {
+      color: #F39B26; }
   .quizview-table tr, .quizview-table td {
-    padding: 5px;
-    border: 1px solid black; }
-  .quizview-table tr:not(:first-child):hover {
-    background-color: #f6ad65; }
+    color: #555;
+    padding: 10px; }
+  .quizview-table tr {
+    -webkit-transition: background 0.3s;
+    -o-transition: background 0.3s;
+    -moz-transition: background 0.3s;
+    transition: background 0.3s; }
+    .quizview-table tr:nth-child(even) {
+      background: #f1f1f1; }
+      .quizview-table tr:nth-child(even):hover {
+        background: #ececec; }
+    .quizview-table tr:nth-child(odd) {
+      background: #fff; }
+      .quizview-table tr:nth-child(odd):hover {
+        background: #fafafa; }
+    .quizview-table tr:first-of-type:hover {
+      background: #fff; }
 
 div.tab {
   overflow: hidden;
-  border: 1px solid black;
   background-color: #f1f1f1;
   width: 50%;
+  -webkit-box-shadow: 0px 0px 8px #888;
+  -moz-box-shadow: 0px 0px 8px #888;
   box-shadow: 0px 0px 8px #888;
   margin: auto; }
 
@@ -188,9 +311,13 @@ div.tab button {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 12px 20px;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
   transition: 0.3s;
-  outline: none; }
+  outline: none;
+  color: #555; }
 
 div.tab button:hover {
   background-color: #f6ad65; }
@@ -209,6 +336,8 @@ div.tab button.active {
 .imagecontainer {
   position: relative;
   width: 50%;
+  -webkit-box-shadow: 0px 0px 8px #888;
+  -moz-box-shadow: 0px 0px 8px #888;
   box-shadow: 0px 0px 8px #888; }
 
 .imagecontainer:hover .overlay {
@@ -229,6 +358,9 @@ div.tab button.active {
   height: 100%;
   width: 150%;
   opacity: 0.5;
+  -webkit-transition: .5s ease;
+  -o-transition: .5s ease;
+  -moz-transition: .5s ease;
   transition: .5s ease;
   background-color: #ACAF33; }
 
@@ -239,6 +371,9 @@ div.tab button.active {
   position: absolute;
   top: 50%;
   left: 75%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%); }
 
