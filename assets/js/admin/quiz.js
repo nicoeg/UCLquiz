@@ -6,8 +6,6 @@ jQuery(document).ready(function($){
         var path = "api/quiz_rest/getsingle";
         var qID = $(this).data('id');
 
-        console.log(qID);
-
         function base_url_gen(string) {
             return base_url + string;
         }
@@ -20,26 +18,25 @@ jQuery(document).ready(function($){
             },
             contentType: 'application/json',
             success: function (response) {
-                response = jQuery.parseJSON(response);
+                // response = jQuery.parseJSON(response);
                 
-                if(response.error) 
-                {
-                    window.location.assign(response.redirect);
-                } 
-                else
-                {
-                    $('.modal').addClass('modal--active');
-                    $('#id').html(response.id);
-                    $('#title').html(response.title);
-                    $('#level').html(response.level);
-                    $('#course').html(response.cID);
-                    $('#createdBy').html(response.uID);
-                }
+                // if(response.error) 
+                // {
+                //     window.location.assign(response.redirect);
+                // } 
+                // else
+                // {
+                //     $('.modal').addClass('modal--active');
+                //     $('#id').html(response.id);
+                //     $('#title').html(response.title);
+                //     $('#level').html(response.level);
+                //     $('#course').html(response.cID);
+                //     $('#createdBy').html(response.uID);
+                // }
                 console.log(response);
             },
             error: function (xhr, status, error) {
-                $('form .button').removeClass('loading');
-                $('form .error').addClass('shown');
+                // Error stuff here
             }
         });
     });

@@ -29,8 +29,7 @@ class Quiz_Rest extends CI_Controller
 		if($this->session->userdata('logged_in') === true)
 		{	
 			$id = json_decode($_GET['id']);
-			// $data = $this->quizModel->getQuizById($id);
-			$data['view'] = $this->load->view('quiz_single-view');
+			$data = $this->quizModel->getQuizById($id);
 
 			$dataJSON = json_encode($data);
 
