@@ -232,13 +232,14 @@ div.tab button.active {
   background-color: #ACAF33; }
 
 .imagetext {
-  color: black;
+  color: #00ff18;
   font-size: 25px;
   font-weight: bold;
   position: absolute;
   top: 50%;
   left: 75%;
   transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%); }
+  -ms-transform: translate(-50%, -50%);
+  }
 
 /*# sourceMappingURL=stylesheet.css.map */

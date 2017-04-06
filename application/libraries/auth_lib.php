@@ -48,7 +48,8 @@ class Auth_lib
                    'username'  => $userData->username,
                    'email'     => $userData->email,
                    'logged_in' => TRUE,
-                   'uid' 	   => $userData->id
+                   'uid' 	   => $userData->id,
+                   'user_type' => $userData->userType
                	);
 
 				$this->ci->session->set_userdata($newdata);
