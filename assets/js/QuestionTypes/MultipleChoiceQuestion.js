@@ -10,6 +10,8 @@ export default class MultipleChoiceQuestion extends React.Component {
     }
 
     selectAnswer(id) {
+        if (this.props.readOnly) return
+
         this.setState({ selectedAnswer: id })
 
         this.props.selectAnswer(id)

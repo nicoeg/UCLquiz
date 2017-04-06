@@ -11,6 +11,8 @@ export default class VideoQuestion extends React.Component {
     }
 
     selectAnswer(id) {
+        if (this.props.readOnly) return
+
         this.setState({ selectedAnswer: id })
 
         this.props.selectAnswer(id)

@@ -11137,18 +11137,21 @@ var Quiz = function (_React$Component) {
         value: function getQuestionData(index) {
             var question = this.state.questions[index],
                 userAnswer = this.state.answers.indexOf(index) ? this.state.answers[index] : false,
-                correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false;
+                correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false,
+                readyOnly = this.state.finished;
 
             if (question.type == 1) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__QuestionTypes_MultipleChoiceQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
                     currentAnswer: userAnswer,
                     answers: question.answers,
-                    correctAnswer: correctAnswer });
+                    correctAnswer: correctAnswer,
+                    readOnly: readyOnly });
             } else if (question.type == 2) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__QuestionTypes_VideoQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
                     currentAnswer: userAnswer,
                     answers: question.answers,
-                    correctAnswer: correctAnswer });
+                    correctAnswer: correctAnswer,
+                    readOnly: readyOnly });
             }
         }
     }, {
@@ -12104,6 +12107,8 @@ var MultipleChoiceQuestion = function (_React$Component) {
     _createClass(MultipleChoiceQuestion, [{
         key: 'selectAnswer',
         value: function selectAnswer(id) {
+            if (this.props.readOnly) return;
+
             this.setState({ selectedAnswer: id });
 
             this.props.selectAnswer(id);
@@ -12179,6 +12184,8 @@ var VideoQuestion = function (_React$Component) {
     _createClass(VideoQuestion, [{
         key: 'selectAnswer',
         value: function selectAnswer(id) {
+            if (this.props.readOnly) return;
+
             this.setState({ selectedAnswer: id });
 
             this.props.selectAnswer(id);

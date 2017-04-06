@@ -89,21 +89,24 @@ class Quiz extends React.Component {
     getQuestionData(index) {
         let question = this.state.questions[index],
             userAnswer = this.state.answers.indexOf(index) ? this.state.answers[index] : false,
-            correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false
+            correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false,
+            readyOnly = this.state.finished
 
         if (question.type == 1) {
             return (
                 <MultipleChoiceQuestion selectAnswer={this.selectAnswer}
                                         currentAnswer={userAnswer}
                                         answers={question.answers}
-                                        correctAnswer={correctAnswer}/>
+                                        correctAnswer={correctAnswer}
+                                        readOnly={readyOnly}/>
             )
         }else if (question.type == 2) {
             return (
                 <VideoQuestion selectAnswer={this.selectAnswer}
                                currentAnswer={userAnswer}
                                answers={question.answers}
-                               correctAnswer={correctAnswer}/>
+                               correctAnswer={correctAnswer}
+                               readOnly={readyOnly}/>
             )
         }
     }
