@@ -27,7 +27,7 @@
                         ?>
                         <tr>
                             <td>
-                                <a href="/quiz/<?= $quizData->id ?>" id="title"><?php echo $quizData->title ?></a>
+                                <a href="<?= base_url('quiz/' . $quizData->id) ?>" id="title"><?php echo $quizData->title ?></a>
                             </td>
                             <td>
                                 <p id="course"><?php echo $quizData->cID ?></p>
