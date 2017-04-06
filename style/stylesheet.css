@@ -127,6 +127,8 @@ header {
         margin-top: -4px; }
       .quiz-container .answers.videos .answer.selected .button {
         background-color: #F39B26; }
+      .quiz-container .answers.videos .answer.correct .button {
+        background-color: #00CC00; }
   .quiz-container .answers.multiplechoice {
     padding: 25px; }
     .quiz-container .answers.multiplechoice ol {
@@ -141,6 +143,8 @@ header {
         transition: color .3s; }
         .quiz-container .answers.multiplechoice ol li.selected {
           color: #F39B26; }
+        .quiz-container .answers.multiplechoice ol li.correct {
+          color: #00CC00; }
 
 .quiz-actions {
   width: 100%;

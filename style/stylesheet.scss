@@ -179,6 +179,10 @@ header {
             &.selected .button {
                 background-color: $accent;
             }
+
+            &.correct .button {
+                background-color: #00CC00;
+            }
         }
     }
 
@@ -199,6 +203,10 @@ header {
 
                 &.selected {
                     color: $accent;
+                }
+
+                &.correct {
+                    color: #00CC00;
                 }
             }
         }

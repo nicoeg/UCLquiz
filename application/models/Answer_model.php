@@ -9,4 +9,13 @@ class Answer_Model extends CI_Model {
 
         return $query->result();
     }
+
+    public function saveUserAnswers($user_id, $answers) {
+        foreach ($answers as $answer) {
+            $this->db->insert('user_answer', [
+                'user_id' => $user_id,
+                'answer_id' => $answer['answer_id']
+            ]);
+        }
+    }
 }
