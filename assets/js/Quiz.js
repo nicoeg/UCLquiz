@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import MultipleChoiceQuestion from './QuestionTypes/MultipleChoiceQuestion'
 import VideoQuestion from './QuestionTypes/VideoQuestion'
+import QuizResults from './QuizResults'
 
 class Quiz extends React.Component {
     constructor(props) {
@@ -34,6 +35,7 @@ class Quiz extends React.Component {
             ],
             answers: [],
             currentQuestion: null,
+            correctAnswers: [],
             finished: false,
         }
 
@@ -84,25 +86,53 @@ class Quiz extends React.Component {
         })
     }
 
+    getQuestionData(index) {
+        let question = this.state.questions[index],
+            userAnswer = this.state.answers.indexOf(index) ? this.state.answers[index] : false,
+            correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false
+
+        if (question.type == 1) {
+            return (
+                <MultipleChoiceQuestion selectAnswer={this.selectAnswer}
+                                        currentAnswer={userAnswer}
+                                        answers={question.answers}
+                                        correctAnswer={correctAnswer}/>
+            )
+        }else if (question.type == 2) {
+            return (
+                <VideoQuestion selectAnswer={this.selectAnswer}
+                               currentAnswer={userAnswer}
+                               answers={question.answers}
+                               correctAnswer={correctAnswer}/>
+            )
+        }
+    }
+
     render() {
-        if (this.state.currentQuestion === null) {
+        if (this.state.currentQuestion === null && !this.state.finished) {
             return <div>Loading...</div>
         }
 
+        let questions = this.state.finished ? Object.keys(this.state.questions) : [ this.state.currentQuestion ],
+            nextButton,
+            message
+
+        questions = questions.map(index => {
+            return (
+                <div key={index} className="main-container quiz-container">
+                    <div className="question">
+                        <h1>{this.state.questions[index].question}</h1>
+                    </div>
+
+                    {this.getQuestionData(index)}
+                </div>
+            )
+        })
+
         if (this.state.finished) {
-            return <div className="main-container quiz-container"><h1 className="finished">Tillykke, du er Færdig!</h1></div>
+            message = <QuizResults question={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
         }
 
-        let question = this.state.questions[this.state.currentQuestion],
-            currentAnswer = this.state.answers.indexOf(this.state.currentQuestion) ? this.state.answers[this.state.currentQuestion] : null,
-            answer,
-            nextButton
-
-        if (question.type == 1) {
-            answer = <MultipleChoiceQuestion selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
-        }else if (question.type == 2) {
-            answer = <VideoQuestion selectAnswer={this.selectAnswer} currentAnswer={currentAnswer} answers={question.answers} />
-        }
 
         if (this.state.currentQuestion == this.state.questions.length - 1) {
             nextButton = <div className="button primary" onClick={this.handleFinish}>Afslut</div>
@@ -112,13 +142,9 @@ class Quiz extends React.Component {
 
         return(
             <div>
-                <div className="main-container quiz-container">
-                    <div className="question">
-                        <h1>{question.question}</h1>
-                    </div>
+                {message}
 
-                    {answer}
-                </div>
+                { questions }
 
                 <div className="quiz-actions">
                     <div className="button primary previous" onClick={this.handlePreviousQuestion}>Forrige</div>
