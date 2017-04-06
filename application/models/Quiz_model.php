@@ -28,7 +28,7 @@ class Quiz_model extends CI_Model
 				->limit(1)
 				->get($this->table);
 
-			return $query->result();
+			return $query->row();
 		}
 
 		return false;
@@ -54,12 +54,12 @@ class Quiz_model extends CI_Model
 
 	public function set($data)
 	{
-		$cID   = $data['course'];
+		$cID   = $data['cID'];
 		$level = $data['level'];
 		$uID   = $data['uID'];
 		$title = trim(strip_tags($data['title']));
 
-		$query = $this->db->insert('quizzes', [
+		$this->db->insert($this->table, [
 			'cID'   => $cID,
 			'level' => $level,
 			'uID'   => $uID,
@@ -85,5 +85,20 @@ class Quiz_model extends CI_Model
 		}
 
 		return false;
+	}
+
+	public function update($id, $data)
+	{
+		$cID    = preg_replace('/[^0-9]/', '', $data['cID']);
+		$level  = preg_replace('/[^0-9]/', '', $data['level']);
+		$title  = stripslashes($data['title']);
+		$safeId = preg_replace('/[^0-9]/', '', $id);
+
+		$data['cID']   = $cID;
+		$data['level'] = $level;
+		$data['title'] = $title;
+
+		$this->db->where('id', $safeId)
+			->update($this->table, $data);
 	}
 }
