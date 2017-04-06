@@ -40,8 +40,7 @@
                                 <p id="level"><?php echo $quizData->uID ?></p>
                             </td>
                         </tr>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </table>
             </div>
             <div id="New" class="tabcontent">
@@ -60,27 +59,7 @@
                             Niveau
                         </th>
                     </tr>
-                    <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
-                        ?>
-                        <tr>
-                            <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
-                            </td>
-                            <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
-                            </td>
-                            <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
-                            </td>
-                            <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
-                            </td>
-                        </tr>
-                    <?php }
-                    ?>
                 </table>
-            
             </div>
             <div id="Done" class="tabcontent">
                  <table class="quizview-table">
@@ -98,25 +77,6 @@
                             Niveau
                         </th>
                     </tr>
-                    <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
-                        ?>
-                        <tr>
-                            <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
-                            </td>
-                            <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
-                            </td>
-                            <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
-                            </td>
-                            <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
-                            </td>
-                        </tr>
-                    <?php }
-                    ?>
                 </table>
             
             </div>
