@@ -7,6 +7,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('style/flexboxgrid.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('style/stylesheet.css'); ?>">
 	<title>UCLquiz</title>

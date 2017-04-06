@@ -4,7 +4,7 @@
             <div class="box">
                 <div class="row">
                     <div class="col-xs-6 ">
-                        <a href="<?php base_url()?>">
+                        <a href="createquiz">
                             <div class="imagecontainer">
                                 <img class="quizimage" src="<?php echo base_url() . "/images/makequiz.jpeg" ?>" height="300" width="300" alt="take quiz"/>
                                 <div class="overlay">

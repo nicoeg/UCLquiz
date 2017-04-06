@@ -17,6 +17,8 @@ mix.react('assets/js/Quiz.js', 'js/');
 
 mix.react('assets/js/CreateQuiz', 'js/')
 
+mix.sass('style/stylesheet.scss', 'sstyle/')
+
 // Full API
 // mix.js(src, output);
 // mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.

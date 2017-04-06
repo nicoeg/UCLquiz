@@ -315,3 +315,22 @@ div.tab button.active {
   -ms-transform: translate(-50%, -50%);
 }
 
+.createquizbox{
+    padding: 50px 0;
+    
+}
+
+.qustiontype{
+    width: 100%;
+    padding: 20px 10px;
+    
+    p{
+        display: inline-block;
+        margin-left: 10px;
+        line-height: 24px;
+    }
+    
+    i{
+        vertical-align: bottom;
+    }
+}
