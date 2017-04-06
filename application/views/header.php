@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url('style/flexboxgrid.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('style/stylesheet.css'); ?>">
 	<title>UCLquiz</title>
@@ -23,5 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <nav>
         <a href="#">Har du brug for hjælp?</a>
+        <?php if (isset($logged_in) && $logged_in) { ?>
+            <a href="/">Log ud</a>
+        <?php } ?>
     </nav>
 </header>

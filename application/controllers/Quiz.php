@@ -40,7 +40,10 @@ class Quiz extends CI_Controller
 
     public function show($id)
     {
-        $this->load->view('header');
+        $this->load->view('header', [
+            'logged_in' => $this->session->userdata('logged_in')
+        ]);
+
         $this->load->view('quiz_show', ['quizId' => $id]);
         $this->load->view('footer');
 	}
