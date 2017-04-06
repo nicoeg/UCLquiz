@@ -22,9 +22,15 @@ input[type="text"], input[type="email"], input[type="password"], textarea {
     background-color: $light-grey;
     border: none;
     margin: 10px 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     border-radius: 5px;
     outline: none;
     text-align: center;
+
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px $light-grey inset !important;
+    }
 }
 
 header {
@@ -93,9 +99,13 @@ header {
     -ms-flex-pack: justify;
     justify-content: space-between;
     overflow: hidden;
+    -webkit-flex-basis: 40% !important;
+    -ms-flex-preferred-size: 40% !important;
+    flex-basis: 25% !important;
+    max-width: 320px;
 
     form {
-        min-width: 320px;
+        width: 100%;
         padding: 40px 40px;
         text-align: center;
 
@@ -154,6 +164,8 @@ header {
     }
 
     .quote {
+        display: none;
+        width: auto;
         height: 425px;
     }
 }
@@ -191,6 +203,7 @@ header {
         -ms-grid-row-align: center;
         align-self: center;
         margin: 0 auto;
+        font-size: 22px;
     }
 
     .question {
@@ -243,9 +256,9 @@ header {
             flex-basis: calc(50% - 10px);
 
             .button {
-                color: #333;
+                color: #555;
                 text-align: center;
-                background-color: #ececec;
+                background-color: $light-grey;
                 -webkit-border-radius: 0 0 5px 5px;
                 -moz-border-radius: 0 0 5px 5px;
                 border-radius: 0 0 5px 5px;
@@ -253,11 +266,12 @@ header {
             }
 
             &.selected .button {
+                color: #fff;
                 background-color: $accent;
             }
 
             &.correct .button {
-                background-color: #00CC00;
+                background-color: #2ecc71;
             }
         }
     }
@@ -299,7 +313,7 @@ header {
                 }
 
                 &.correct {
-                    color: #00CC00;
+                    color: #2ecc71;
                 }
             }
         }
@@ -470,22 +484,26 @@ div.tab button.active {
 }
 
 .imagetext {
-  color: black;
-  font-size: 25px;
-  font-weight: bold;
-  position: absolute;
-  top: 50%;
-  left: 75%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
 }
 
 .support-container {
     max-width: 400px;
     padding: 20px 20px;
+
+    h1 {
+        font-size: 22px;
+    }
 
     label {
         display: block;
@@ -494,25 +512,29 @@ div.tab button.active {
 
     form {
         text-align: center;
+
+        textarea {
+            resize: none;
+            height: 150px;
+        }
     }
 }
 
-.createquizbox{
+.createquizbox {
     padding: 50px 0;
-    
 }
 
-.qustiontype{
+.qustiontype {
     width: 100%;
     padding: 20px 10px;
-    
-    p{
+
+    p {
         display: inline-block;
         margin-left: 10px;
         line-height: 24px;
     }
-    
-    i{
+
+    i {
         vertical-align: bottom;
     }
 }
