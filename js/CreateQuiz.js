@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 182);
+/******/ 	return __webpack_require__(__webpack_require__.s = 181);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9441,8 +9441,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 80 */,
-/* 81 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9467,131 +9466,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Quiz = function (_React$Component) {
-    _inherits(Quiz, _React$Component);
+var CreateQuiz = function (_React$Component) {
+    _inherits(CreateQuiz, _React$Component);
 
-    function Quiz(props) {
-        _classCallCheck(this, Quiz);
+    function CreateQuiz(props) {
+        _classCallCheck(this, CreateQuiz);
 
-        var _this = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
-
-        _this.state = {
-            questions: [{
-                type: 1,
-                question: "Hvor sidder sternum?",
-                answers: [{ id: 1, answer: "Brystbenet" }, { id: 2, answer: "Hovedet" }, { id: 3, answer: "Knæet" }]
-            }, {
-                type: 2,
-                question: "hvordan løfter man en baby?",
-                answers: [{ id: 1, answer: "Rds3nIlLRdY" }, { id: 2, answer: "Jeiu7y-a220" }, { id: 3, answer: "w_q56nyIqiI" }, { id: 4, answer: "_RIQm3Ogkmk" }]
-            }],
-            answers: [],
-            currentQuestion: null
-        };
-
-        _this.handleNextQuestion = _this.handleNextQuestion.bind(_this);
-        _this.handlePreviousQuestion = _this.handlePreviousQuestion.bind(_this);
-        _this.selectAnswer = _this.selectAnswer.bind(_this);
-
-        _this.initialize();
-        return _this;
+        return _possibleConstructorReturn(this, (CreateQuiz.__proto__ || Object.getPrototypeOf(CreateQuiz)).call(this, props));
     }
 
-    _createClass(Quiz, [{
-        key: 'initialize',
-        value: function initialize() {
-            this.state.currentQuestion = 0;
-        }
-    }, {
-        key: 'handleNextQuestion',
-        value: function handleNextQuestion() {
-            if (this.state.questions.length > this.state.currentQuestion + 1) {
-                this.setState({
-                    currentQuestion: this.state.currentQuestion + 1
-                });
-            }
-        }
-    }, {
-        key: 'handlePreviousQuestion',
-        value: function handlePreviousQuestion() {
-            if (this.state.currentQuestion != 0) {
-                this.setState({
-                    currentQuestion: this.state.currentQuestion - 1
-                });
-            }
-        }
-    }, {
-        key: 'selectAnswer',
-        value: function selectAnswer(answer) {
-            var answers = this.state.answers;
-            answers[this.state.currentQuestion] = answer;
-
-            this.setState({
-                answers: answers
-            });
-        }
-    }, {
+    _createClass(CreateQuiz, [{
         key: 'render',
-        value: function render() {
-            if (this.state.currentQuestion === null) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
-                    'Loading...'
-                );
-            }
-
-            var question = this.state.questions[this.state.currentQuestion],
-                currentAnswer = this.state.answers.indexOf(this.state.currentQuestion) ? this.state.answers[this.state.currentQuestion] : null,
-                answer = void 0;
-
-            if (question.type == 1) {
-                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__MultipleChoiceAnswer__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
-            } else if (question.type == 2) {
-                answer = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__VideoAnswer__["a" /* default */], { selectAnswer: this.selectAnswer, currentAnswer: currentAnswer, answers: question.answers });
-            }
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'main-container quiz-container' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'question' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h1',
-                            null,
-                            question.question
-                        )
-                    ),
-                    answer
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'quiz-actions' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'button primary previous', onClick: this.handlePreviousQuestion },
-                        'Forrige'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'button primary next', onClick: this.handleNextQuestion },
-                        'N\xE6ste'
-                    )
-                )
-            );
-        }
+        value: function render() {}
     }]);
 
-    return Quiz;
+    return CreateQuiz;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Quiz, null), document.getElementById('quiz'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CreateQuiz, null), document.getElementById('createquiz'));
 
 /***/ }),
+/* 81 */,
 /* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -21974,11 +21869,10 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 181 */,
-/* 182 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(81);
+module.exports = __webpack_require__(80);
 
 
 /***/ })
