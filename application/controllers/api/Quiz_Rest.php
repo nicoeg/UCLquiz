@@ -49,9 +49,27 @@ class Quiz_Rest extends CI_Controller
 	/**
 	 * Creates a quiz
 	 */
-	public function set()
+	public function post()
 	{
+		if($_POST)
+		{
+			$title  = $_POST['title'];
+			$course = $_POST['course'];
+			$level  = $_POST['level'];
+			$uID    = 1;
 
+			if(isset($title) && isset($course) && isset($level))
+			{
+				$data = [
+					'title'  => $title,
+					'cID'    => $course,
+					'level'  => $level,
+					'uID'    => $uID
+				];
+
+				$this->quizModel->set($data);
+			}
+		}
 	}
 
 	/**
