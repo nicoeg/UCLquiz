@@ -32,15 +32,6 @@
                 <button class="tablinks" onclick="openTab(event, 'New')">Nye</button>
                 <button class="tablinks" onclick="openTab(event, 'Done')">Færdige</button>
             </div>
-             <?php
-                $conn = mysqli_connect('localhost', 'root', '', 'ucl');
-                $query = 'SELECT * FROM ((quizzes
-INNER JOIN courses ON quizzes.cID = courses.id)
-INNER JOIN users ON quizzes.uID = users.id);';
-                $data = mysqli_query($conn, $query);
-                $savedDataQuiz = mysqli_fetch_all($data, MYSQLI_ASSOC);
-                mysqli_close($conn);
-                ?>
             <div id="All" class="tabcontent">               
                 <table class="quizview-table" id="quizTable">
                     <tr>
@@ -48,30 +39,30 @@ INNER JOIN users ON quizzes.uID = users.id);';
                             <p>Quiz</p>
                         </th>
                         <th>
-                            <p>Fag</p>
+                            <p>cID</p>
                         </th>
                         <th>
-                            <p>Udgivet af</p>
+                            <p>Niveau</p>
                         </th>
                         <th>
-                            Niveau
+                            uID
                         </th>
                     </tr>
                     <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
+                    foreach ($quizzes as $i => $quizData) {
                         ?>
                         <tr>
                             <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
+                                <a href="/quiz/<?= $quizData->id ?>" id="title"><?php echo $quizData->title ?></a>
                             </td>
                             <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
+                                <p id="course"><?php echo $quizData->cID ?></p>
                             </td>
                             <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
+                                <p id="publisher"><?php echo $quizData->level ?></p></p>
                             </td>
                             <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
+                                <p id="level"><?php echo $quizData->uID ?></p>
                             </td>
                         </tr>
                     <?php }

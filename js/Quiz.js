@@ -11085,7 +11085,7 @@ var Quiz = function (_React$Component) {
         value: function initialize() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/quiz_rest/getSingle?id=1').then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/quiz_rest/getSingle?id=' + quizId).then(function (response) {
                 _this2.setState({
                     quiz: response.data,
                     questions: response.data.questions,

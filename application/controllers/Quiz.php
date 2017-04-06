@@ -41,7 +41,7 @@ class Quiz extends CI_Controller
     public function show($id)
     {
         $this->load->view('header');
-        $this->load->view('quiz_show');
+        $this->load->view('quiz_show', ['quizId' => $id]);
         $this->load->view('footer');
 	}
 

@@ -28,7 +28,7 @@ class Quiz extends React.Component {
     }
 
     initialize() {
-        axios.get('/api/quiz_rest/getSingle?id=1').then(response => {
+        axios.get('/api/quiz_rest/getSingle?id=' + quizId).then(response => {
             this.setState({
                 quiz: response.data,
                 questions: response.data.questions,
