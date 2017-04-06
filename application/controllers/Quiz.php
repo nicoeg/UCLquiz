@@ -34,11 +34,14 @@ class Quiz extends CI_Controller
 
 	public function view(int $id = null)
 	{
+
+		echo '<pre>';
+		print_r($this->quizModel->getQuizByID($id));
+		die();
 		$safeId = preg_replace('/[^0-9]/', '', $id);
 
 		if(filter_var($safeId, FILTER_VALIDATE_INT))
 		{
-			$this->session->set_flashdata('storedId', $safeId);
 			$data['quiz'] = $this->quizModel->getQuizById($safeId);
 
 			$this->load->view('quiz_single-view', $data);
@@ -75,7 +78,7 @@ class Quiz extends CI_Controller
 	{
 		$this->load->library('form_validation');
 
-		if($this->form_validation->run('create-quiz') == true)
+		if($this->form_validation->run('create-quiz') === true)
 		{
 			$cID   = $this->input->post('course');
 			$level = $this->input->post('level');
@@ -109,6 +112,31 @@ class Quiz extends CI_Controller
 
 	public function update($id)
 	{
+		$this->load->library('form_validation');
 
+		$safeId       = preg_replace('/[^0-9]/', '', $id);
+		$data['quiz'] = $this->quizModel->getQuizById($safeId);
+
+		$cID   = $this->input->post('course');
+		$level = $this->input->post('level');
+		$uID   = 1;
+		$title = stripslashes($this->input->post('title'));
+
+		if(isset($cID) && isset($level) && isset($uID) && isset($title))
+		{
+			if($this->form_validation->run('create-quiz') === true)
+			{
+				$setData = [
+					'cID' => $cID,
+					'level' => $level,
+					'uID' => $uID,
+					'title' => $title,
+				];
+
+				$this->quizModel->update($safeId, $setData);
+			}	
+		}
+
+		$this->load->view('quiz_update-view', $data);
 	}
 }

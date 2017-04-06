@@ -6,7 +6,6 @@
 </head>
 <body>
 	<h1>Single</h1>
-	<?php echo anchor('quiz/update', 'refresh'); ?>
 	<table>
 			<tr>
 				<th>Title</th>
@@ -15,10 +14,10 @@
 				<th>Created by</th>
 			</tr>
 			<tr>
-				<td><?php echo $quiz->title; ?></td>
-				<td><?php echo $quiz->level; ?></td>
-				<td><?php echo $quiz->cID; ?></td>
-				<td><?php echo $quiz->uID; ?></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 	</table>
 </body>

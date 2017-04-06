@@ -86,4 +86,19 @@ class Quiz_model extends CI_Model
 
 		return false;
 	}
+
+	public function update($id, $data)
+	{
+		$cID    = preg_replace('/[^0-9]/', '', $data['cID']);
+		$level  = preg_replace('/[^0-9]/', '', $data['level']);
+		$title  = stripslashes($data['title']);
+		$safeId = preg_replace('/[^0-9]/', '', $id);
+
+		$data['cID']   = $cID;
+		$data['level'] = $level;
+		$data['title'] = $title;
+
+		$this->db->where('id', $safeId)
+			->update($this->table, $data);
+	}
 }

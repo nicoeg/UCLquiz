@@ -10,6 +10,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="<?= base_url('style/flexboxgrid.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('style/stylesheet.css'); ?>">
 	<title>UCLquiz</title>
+
+    <script>
+        window.settings = {
+            baseUrl: '<?php echo base_url(); ?>',
+        }
+    </script>
 </head>
 <body>
 <header>
