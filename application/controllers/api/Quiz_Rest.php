@@ -9,6 +9,8 @@ class Quiz_Rest extends CI_Controller
 	{
 		Parent::__construct();
 		$this->load->model('Quiz_Model', 'quizModel');
+        $this->load->model('Question_Model', 'questionModel');
+        $this->load->model('Answer_Model', 'answerModel');
 	}
 
 	/**
@@ -31,9 +33,20 @@ class Quiz_Rest extends CI_Controller
 			$id = json_decode($_GET['id']);
 			$data = $this->quizModel->getQuizById($id);
 
-			$dataJSON = json_encode($data);
+			$questions = $this->questionModel->getQuestionsByQuizId($id);
 
-			echo $dataJSON;
+			foreach ($questions as $key => $question) {
+			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
+                $questions[$key]->answers = array_map(function($answer) {
+                    unset($answer->correct);
+
+                    return $answer;
+                }, $answers);
+            }
+
+            $data->questions = $questions;
+
+			$dataJSON = json_encode($data);
 		} 
 		else 
 		{
@@ -41,9 +54,9 @@ class Quiz_Rest extends CI_Controller
 				'error' => 'You are not logged in',
 				'redirect' => base_url(),
 			]);
-
-			echo $dataJSON;
 		}
+
+		return $this->output->set_content_type('application/json')->set_output($dataJSON);
 	}
 	
 	/**

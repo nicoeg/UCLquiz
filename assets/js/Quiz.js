@@ -12,27 +12,7 @@ class Quiz extends React.Component {
 
         this.state = {
             quiz: { id: 1 },
-            questions: [
-                {
-                    type: 1,
-                    question: "Hvor sidder sternum?",
-                    answers: [
-                        { id: 1, answer: "Brystbenet" },
-                        { id: 2, answer: "Hovedet" },
-                        { id: 3, answer: "Knæet" }
-                    ]
-                },
-                {
-                    type: 2,
-                    question: "hvordan løfter man en baby?",
-                    answers: [
-                        { id: 1, answer: "Rds3nIlLRdY" },
-                        { id: 2, answer: "Jeiu7y-a220" },
-                        { id: 3, answer: "w_q56nyIqiI" },
-                        { id: 4, answer: "_RIQm3Ogkmk" }
-                    ]
-                }
-            ],
+            questions: [],
             answers: [],
             currentQuestion: null,
             correctAnswers: [],
@@ -48,7 +28,13 @@ class Quiz extends React.Component {
     }
 
     initialize() {
-        this.state.currentQuestion = 0
+        axios.get('/api/quiz_rest/getSingle?id=1').then(response => {
+            this.setState({
+                quiz: response.data,
+                questions: response.data.questions,
+                currentQuestion: 0
+            })
+        })
     }
 
     handleNextQuestion() {

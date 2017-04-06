@@ -11064,15 +11064,7 @@ var Quiz = function (_React$Component) {
 
         _this.state = {
             quiz: { id: 1 },
-            questions: [{
-                type: 1,
-                question: "Hvor sidder sternum?",
-                answers: [{ id: 1, answer: "Brystbenet" }, { id: 2, answer: "Hovedet" }, { id: 3, answer: "Knæet" }]
-            }, {
-                type: 2,
-                question: "hvordan løfter man en baby?",
-                answers: [{ id: 1, answer: "Rds3nIlLRdY" }, { id: 2, answer: "Jeiu7y-a220" }, { id: 3, answer: "w_q56nyIqiI" }, { id: 4, answer: "_RIQm3Ogkmk" }]
-            }],
+            questions: [],
             answers: [],
             currentQuestion: null,
             correctAnswers: [],
@@ -11091,7 +11083,15 @@ var Quiz = function (_React$Component) {
     _createClass(Quiz, [{
         key: 'initialize',
         value: function initialize() {
-            this.state.currentQuestion = 0;
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/quiz_rest/getSingle?id=1').then(function (response) {
+                _this2.setState({
+                    quiz: response.data,
+                    questions: response.data.questions,
+                    currentQuestion: 0
+                });
+            });
         }
     }, {
         key: 'handleNextQuestion',
@@ -11157,7 +11157,7 @@ var Quiz = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             if (this.state.currentQuestion === null && !this.state.finished) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -11181,10 +11181,10 @@ var Quiz = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            _this2.state.questions[index].question
+                            _this3.state.questions[index].question
                         )
                     ),
-                    _this2.getQuestionData(index)
+                    _this3.getQuestionData(index)
                 );
             });
 

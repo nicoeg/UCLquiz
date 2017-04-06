@@ -53,7 +53,8 @@ $('form').on('submit', function(e) {
         success: function (response) {
             response = jQuery.parseJSON(response);
             if (response.error) {
-                $("form").before("<p>" + response.error + "</p>");
+                $('form .button').removeClass('loading');
+                $('form .error').addClass('shown');
             } else if (response.redirect) {
                 window.location.assign(response.redirect);
                 console.log(response.redirect);
