@@ -15,7 +15,7 @@
 
             <input type="submit" class="button primary" value="Login">
 
-            <a class="forgot-login" href="#">Har du glemt din adgangskode?</a>
+            <a class="forgot-login" href="<?= base_url('support') ?>">Har du glemt din adgangskode?</a>
         </form>
         <img class="quote" src="<?= base_url('images/quote.png') ?>" alt="Quote">
     </div>
