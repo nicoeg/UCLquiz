@@ -1,6 +1,5 @@
 <div class="quizview-container">
     <div class="row-center-xs">
-        <?php if ($teacher) { ?> <a href="/createquiz" class="button primary">Lav quiz</a> <?php } ?>
         <div class="box">
             <div class="tab">
                 <button class="tablinks" onclick="openTab(event, 'All')" id="tabopen">Alle</button>

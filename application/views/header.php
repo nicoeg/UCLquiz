@@ -27,5 +27,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php if (isset($logged_in) && $logged_in) { ?>
             <a href="/">Log ud</a>
         <?php } ?>
+        <?php if(uri_string() === 'quizview') : ?>
+            <?php if($teacher) : ?> 
+                <a href="<?= base_url(); ?>/createquiz" class="button primary">Lav quiz</a> 
+            <?php endif; ?>
+        <?php endif; ?>
     </nav>
 </header>

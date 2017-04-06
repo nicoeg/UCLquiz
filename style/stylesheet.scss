@@ -162,11 +162,11 @@ header {
 
 .button {
     color: #fff;
-    padding: 15px;
+    padding: 8px 16px;
     border: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     font-weight: bold;
     font-size: 12px;
     cursor: pointer;
@@ -407,21 +407,24 @@ div.tab button {
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 12px 20px;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    -moz-transition: 0.3s;
-    transition: 0.3s;
+    padding: 8px 16px;
+    margin: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     outline: none;
     color: $dark-grey;
+    font-weight: bold;
 }
 
 div.tab button:hover {
     background-color: #f6ad65;
+    color: #fff;
 }
 
 div.tab button.active {
     background-color: rgb(243, 146, 51);
+    color: #fff;
 }
 
 .tabcontent {
