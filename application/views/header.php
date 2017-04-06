@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <a href="<?php echo base_url();?>"><img src="<?= base_url('images/ucl.jpg') ?>" alt="UCL Logo" class="logo"></a>
 
     <nav>
-        <a href="#">Har du brug for hjælp?</a>
+        <a href="/support">Har du brug for hjælp?</a>
         <?php if (isset($logged_in) && $logged_in) { ?>
             <a href="/">Log ud</a>
         <?php } ?>

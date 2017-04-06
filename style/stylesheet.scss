@@ -13,6 +13,17 @@ body {
     background-color: #ACAF33;
 }
 
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 15px 10px;
+    background-color: $light-grey;
+    border: none;
+    margin: 10px 0;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -70,17 +81,6 @@ header {
 
         .error.shown {
             opacity: 1;
-        }
-
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 15px 10px;
-            background-color: $light-grey;
-            border: none;
-            margin: 10px 0;
-            border-radius: 5px;
-            outline: none;
-            text-align: center;
         }
 
         label.remember {
@@ -323,3 +323,16 @@ div.tab button.active {
   -ms-transform: translate(-50%, -50%);
 }
 
+.support-container {
+    max-width: 400px;
+    padding: 20px 20px;
+
+    label {
+        display: block;
+        margin-top: 20px;
+    }
+
+    form {
+        text-align: center;
+    }
+}
