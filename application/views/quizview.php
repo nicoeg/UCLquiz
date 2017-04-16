@@ -1,29 +1,3 @@
-<script>
-    var jsonTest = {
-    "firstName": "John",
-            "lastName": "Smith",
-            "age": 25,
-            "address": {
-            "streetAddress": "21 2nd Street",
-                    "city": "New York",
-                    "state": "NY",
-                    "postalCode": "10021"
-            },
-            "phoneNumber": [
-            {
-            "type": "home",
-                    "number": "212 555-1234"
-            },
-            {
-            "type": "fax",
-                    "number": "646 555-4567"
-            }
-            ],
-            "gender": {
-            "type": "male"
-            }
-    } 
-</script>
 <div class="quizview-container">
     <div class="row-center-xs">
         <div class="box">
@@ -32,15 +6,6 @@
                 <button class="tablinks" onclick="openTab(event, 'New')">Nye</button>
                 <button class="tablinks" onclick="openTab(event, 'Done')">Færdige</button>
             </div>
-             <?php
-                $conn = mysqli_connect('localhost', 'root', '', 'ucl');
-                $query = 'SELECT * FROM ((quizzes
-INNER JOIN courses ON quizzes.cID = courses.id)
-INNER JOIN users ON quizzes.uID = users.id);';
-                $data = mysqli_query($conn, $query);
-                $savedDataQuiz = mysqli_fetch_all($data, MYSQLI_ASSOC);
-                mysqli_close($conn);
-                ?>
             <div id="All" class="tabcontent">               
                 <table class="quizview-table" id="quizTable">
                     <tr>
@@ -48,34 +13,33 @@ INNER JOIN users ON quizzes.uID = users.id);';
                             <p>Quiz</p>
                         </th>
                         <th>
-                            <p>Fag</p>
+                            <p>cID</p>
                         </th>
                         <th>
-                            <p>Udgivet af</p>
+                            <p>Niveau</p>
                         </th>
                         <th>
-                            Niveau
+                            uID
                         </th>
                     </tr>
                     <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
+                    foreach ($quizzes as $i => $quizData) {
                         ?>
                         <tr>
                             <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
+                                <a href="<?= base_url('quiz/' . $quizData->id) ?>" id="title"><?php echo $quizData->title ?></a>
                             </td>
                             <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
+                                <p id="course"><?php echo $quizData->cID ?></p>
                             </td>
                             <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
+                                <p id="publisher"><?php echo $quizData->level ?></p></p>
                             </td>
                             <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
+                                <p id="level"><?php echo $quizData->uID ?></p>
                             </td>
                         </tr>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </table>
             </div>
             <div id="New" class="tabcontent">
@@ -94,27 +58,7 @@ INNER JOIN users ON quizzes.uID = users.id);';
                             Niveau
                         </th>
                     </tr>
-                    <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
-                        ?>
-                        <tr>
-                            <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
-                            </td>
-                            <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
-                            </td>
-                            <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
-                            </td>
-                            <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
-                            </td>
-                        </tr>
-                    <?php }
-                    ?>
                 </table>
-            
             </div>
             <div id="Done" class="tabcontent">
                  <table class="quizview-table">
@@ -132,25 +76,6 @@ INNER JOIN users ON quizzes.uID = users.id);';
                             Niveau
                         </th>
                     </tr>
-                    <?php
-                    foreach ($savedDataQuiz as $i => $quizData) {
-                        ?>
-                        <tr>
-                            <td>
-                                <p id="title"><?php echo $quizData['title'] ?></p>
-                            </td>
-                            <td>
-                                <p id="course"><?php echo $quizData['name'] ?></p>
-                            </td>
-                            <td>
-                                <p id="publisher"><?php echo $quizData['username'] ?></p></p>
-                            </td>
-                            <td>
-                                <p id="level"><?php echo $quizData['level'] ?></p>
-                            </td>
-                        </tr>
-                    <?php }
-                    ?>
                 </table>
             
             </div>

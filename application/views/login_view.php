@@ -15,7 +15,7 @@
 
             <input type="submit" class="button primary" value="Login">
 
-            <a class="forgot-login" href="#">Har du glemt din adgangskode?</a>
+            <a class="forgot-login" href="<?= base_url('support') ?>">Har du glemt din adgangskode?</a>
         </form>
         <img class="quote" src="<?= base_url('images/quote.png') ?>" alt="Quote">
     </div>
@@ -53,7 +53,8 @@ $('form').on('submit', function(e) {
         success: function (response) {
             response = jQuery.parseJSON(response);
             if (response.error) {
-                $("form").before("<p>" + response.error + "</p>");
+                $('form .button').removeClass('loading');
+                $('form .error').addClass('shown');
             } else if (response.redirect) {
                 window.location.assign(response.redirect);
                 console.log(response.redirect);

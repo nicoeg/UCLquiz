@@ -5,7 +5,10 @@ export default class VideoQuestion extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { selectedAnswer: props.currentAnswer, videos: {} }
+        this.state = {
+            selectedAnswer: props.currentAnswer.answer_id,
+            videos: {}
+        }
 
         this.selectAnswer = this.selectAnswer.bind(this)
     }
@@ -40,7 +43,9 @@ export default class VideoQuestion extends React.Component {
 
         const answers = this.props.answers.map(answer => {
             return (
-                <div key={answer.id} className={"answer " + (answer.id == this.state.selectedAnswer ? 'selected' : '')}>
+                <div key={answer.id} className={
+                        "answer " + (answer.id == this.state.selectedAnswer ? 'selected' : '') +
+                        (this.props.correctAnswer && answer.id == this.props.correctAnswer.id ? ' correct' : '')}>
                     <YouTube videoId={answer.answer} opts={videoOptions} onReady={(event) => this.videoReady(answer, event)}/>
 
                     <div onClick={() => this.selectAnswer(answer.id)} className="button">

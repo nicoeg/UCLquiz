@@ -14,12 +14,14 @@ class User extends CI_controller
 	{
 		
 		if ($this->auth->access()) {
-			// echo json_encode( array( 
-			// 	'redirect' => 'location:' . base_url(),
-			// 	'test' => 'test',
-			// 	) );
+			// $this->session->set_userdata(array(
+				// 	'auth' => TRUE,
+				// 	'email' => $email,
+				// 	'uid' => $userData->id,
+				// 	'username' => $userData->username
+				// ));
 			echo json_encode( array( 
-				'redirect' => base_url('quiz'),
+				'redirect' => base_url('quizview'),
 				'errors' => 'wrong username or ',
 				) );
 		} 

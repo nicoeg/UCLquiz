@@ -4,7 +4,10 @@ export default class MultipleChoiceQuestion extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { selectedAnswer: props.currentAnswer }
+        this.state = {
+            selectedAnswer: props.currentAnswer.answer_id,
+            correctAnswer: props.correctAnswer
+        }
 
         this.selectAnswer = this.selectAnswer.bind(this)
     }
@@ -22,7 +25,11 @@ export default class MultipleChoiceQuestion extends React.Component {
             return (
                 <li key={answer.id}
                     onClick={() => this.selectAnswer(answer.id)}
-                    className={"answer " + (answer.id == this.state.selectedAnswer ? 'selected' : '')}>
+                    className={
+                        "answer " +
+                        (answer.id == this.state.selectedAnswer ? 'selected' : '') +
+                        (this.state.correctAnswer && answer.id == this.state.correctAnswer.id ? ' correct' : '')
+                    }>
                     {answer.answer}
                 </li>
             )

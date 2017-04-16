@@ -15,9 +15,9 @@ mix.setPublicPath('.')
 
 mix.react('assets/js/Quiz.js', 'js/');
 
-mix.react('assets/js/CreateQuiz', 'js/')
+mix.react('assets/js/CreateQuiz', 'js/');
 
-mix.sass('style/stylesheet.scss', 'sstyle/')
+mix.sass('style/stylesheet.scss', 'sstyle/');
 
 // Full API
 // mix.js(src, output);

@@ -12,27 +12,7 @@ class Quiz extends React.Component {
 
         this.state = {
             quiz: { id: 1 },
-            questions: [
-                {
-                    type: 1,
-                    question: "Hvor sidder sternum?",
-                    answers: [
-                        { id: 1, answer: "Brystbenet" },
-                        { id: 2, answer: "Hovedet" },
-                        { id: 3, answer: "Knæet" }
-                    ]
-                },
-                {
-                    type: 2,
-                    question: "hvordan løfter man en baby?",
-                    answers: [
-                        { id: 1, answer: "Rds3nIlLRdY" },
-                        { id: 2, answer: "Jeiu7y-a220" },
-                        { id: 3, answer: "w_q56nyIqiI" },
-                        { id: 4, answer: "_RIQm3Ogkmk" }
-                    ]
-                }
-            ],
+            questions: [],
             answers: [],
             currentQuestion: null,
             correctAnswers: [],
@@ -48,7 +28,13 @@ class Quiz extends React.Component {
     }
 
     initialize() {
-        this.state.currentQuestion = 0
+        axios.get(window.settings.baseUrl + '/api/quiz_rest/getSingle?id=' + quizId).then(response => {
+            this.setState({
+                quiz: response.data,
+                questions: response.data.questions,
+                currentQuestion: 0
+            })
+        })
     }
 
     handleNextQuestion() {
@@ -68,18 +54,26 @@ class Quiz extends React.Component {
     }
 
     handleFinish() {
-        /*axios.post('/api/quiz/6/finish', this.state.answers).then(response => {
+        axios.post(window.settings.baseUrl + '/api/quiz_rest/saveResult/' + this.state.quiz.id, {answers: this.state.answers}).then(response => {
             //Get response with correct answers and display them
-            console.log(response);
-            this.setState({ finished: true })
-        })*/
-
-        this.setState({ finished: true })
+            this.setState({
+                finished: true,
+                correctAnswers: response.data
+            })
+        })
     }
 
-    selectAnswer(answer) {
-        let answers = this.state.answers
-        answers[this.state.currentQuestion] = answer
+    selectAnswer(answer_id) {
+        const question = this.state.questions[this.state.currentQuestion],
+              answers = this.state.answers,
+              data = { question_id: question.id, answer_id: answer_id },
+              existing = answers.findIndex(answer => answer.question_id == question.id)
+
+        if (existing != -1) {
+            answers[existing] = data
+        }else {
+            answers.push(data)
+        }
 
         this.setState({
             answers
@@ -88,24 +82,25 @@ class Quiz extends React.Component {
 
     getQuestionData(index) {
         let question = this.state.questions[index],
-            userAnswer = this.state.answers.indexOf(index) ? this.state.answers[index] : false,
-            correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false,
+            userAnswer = this.state.answers.find(answer => answer.question_id == question.id),
+            correctAnswer = this.state.correctAnswers.find(answer => answer.question_id == question.id),
             readyOnly = this.state.finished
 
         if (question.type == 1) {
             return (
                 <MultipleChoiceQuestion selectAnswer={this.selectAnswer}
-                                        currentAnswer={userAnswer}
+                                        currentAnswer={userAnswer ? userAnswer : false}
                                         answers={question.answers}
-                                        correctAnswer={correctAnswer}
+                                        correctAnswer={correctAnswer ? correctAnswer : false}
                                         readOnly={readyOnly}/>
             )
         }else if (question.type == 2) {
+            console.log(correctAnswer);
             return (
                 <VideoQuestion selectAnswer={this.selectAnswer}
-                               currentAnswer={userAnswer}
+                               currentAnswer={userAnswer ? userAnswer : false}
                                answers={question.answers}
-                               correctAnswer={correctAnswer}
+                               correctAnswer={correctAnswer ? correctAnswer : false}
                                readOnly={readyOnly}/>
             )
         }

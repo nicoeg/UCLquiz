@@ -11065,15 +11065,7 @@ var Quiz = function (_React$Component) {
 
         _this.state = {
             quiz: { id: 1 },
-            questions: [{
-                type: 1,
-                question: "Hvor sidder sternum?",
-                answers: [{ id: 1, answer: "Brystbenet" }, { id: 2, answer: "Hovedet" }, { id: 3, answer: "Knæet" }]
-            }, {
-                type: 2,
-                question: "hvordan løfter man en baby?",
-                answers: [{ id: 1, answer: "Rds3nIlLRdY" }, { id: 2, answer: "Jeiu7y-a220" }, { id: 3, answer: "w_q56nyIqiI" }, { id: 4, answer: "_RIQm3Ogkmk" }]
-            }],
+            questions: [],
             answers: [],
             currentQuestion: null,
             correctAnswers: [],
@@ -11092,7 +11084,15 @@ var Quiz = function (_React$Component) {
     _createClass(Quiz, [{
         key: 'initialize',
         value: function initialize() {
-            this.state.currentQuestion = 0;
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(window.settings.baseUrl + '/api/quiz_rest/getSingle?id=' + quizId).then(function (response) {
+                _this2.setState({
+                    quiz: response.data,
+                    questions: response.data.questions,
+                    currentQuestion: 0
+                });
+            });
         }
     }, {
         key: 'handleNextQuestion',
@@ -11115,19 +11115,31 @@ var Quiz = function (_React$Component) {
     }, {
         key: 'handleFinish',
         value: function handleFinish() {
-            /*axios.post('/api/quiz/6/finish', this.state.answers).then(response => {
-                //Get response with correct answers and display them
-                console.log(response);
-                this.setState({ finished: true })
-            })*/
+            var _this3 = this;
 
-            this.setState({ finished: true });
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz_rest/saveResult/' + this.state.quiz.id, { answers: this.state.answers }).then(function (response) {
+                //Get response with correct answers and display them
+                _this3.setState({
+                    finished: true,
+                    correctAnswers: response.data
+                });
+            });
         }
     }, {
         key: 'selectAnswer',
-        value: function selectAnswer(answer) {
-            var answers = this.state.answers;
-            answers[this.state.currentQuestion] = answer;
+        value: function selectAnswer(answer_id) {
+            var question = this.state.questions[this.state.currentQuestion],
+                answers = this.state.answers,
+                data = { question_id: question.id, answer_id: answer_id },
+                existing = answers.findIndex(function (answer) {
+                return answer.question_id == question.id;
+            });
+
+            if (existing != -1) {
+                answers[existing] = data;
+            } else {
+                answers.push(data);
+            }
 
             this.setState({
                 answers: answers
@@ -11137,28 +11149,33 @@ var Quiz = function (_React$Component) {
         key: 'getQuestionData',
         value: function getQuestionData(index) {
             var question = this.state.questions[index],
-                userAnswer = this.state.answers.indexOf(index) ? this.state.answers[index] : false,
-                correctAnswer = this.state.correctAnswers.indexOf(index) ? this.state.correctAnswers[index] : false,
+                userAnswer = this.state.answers.find(function (answer) {
+                return answer.question_id == question.id;
+            }),
+                correctAnswer = this.state.correctAnswers.find(function (answer) {
+                return answer.question_id == question.id;
+            }),
                 readyOnly = this.state.finished;
 
             if (question.type == 1) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__QuestionTypes_MultipleChoiceQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
-                    currentAnswer: userAnswer,
+                    currentAnswer: userAnswer ? userAnswer : false,
                     answers: question.answers,
-                    correctAnswer: correctAnswer,
+                    correctAnswer: correctAnswer ? correctAnswer : false,
                     readOnly: readyOnly });
             } else if (question.type == 2) {
+                console.log(correctAnswer);
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__QuestionTypes_VideoQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
-                    currentAnswer: userAnswer,
+                    currentAnswer: userAnswer ? userAnswer : false,
                     answers: question.answers,
-                    correctAnswer: correctAnswer,
+                    correctAnswer: correctAnswer ? correctAnswer : false,
                     readOnly: readyOnly });
             }
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this4 = this;
 
             if (this.state.currentQuestion === null && !this.state.finished) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -11182,10 +11199,10 @@ var Quiz = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            _this2.state.questions[index].question
+                            _this4.state.questions[index].question
                         )
                     ),
-                    _this2.getQuestionData(index)
+                    _this4.getQuestionData(index)
                 );
             });
 
@@ -12105,7 +12122,10 @@ var MultipleChoiceQuestion = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MultipleChoiceQuestion.__proto__ || Object.getPrototypeOf(MultipleChoiceQuestion)).call(this, props));
 
-        _this.state = { selectedAnswer: props.currentAnswer };
+        _this.state = {
+            selectedAnswer: props.currentAnswer.answer_id,
+            correctAnswer: props.correctAnswer
+        };
 
         _this.selectAnswer = _this.selectAnswer.bind(_this);
         return _this;
@@ -12132,7 +12152,7 @@ var MultipleChoiceQuestion = function (_React$Component) {
                         onClick: function onClick() {
                             return _this2.selectAnswer(answer.id);
                         },
-                        className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
+                        className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') + (_this2.state.correctAnswer && answer.id == _this2.state.correctAnswer.id ? ' correct' : '') },
                     answer.answer
                 );
             });
@@ -12182,7 +12202,10 @@ var VideoQuestion = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (VideoQuestion.__proto__ || Object.getPrototypeOf(VideoQuestion)).call(this, props));
 
-        _this.state = { selectedAnswer: props.currentAnswer, videos: {} };
+        _this.state = {
+            selectedAnswer: props.currentAnswer.answer_id,
+            videos: {}
+        };
 
         _this.selectAnswer = _this.selectAnswer.bind(_this);
         return _this;
@@ -12225,7 +12248,7 @@ var VideoQuestion = function (_React$Component) {
             var answers = this.props.answers.map(function (answer) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { key: answer.id, className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') },
+                    { key: answer.id, className: "answer " + (answer.id == _this2.state.selectedAnswer ? 'selected' : '') + (_this2.props.correctAnswer && answer.id == _this2.props.correctAnswer.id ? ' correct' : '') },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_youtube___default.a, { videoId: answer.answer, opts: videoOptions, onReady: function onReady(event) {
                             return _this2.videoReady(answer, event);
                         } }),

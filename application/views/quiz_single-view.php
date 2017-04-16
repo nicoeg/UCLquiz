@@ -13,14 +13,12 @@
 				<th>Course</th>
 				<th>Created by</th>
 			</tr>
-			<?php foreach($quiz as $row) : ?>
-				<tr>
-					<td><?php echo $row->title; ?></td>
-					<td><?php echo $row->level; ?></td>
-					<td><?php echo $row->cID; ?></td>
-					<td><?php echo $row->uID; ?></td>
-				</tr>
-			<?php endforeach; ?>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
 	</table>
 </body>
 </html>
