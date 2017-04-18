@@ -9,6 +9,8 @@ class Quiz_Rest extends CI_Controller
 	{
 		Parent::__construct();
 		$this->load->model('Quiz_Model', 'quizModel');
+        $this->load->model('Question_Model', 'questionModel');
+        $this->load->model('Answer_Model', 'answerModel');
 	}
 
 	/**
@@ -31,9 +33,20 @@ class Quiz_Rest extends CI_Controller
 			$id = json_decode($_GET['id']);
 			$data = $this->quizModel->getQuizById($id);
 
-			$dataJSON = json_encode($data);
+			$questions = $this->questionModel->getQuestionsByQuizId($id);
 
-			echo $dataJSON;
+			foreach ($questions as $key => $question) {
+			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
+                $questions[$key]->answers = array_map(function($answer) {
+                    unset($answer->correct);
+
+                    return $answer;
+                }, $answers);
+            }
+
+            $data->questions = $questions;
+
+			$dataJSON = json_encode($data);
 		} 
 		else 
 		{
@@ -41,9 +54,22 @@ class Quiz_Rest extends CI_Controller
 				'error' => 'You are not logged in',
 				'redirect' => base_url(),
 			]);
-
-			echo $dataJSON;
 		}
+
+		return $this->output->set_content_type('application/json')->set_output($dataJSON);
+	}
+
+    public function saveResult($quiz_id) {
+        if ($this->input->method() != 'post') {
+            redirect('404');
+        }
+
+        $request_data = json_decode(file_get_contents('php://input'), true);
+
+        $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid'));
+        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers']);
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode($this->quizModel->getCorrectAnswers($quiz_id)));
 	}
 	
 	/**

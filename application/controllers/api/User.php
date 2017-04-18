@@ -21,7 +21,7 @@ class User extends CI_controller
 				// 	'username' => $userData->username
 				// ));
 			echo json_encode( array( 
-				'redirect' => base_url('quiz'),
+				'redirect' => base_url('quizview'),
 				'errors' => 'wrong username or ',
 				) );
 		} 

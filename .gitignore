@@ -12,3 +12,4 @@ Homestead.yaml
 env.php
 style/stylesheet.css.map
 /application/cache
+*.map

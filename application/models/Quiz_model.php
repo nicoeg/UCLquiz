@@ -101,4 +101,24 @@ class Quiz_model extends CI_Model
 		$this->db->where('id', $safeId)
 			->update($this->table, $data);
 	}
+
+    public function saveUserResult($quiz_id, $user_id)
+    {
+        $this->db->insert('user_quiz', [
+            'user_id' => $user_id,
+            'quiz_id' => $quiz_id
+        ]);
+	}
+
+    public function getCorrectAnswers($quiz_id)
+    {
+        $query = $this->db->from('answers')
+            ->select('answers.id, answers.question_id')
+            ->join('questions', 'questions.id = answers.question_id')
+            ->where('quiz_id', $quiz_id)
+            ->where('correct', 1)
+            ->get();
+
+        return $query->result();
+	}
 }
