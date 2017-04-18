@@ -52,7 +52,7 @@ class Quiz_model extends CI_Model
 	*  @param array $data Array with data from input fields
 	*/
 
-	public function set($data)
+	public function setQuiz($data)
 	{
 		$cID   = $data['cID'];
 		$level = $data['level'];
@@ -65,6 +65,42 @@ class Quiz_model extends CI_Model
 			'uID'   => $uID,
 			'title' => $title,
 		]);
+
+		$savedId = $this->db->insert_id();
+
+		foreach($data['questions'] as $question)
+		{
+			$data = [
+				'qID' => $savedId,
+				'question' => $question['question'] ,
+				'type' => $question['type'],
+				'answers' => $question['answers'],
+			];
+
+			$this->setQuestions($data);
+		}
+	}
+
+	public function setQuestions($data)
+	{
+		$qID = $data['qID'];
+		$question = $data['question'];
+		$type = $data['type'];
+
+		$this->db->insert('questions', [
+			'quiz_id' => $qID,
+			'question' => $question,
+			'type' => $type
+		]);
+
+		$savedId = $this->db->insert_id();
+
+		foreach()
+	}
+
+	public function setAnswers($data)
+	{
+
 	}
 
 	/**
