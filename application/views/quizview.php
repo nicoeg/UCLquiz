@@ -30,7 +30,7 @@
                                 <a href="<?= base_url('quiz/' . $quizData->id) ?>" id="title"><?php echo $quizData->title ?></a>
                             </td>
                             <td>
-                                <p id="course"><?php echo $quizData->cID ?></p>
+                                <p id="course"><?php echo $quizData->course_id ?></p>
                             </td>
                             <td>
                                 <p id="publisher"><?php echo $quizData->level ?></p></p>
