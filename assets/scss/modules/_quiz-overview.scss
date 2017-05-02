@@ -16,9 +16,6 @@
     a {
         color: $dark-grey;
         text-decoration: none;
-        -webkit-transition: color 0.3s;
-        -o-transition: color 0.3s;
-        -moz-transition: color 0.3s;
         transition: color 0.3s;
 
         &:hover {
@@ -32,9 +29,6 @@
     }
 
     tr {
-        -webkit-transition: background 0.3s;
-        -o-transition: background 0.3s;
-        -moz-transition: background 0.3s;
         transition: background 0.3s;
 
         &:nth-child(even) {
