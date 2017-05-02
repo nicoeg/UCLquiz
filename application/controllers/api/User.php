@@ -2,8 +2,6 @@
 
 class User extends CI_controller 
 {
-	private $status = 0;
-
 	public function __construct() 
 	{
 		parent::__construct();
@@ -11,44 +9,16 @@ class User extends CI_controller
 	}
 
 	public function index() 
-	{
-		
-		if ($this->auth->access()) {
-			// $this->session->set_userdata(array(
-				// 	'auth' => TRUE,
-				// 	'email' => $email,
-				// 	'uid' => $userData->id,
-				// 	'username' => $userData->username
-				// ));
-			echo json_encode( array( 
-				'redirect' => base_url('quizview'),
-				'errors' => 'wrong username or ',
-				) );
+	{	
+		if ($this->auth->access()) 
+		{
+			$json_data = ['redirect' => base_url('quiz_view')];
 		} 
-			else {
-			echo json_encode( array( 
-				'redirect' => base_url(),
-				'error' => 'wrong username or password',
-				) );
+		else 
+		{
+			$json_data = ['redirect' => base_url()];
 		}
 
-
-		// if ($_SERVER['REQUEST_METHOD'] === 'GET') 
-		// {
-		// 	if (!empty($_GET['email'])) {
-		// 		echo 'hi';
-		// 	} else {
-		// 		redirect(base_url());
-		// 	}
-		// 	// $this->auth->access();
-		// 	// $output = $this->User_model->get();
-		// 	// $status = 200;
-		// }
-		// else {
-		// 	redirect(base_url());
-		// }
-		// echo '<pre>';
-		// $this->auth->access();
-		// print_r(getallheaders());
+		echo json_encode($json_data);
 	}
 }
