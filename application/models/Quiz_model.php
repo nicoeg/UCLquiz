@@ -54,7 +54,7 @@ class Quiz_model extends CI_Model
 
 	public function setQuiz($data)
 	{
-		$cID   = $data['course_id'];
+		$cID   = $data['cID'];
 		$level = $data['level'];
 		$uID   = $data['uID'];
 		$title = trim(strip_tags($data['title']));
@@ -142,7 +142,7 @@ class Quiz_model extends CI_Model
 
 	public function update($id, $data)
 	{
-		$cID    = preg_replace('/[^0-9]/', '', $data['course_id']);
+		$cID    = preg_replace('/[^0-9]/', '', $data['cID']);
 		$level  = preg_replace('/[^0-9]/', '', $data['level']);
 		$title  = stripslashes($data['title']);
 		$safeId = preg_replace('/[^0-9]/', '', $id);
