@@ -1,0 +1,108 @@
+.quiz-container {
+    width: 100%;
+    max-width: 800px;
+    min-height: 400px;
+    display: flex;
+    margin-bottom: 20px;
+    
+    &.questions {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    &.big {
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    .finished {
+        align-self: center;
+        margin: 0 auto;
+        font-size: 22px;
+    }
+
+    .question {
+        width: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h1 {
+            font-size: 25px;
+        }
+    }
+
+    .answers.videos {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        width: 70%;
+        margin-top: 20px;
+
+        .answer {
+            margin: 5px;
+            flex-basis: -moz-calc(50% - 10px);
+            flex-basis: calc(50% - 10px);
+
+            .button {
+                color: #555;
+                text-align: center;
+                background-color: $light-grey;
+                -webkit-border-radius: 0 0 5px 5px;
+                -moz-border-radius: 0 0 5px 5px;
+                border-radius: 0 0 5px 5px;
+                margin-top: -4px;
+            }
+
+            &.selected .button {
+                color: #fff;
+                background-color: $accent;
+            }
+
+            &.correct .button {
+                background-color: #2ecc71;
+            }
+        }
+    }
+
+    .answers.multiplechoice {
+        margin-top: 25px;
+        width: 70%;
+        list-style-position: inside;
+
+        ol {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+
+            li {
+                padding: 10px 0;
+                cursor: pointer;
+                font-size: 17px;
+                transition: color .3s;
+
+                &.selected {
+                    color: $accent;
+                }
+
+                &.correct {
+                    color: #2ecc71;
+                }
+            }
+        }
+    }
+}
+
+.quiz-actions {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+
+    &.finished {
+        max-width: 400px;
+    }
+}
