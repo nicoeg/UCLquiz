@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.5-10.2.4-MariaDB)
 # Database: uclquiz
-# Generation Time: 2017-04-06 08:30:40 +0000
+# Generation Time: 2017-05-02 09:37:45 +0000
 # ************************************************************
 
 
@@ -48,7 +48,26 @@ VALUES
 	(8,3,'Ja',1),
 	(9,3,'Nej',0),
 	(10,4,'Ja',0),
-	(11,4,'Nej',1);
+	(11,4,'Nej',1),
+	(12,5,'Bruge sæbe',0),
+	(13,5,'Gå til tandlæge',0),
+	(14,5,'Gå i bad',0),
+	(15,5,'Alle overstående',1),
+	(16,6,'Skubber dem ud af sengen',0),
+	(17,6,'Tager fat om kroppen, og løfter med ryggen',0),
+	(18,6,'Bruger en kran ',1),
+	(19,7,'r9um2fkGBvQ',0),
+	(20,7,'DShxSpmR7Fs',0),
+	(21,7,'MmRF5hP97sQ',0),
+	(22,7,'6FKC6gj-AMY',1),
+	(23,8,'Sprit',1),
+	(24,8,'Jord',0),
+	(25,8,'Eddike',0),
+	(26,8,'Nellikker',0),
+	(27,9,'4 ton',0),
+	(28,9,'93m',1),
+	(29,9,'94m',0),
+	(30,9,'2cm',0);
 
 /*!40000 ALTER TABLE `answers` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -62,15 +81,18 @@ DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
 
-INSERT INTO `courses` (`id`, `name`)
+INSERT INTO `courses` (`id`, `name`, `image`)
 VALUES
-	(1,'Bio');
+	(1,'Biologi','http://eucnord.sonar.pil.dk/typo3temp/_processed_/csm_htx_pic_undervisning_a82e5b71c3.png'),
+	(2,'Anatomy','https://innowell.net/wp-content/uploads/2015/01/anatomi_og_fysiologi_-kursus_-innnowell.jpg'),
+	(3,'Psykologi','https://www.ug.dk/sites/default/files/styles/ug3_large/public/cand-hum-paedagogisk-psykologi-l.jpeg?itok=qVfs24dS');
 
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -84,20 +106,26 @@ DROP TABLE IF EXISTS `questions`;
 CREATE TABLE `questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_id` int(11) unsigned NOT NULL,
-  `question` varchar(200) NOT NULL,
+  `question` text NOT NULL,
   `type` int(11) DEFAULT 1,
+  `hint` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `questions` WRITE;
 /*!40000 ALTER TABLE `questions` DISABLE KEYS */;
 
-INSERT INTO `questions` (`id`, `quiz_id`, `question`, `type`)
+INSERT INTO `questions` (`id`, `quiz_id`, `question`, `type`, `hint`)
 VALUES
-	(1,1,'Hvor sidder sternum?',1),
-	(2,1,'Hvordan løfter man en baby?',2),
-	(3,2,'Falafel?',1),
-	(4,2,'Grønsager?',1);
+	(1,1,'Hvor sidder sternum?',1,NULL),
+	(2,1,'Hvordan løfter man en baby?',2,NULL),
+	(3,2,'Falafel?',1,NULL),
+	(4,2,'Grønsager?',1,NULL),
+	(5,3,'De ansatte skal sikre de ældres personlig hygiejne. Hvad indgår under dette?',1,NULL),
+	(6,3,'Ved mødetid om morgenen skal personalet sørge for at vække de ældre, og få dem op af sengen. Hvordan håndtere de de overvægtige?',1,NULL),
+	(7,3,'Når personalet har været på toilettet skal de vaske hænderne. Hvordan gøres dette?',2,NULL),
+	(8,3,'Hvad kan anvendes som supplement til håndvask?',1,NULL),
+	(9,3,'Hvor høj er frihedsgudinden?',1,NULL);
 
 /*!40000 ALTER TABLE `questions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -110,7 +138,7 @@ DROP TABLE IF EXISTS `quizzes`;
 
 CREATE TABLE `quizzes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cID` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
   `level` int(2) NOT NULL,
   `uID` int(11) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -120,10 +148,11 @@ CREATE TABLE `quizzes` (
 LOCK TABLES `quizzes` WRITE;
 /*!40000 ALTER TABLE `quizzes` DISABLE KEYS */;
 
-INSERT INTO `quizzes` (`id`, `cID`, `level`, `uID`, `title`)
+INSERT INTO `quizzes` (`id`, `course_id`, `level`, `uID`, `title`)
 VALUES
 	(1,1,1,1,'Quiz 1'),
-	(2,1,2,4,'Second quiz');
+	(2,1,2,4,'Second quiz'),
+	(3,1,1,4,'Plejehjemmet Solhjem');
 
 /*!40000 ALTER TABLE `quizzes` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -147,7 +176,100 @@ LOCK TABLES `user_answer` WRITE;
 INSERT INTO `user_answer` (`id`, `user_id`, `answer_id`)
 VALUES
 	(1,1,1),
-	(2,1,6);
+	(2,1,6),
+	(3,1,2),
+	(4,1,5),
+	(5,1,2),
+	(6,1,4),
+	(7,1,3),
+	(8,1,7),
+	(9,1,3),
+	(10,1,4),
+	(11,1,3),
+	(12,1,4),
+	(13,1,3),
+	(14,1,4),
+	(15,1,2),
+	(16,1,4),
+	(17,1,2),
+	(18,1,4),
+	(19,1,3),
+	(20,1,4),
+	(21,1,2),
+	(22,1,4),
+	(23,1,2),
+	(24,1,4),
+	(25,1,1),
+	(26,1,7),
+	(27,1,1),
+	(28,1,5),
+	(29,1,1),
+	(30,1,5),
+	(31,1,3),
+	(32,1,3),
+	(33,1,4),
+	(34,1,3),
+	(35,1,4),
+	(36,1,3),
+	(37,1,4),
+	(38,1,2),
+	(39,1,6),
+	(40,1,9),
+	(41,1,10),
+	(42,1,3),
+	(43,1,4),
+	(44,1,3),
+	(45,1,4),
+	(46,1,3),
+	(47,1,5),
+	(48,1,9),
+	(49,1,10),
+	(50,1,3),
+	(51,1,4),
+	(52,1,8),
+	(53,1,11),
+	(54,1,3),
+	(55,1,3),
+	(56,1,4),
+	(57,1,2),
+	(58,1,4),
+	(59,1,2),
+	(60,1,4),
+	(61,1,3),
+	(62,1,5),
+	(63,1,1),
+	(64,1,6),
+	(65,1,1),
+	(66,1,7),
+	(67,1,1),
+	(68,1,6),
+	(69,1,1),
+	(70,1,5),
+	(71,1,1),
+	(72,1,5),
+	(73,1,1),
+	(74,1,7),
+	(75,1,2),
+	(76,1,7),
+	(77,1,1),
+	(78,1,5),
+	(79,1,15),
+	(80,1,18),
+	(81,1,15),
+	(82,1,17),
+	(83,1,19),
+	(84,1,23),
+	(85,1,29),
+	(86,1,15),
+	(87,1,18),
+	(88,1,22),
+	(89,1,24),
+	(90,1,28),
+	(91,1,13),
+	(92,1,16),
+	(93,1,20),
+	(94,1,26),
+	(95,1,28);
 
 /*!40000 ALTER TABLE `user_answer` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -185,15 +307,105 @@ CREATE TABLE `user_quiz` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `quiz_id` int(10) unsigned NOT NULL,
+  `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `user_quiz` WRITE;
 /*!40000 ALTER TABLE `user_quiz` DISABLE KEYS */;
 
-INSERT INTO `user_quiz` (`id`, `user_id`, `quiz_id`)
+INSERT INTO `user_quiz` (`id`, `user_id`, `quiz_id`, `time`)
 VALUES
-	(1,1,1);
+	(23,1,1,NULL),
+	(24,1,1,NULL),
+	(25,1,1,NULL),
+	(26,1,1,NULL),
+	(27,1,1,NULL),
+	(28,1,1,NULL),
+	(29,1,1,NULL),
+	(30,1,1,NULL),
+	(31,1,1,NULL),
+	(32,1,1,NULL),
+	(33,1,1,NULL),
+	(34,1,1,NULL),
+	(35,1,1,NULL),
+	(36,1,1,NULL),
+	(37,1,1,NULL),
+	(38,1,1,NULL),
+	(39,1,1,NULL),
+	(40,1,1,NULL),
+	(41,1,1,NULL),
+	(42,1,2,NULL),
+	(43,1,1,NULL),
+	(44,1,1,NULL),
+	(45,1,1,NULL),
+	(46,1,2,NULL),
+	(47,1,1,NULL),
+	(48,1,1,NULL),
+	(49,1,2,NULL),
+	(50,1,1,NULL),
+	(51,1,1,NULL),
+	(52,1,1,NULL),
+	(53,1,1,NULL),
+	(54,1,1,NULL),
+	(55,1,1,NULL),
+	(56,1,1,NULL),
+	(57,1,1,NULL),
+	(58,1,1,NULL),
+	(59,1,1,NULL),
+	(60,1,1,NULL),
+	(61,1,1,NULL),
+	(62,1,1,NULL),
+	(63,1,1,NULL),
+	(64,1,1,NULL),
+	(65,1,1,NULL),
+	(66,1,1,NULL),
+	(67,1,1,NULL),
+	(68,1,1,NULL),
+	(69,1,1,NULL),
+	(70,1,1,NULL),
+	(71,1,1,NULL),
+	(72,1,1,NULL),
+	(73,1,1,NULL),
+	(74,1,1,NULL),
+	(75,1,1,NULL),
+	(76,1,1,NULL),
+	(77,1,1,NULL),
+	(78,1,1,NULL),
+	(79,1,1,NULL),
+	(80,1,1,NULL),
+	(81,1,1,NULL),
+	(82,1,1,NULL),
+	(83,1,1,NULL),
+	(84,1,1,NULL),
+	(85,1,1,NULL),
+	(86,1,1,NULL),
+	(87,1,1,NULL),
+	(88,1,1,NULL),
+	(89,1,1,NULL),
+	(90,1,1,NULL),
+	(91,1,1,NULL),
+	(92,1,1,NULL),
+	(93,1,1,NULL),
+	(94,1,1,NULL),
+	(95,1,1,NULL),
+	(96,1,1,NULL),
+	(97,1,1,NULL),
+	(98,1,1,NULL),
+	(99,1,1,NULL),
+	(100,1,1,NULL),
+	(101,1,1,NULL),
+	(102,1,1,NULL),
+	(103,1,1,NULL),
+	(104,1,1,NULL),
+	(105,1,1,NULL),
+	(106,1,1,NULL),
+	(107,1,1,NULL),
+	(108,1,3,NULL),
+	(109,1,3,NULL),
+	(110,1,3,NULL),
+	(111,1,3,NULL),
+	(112,1,1,NULL);
 
 /*!40000 ALTER TABLE `user_quiz` ENABLE KEYS */;
 UNLOCK TABLES;
