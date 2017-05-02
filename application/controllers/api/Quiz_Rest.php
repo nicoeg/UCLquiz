@@ -24,19 +24,21 @@ class Quiz_Rest extends CI_Controller
 
 	/**
 	 * Retrieves a single quiz
-	 * @return [type] [description]
+	 * @return Object JSON data with quiz questions and answers
+	 *
+	 * int $id Id of quiz
 	 */
-	public function getSingle()
+	public function getSingle(int $id)
 	{
 		if($this->session->userdata('logged_in') === true)
 		{	
-			$id = json_decode($_GET['id']);
-			$data = $this->quizModel->getQuizById($id);
+			$quizId = $id;
+			$data   = $this->quizModel->getQuizById($quizId);
 
-			$questions = $this->questionModel->getQuestionsByQuizId($id);
+			$questions = $this->questionModel->getQuestionsByQuizId($quizId);
 
 			foreach ($questions as $key => $question) {
-			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
+			    $answers                  = $this->answerModel->getAnswersByQuestionId($question->id);
                 $questions[$key]->answers = array_map(function($answer) {
                     unset($answer->correct);
 
@@ -51,7 +53,7 @@ class Quiz_Rest extends CI_Controller
 		else 
 		{
 			$dataJSON = json_encode([
-				'error' => 'You are not logged in',
+				'error'    => 'You are not logged in',
 				'redirect' => base_url(),
 			]);
 		}
@@ -75,9 +77,9 @@ class Quiz_Rest extends CI_Controller
 	/**
 	 * Creates a quiz
 	 */
-	public function set()
+	public function post()
 	{
-
+		
 	}
 
 	/**

@@ -13,11 +13,11 @@ let mix = require('laravel-mix');
 
 mix.setPublicPath('.')
 
-mix.react('assets/js/Quiz.js', 'js/');
+mix.react('assets/js/Quiz.js', 'dist/js/');
 
-mix.react('assets/js/CreateQuiz', 'js/');
+mix.react('assets/js/CreateQuiz', 'dist/js/');
 
-mix.sass('style/stylesheet.scss', 'sstyle/');
+mix.sass('assets/scss/base/stylesheet.scss', 'ddist/css/');
 
 // Full API
 // mix.js(src, output);

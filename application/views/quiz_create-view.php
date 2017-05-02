@@ -3,6 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Create</title>
+	<script>
+		window.settings = {
+			baseUrl: '<?php echo base_url(); ?>'
+		}
+	</script>
 </head>
 <body>
 	<h1>Create</h1>
@@ -23,7 +28,9 @@
 			<option value="4">Level 4</option>
 			<option value="5">Level 5</option>
 		</select>
-		<input value="Create quiz" type="submit">
+		<input value="Create quiz" type="button">
 	</form>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="<?php echo base_url(); ?>/assets/js/admin/quiz.js"></script>
 </body>
 </html>

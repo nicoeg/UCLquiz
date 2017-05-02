@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url('style/flexboxgrid.min.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('style/stylesheet.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('dist/css/flexboxgrid.min.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('dist/css/stylesheet.css'); ?>">
 	<title>UCLquiz</title>
 
     <script>
