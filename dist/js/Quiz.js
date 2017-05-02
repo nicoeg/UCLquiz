@@ -11069,11 +11069,13 @@ var Quiz = function (_React$Component) {
             answers: [],
             currentQuestion: null,
             correctAnswers: [],
-            finished: false
+            finished: false,
+            showAnswers: false
         };
 
         _this.handleNextQuestion = _this.handleNextQuestion.bind(_this);
         _this.handlePreviousQuestion = _this.handlePreviousQuestion.bind(_this);
+        _this.toggleAnswers = _this.toggleAnswers.bind(_this);
         _this.handleFinish = _this.handleFinish.bind(_this);
         _this.selectAnswer = _this.selectAnswer.bind(_this);
 
@@ -11111,6 +11113,13 @@ var Quiz = function (_React$Component) {
                     currentQuestion: this.state.currentQuestion - 1
                 });
             }
+        }
+    }, {
+        key: 'toggleAnswers',
+        value: function toggleAnswers() {
+            this.setState({
+                showAnswers: !this.state.showAnswers
+            });
         }
     }, {
         key: 'handleFinish',
@@ -11164,7 +11173,6 @@ var Quiz = function (_React$Component) {
                     correctAnswer: correctAnswer ? correctAnswer : false,
                     readOnly: readyOnly });
             } else if (question.type == 2) {
-                console.log(correctAnswer);
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__QuestionTypes_VideoQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
                     currentAnswer: userAnswer ? userAnswer : false,
                     answers: question.answers,
@@ -11190,9 +11198,9 @@ var Quiz = function (_React$Component) {
                 message = void 0;
 
             questions = questions.map(function (index) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                return _this4.state.finished && _this4.state.showAnswers || !_this4.state.finished ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { key: index, className: 'main-container quiz-container' },
+                    { key: index, className: 'main-container quiz-container questions' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'question' },
@@ -11203,11 +11211,29 @@ var Quiz = function (_React$Component) {
                         )
                     ),
                     _this4.getQuestionData(index)
-                );
+                ) : '';
             });
 
             if (this.state.finished) {
-                message = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuizResults__["a" /* default */], { question: this.state.questions, answers: this.state.answers, correctAnswers: this.state.correctAnswers });
+                message = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuizResults__["a" /* default */], { questions: this.state.questions, answers: this.state.answers, correctAnswers: this.state.correctAnswers }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'quiz-actions finished' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'button primary', onClick: this.toggleAnswers },
+                            'Se svar'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'button primary next' },
+                            'Afslut'
+                        )
+                    )
+                );
             }
 
             if (this.state.currentQuestion == this.state.questions.length - 1) {
@@ -11224,21 +11250,23 @@ var Quiz = function (_React$Component) {
                 );
             }
 
+            var quizActions = !this.state.finished ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'quiz-actions' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'button primary previous ' + (this.state.currentQuestion == 0 ? 'disabled' : ''), onClick: this.handlePreviousQuestion },
+                    'Forrige'
+                ),
+                nextButton
+            ) : '';
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
                 message,
                 questions,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'quiz-actions' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'button primary previous', onClick: this.handlePreviousQuestion },
-                        'Forrige'
-                    ),
-                    nextButton
-                )
+                quizActions
             );
         }
     }]);
@@ -12295,10 +12323,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var QuizResults = function (_React$Component) {
     _inherits(QuizResults, _React$Component);
 
-    function QuizResults() {
+    function QuizResults(props) {
         _classCallCheck(this, QuizResults);
 
-        return _possibleConstructorReturn(this, (QuizResults.__proto__ || Object.getPrototypeOf(QuizResults)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (QuizResults.__proto__ || Object.getPrototypeOf(QuizResults)).call(this, props));
+
+        var correctAnswerCount = props.answers.filter(function (answer) {
+            return props.correctAnswers.find(function (cAnswer) {
+                return cAnswer.question_id == answer.question_id;
+            }).id == answer.answer_id;
+        }).length;
+
+        _this.state = {
+            correctAnswerCount: correctAnswerCount,
+            questionCount: props.questions.length,
+            percent: correctAnswerCount / props.questions.length * 100
+        };
+        return _this;
     }
 
     _createClass(QuizResults, [{
@@ -12306,11 +12347,162 @@ var QuizResults = function (_React$Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                { className: "main-container quiz-container" },
+                { className: "quiz-container big" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "h1",
-                    { className: "finished" },
-                    "Tillykke, du er F\xE6rdig!"
+                    "div",
+                    { className: "tribox-container main-container result" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h1",
+                        null,
+                        "Resultat"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "donut-chart", style: { animationDelay: '-' + this.state.percent + 's' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "span",
+                            null,
+                            this.state.correctAnswerCount,
+                            " ud af ",
+                            this.state.questionCount,
+                            " rigtige"
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h1",
+                        { className: "time" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "b",
+                            null,
+                            "Tid"
+                        ),
+                        " 5m 03s"
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tribox-container main-container result" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h1",
+                        null,
+                        "Placering"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "highscores" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "1. Sofie Jensen"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "5/5"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "2. Sofie Nielsen"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "5/5"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "3. Sofie Hansen"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "5/5"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "4. Sofie Olesen"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "5/5"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "4. Sofie Mikkelsen"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "5/5"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "highscore highlighted" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "place" },
+                                "8. Dig"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "score" },
+                                "4/5"
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tribox-container main-container result" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h1",
+                        null,
+                        "Gennemsnit"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "donut-chart", style: { animationDelay: '-60s' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "span",
+                            null,
+                            "3 ud af 5 rigtige"
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h1",
+                        { className: "time" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "b",
+                            null,
+                            "Tid"
+                        ),
+                        " 5m 47s"
+                    )
                 )
             );
         }

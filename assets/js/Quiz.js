@@ -17,10 +17,12 @@ class Quiz extends React.Component {
             currentQuestion: null,
             correctAnswers: [],
             finished: false,
+            showAnswers: false
         }
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this)
         this.handlePreviousQuestion = this.handlePreviousQuestion.bind(this)
+        this.toggleAnswers = this.toggleAnswers.bind(this)
         this.handleFinish = this.handleFinish.bind(this)
         this.selectAnswer = this.selectAnswer.bind(this)
 
@@ -51,6 +53,12 @@ class Quiz extends React.Component {
                 currentQuestion: this.state.currentQuestion - 1
             })
         }
+    }
+
+    toggleAnswers() {
+        this.setState({
+            showAnswers: !this.state.showAnswers
+        })
     }
 
     handleFinish() {
@@ -95,7 +103,6 @@ class Quiz extends React.Component {
                                         readOnly={readyOnly}/>
             )
         }else if (question.type == 2) {
-            console.log(correctAnswer);
             return (
                 <VideoQuestion selectAnswer={this.selectAnswer}
                                currentAnswer={userAnswer ? userAnswer : false}
@@ -116,21 +123,30 @@ class Quiz extends React.Component {
             message
 
         questions = questions.map(index => {
-            return (
-                <div key={index} className="main-container quiz-container">
+            return this.state.finished && this.state.showAnswers || !this.state.finished ? (
+                <div key={index} className="main-container quiz-container questions">
                     <div className="question">
                         <h1>{this.state.questions[index].question}</h1>
                     </div>
 
                     {this.getQuestionData(index)}
                 </div>
-            )
+            ) : ''
         })
 
         if (this.state.finished) {
-            message = <QuizResults question={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
-        }
+            message = (
+                <div>
+                    <QuizResults questions={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
 
+                    <div className="quiz-actions finished">
+                        <div className="button primary" onClick={this.toggleAnswers}>Se svar</div>
+
+                        <div className="button primary next">Afslut</div>
+                    </div>
+                </div>
+            )
+        }
 
         if (this.state.currentQuestion == this.state.questions.length - 1) {
             nextButton = <div className="button primary" onClick={this.handleFinish}>Afslut</div>
@@ -138,17 +154,21 @@ class Quiz extends React.Component {
             nextButton = <div className="button primary next" onClick={this.handleNextQuestion}>Næste</div>
         }
 
+        const quizActions = !this.state.finished ? (
+            <div className="quiz-actions">
+                <div className={'button primary previous ' + (this.state.currentQuestion == 0 ? 'disabled' : '')} onClick={this.handlePreviousQuestion}>Forrige</div>
+
+                {nextButton}
+            </div>
+        ) : ''
+
         return(
             <div>
                 {message}
 
-                { questions }
+                {questions}
 
-                <div className="quiz-actions">
-                    <div className="button primary previous" onClick={this.handlePreviousQuestion}>Forrige</div>
-
-                    {nextButton}
-                </div>
+                {quizActions}
             </div>
         )
     }
