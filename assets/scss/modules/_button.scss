@@ -3,12 +3,11 @@
 	background-color: white; 
     padding: 15px;
     border: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     font-weight: bold;
     font-size: 12px;
     cursor: pointer;
+    text-transform: uppercase;
 
     &--primary {
 		color: #fff;
@@ -24,4 +23,9 @@
 	&--inline {
 		display: inline-block;
 	}
+
+    &--small {
+        padding: 5px 15px;
+        font-size: smaller;
+    }
 }

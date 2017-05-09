@@ -3,15 +3,19 @@
 
 /* Layout */
 @import 'layout/header';
+@import 'layout/quiz-container';
 @import 'layout/main-container';
 
 /* Modules */
+@import 'modules/textfield';
 @import 'modules/button';
 @import 'modules/login';
 @import 'modules/quiz';
 @import 'modules/quiz-overview';
 @import 'modules/quiz-result';
 @import 'modules/donut';
+
+@import 'modules/question-types/multiple-choice-builder';
 
 div.tab {
     overflow: hidden;
@@ -207,9 +211,6 @@ h2 {
         }
 
         .button {
-            padding: 5px 15px;
-            text-transform: uppercase;
-            font-size: smaller;
             position: absolute;
             bottom:25%;
             left:25%;

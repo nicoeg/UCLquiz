@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
-import MultipleChoiceQuestion from './QuestionTypes/MultipleChoiceQuestion'
-import VideoQuestion from './QuestionTypes/VideoQuestion'
+import MultipleChoiceQuestion from './questionTypes/MultipleChoiceQuestion'
+import VideoQuestion from './questionTypes/VideoQuestion'
 import QuizResults from './QuizResults'
 
 class Quiz extends React.Component {
@@ -142,7 +142,7 @@ class Quiz extends React.Component {
                     <div className="quiz-actions finished">
                         <div className="button button--primary" onClick={this.toggleAnswers}>Se svar</div>
 
-                        <div className="button button--primary next">Afslut</div>
+                        <div className="button button--primary">Afslut</div>
                     </div>
                 </div>
             )
@@ -151,7 +151,7 @@ class Quiz extends React.Component {
         if (this.state.currentQuestion == this.state.questions.length - 1) {
             nextButton = <div className="button button--primary" onClick={this.handleFinish}>Afslut</div>
         }else {
-            nextButton = <div className="button button--primary next" onClick={this.handleNextQuestion}>Næste</div>
+            nextButton = <div className="button button--primary" onClick={this.handleNextQuestion}>Næste</div>
         }
 
         const quizActions = !this.state.finished ? (
