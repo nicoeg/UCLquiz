@@ -11,15 +11,21 @@ class Leaderboard extends CI_Controller
 	/**
 	 * Gets a leaderboard based on quiz id
 	 * 
-	 * @param  int    $quiz_id Quiz ID for desired leaderboard
-	 * @return [type]     [description]
+	 * @param  int           $quiz_id Quiz ID for desired leaderboard
+	 * @return JSON Object   A JSON object containing a leaderboard.
 	 */
 	
 	public function getLeaderboardByQuizId(int $quiz_id)
 	{
-		if(is_numeric($quiz_id))
+		$json_data = json_decode(file_get_contents('php://input'), true);
+
+		if(is_numeric($json_data))
 		{
-			
+			$output = json_encode($this->leaderboardModel->getLeaderboard($json_data));
+
+			return $this->output->set_content_type('application/json')->set_content($output);
 		}
+
+		return false;
 	}
 }
