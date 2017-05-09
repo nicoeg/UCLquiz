@@ -28,20 +28,23 @@ class Leaderboard extends CI_Controller
 		if(is_numeric($quiz_id))
 		{
 			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
-			$stats       = [];
+			$results     = [];
 			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
 
 			foreach($leaderboard as $item)
 			{
-				$user_quiz_id = $this->leaderboardModel->getStats($item->id);
+				$correct_answers = $this->leaderboardModel->getStats($item->id);
 
-				$stats[$item->user_id] = $user_quiz_id;		
+				$stats[$item->user_id] = [
+					$correct_answers,
+					$item->time
+				];		
 			}
 
 			$output = json_encode([
 				'quiz_name' => $quiz_id,
 				'question_count' => $count,
-				'results' => $stats
+				'results' => $results
 			]);
 
 			return $this->output->set_content_type('application/json')->set_output($output);
