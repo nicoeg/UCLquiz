@@ -173,6 +173,6 @@ class Quiz extends CI_Controller
 	{
 		$this->load->model('Leaderboard_model');
 		echo '<pre>';
-		var_dump($this->Leaderboard_model->getQuestionCount(1));
+		var_dump($this->Leaderboard_model->getStats(119));
 	}
 }

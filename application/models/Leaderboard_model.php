@@ -33,7 +33,7 @@ class Leaderboard_Model extends CI_Model
 	{
 		$query = $this->db->select_sum('correct')->where('user_quiz_id', $user_quiz_id)->join('answers', 'answers.id = user_answer.answer_id')->get('user_answer');
 
-		return $query->result();
+		return $query->row('correct');
 	}
 
 
@@ -43,7 +43,7 @@ class Leaderboard_Model extends CI_Model
 	 * @return int          amoutn of questions
 	 */
 	
-	
+
 	public function getQuestionCount($quiz_id)
 	{
 		$query = $this->db->where('quiz_id', $quiz_id)->count_all_results('questions');
