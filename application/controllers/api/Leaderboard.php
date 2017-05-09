@@ -25,19 +25,17 @@ class Leaderboard extends CI_Controller
 
 	public function getLeaderboard($quiz_id)
 	{
-		// $json_data = json_decode(file_get_contents('php://input'), true);
-
 		if(is_numeric($quiz_id))
 		{
 			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
 			$stats       = [];
 			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
 
-			foreach($leaderboard->id as $leaderboard)
+			foreach($leaderboard as $item)
 			{
-				$user_quiz_id = $this->leaderboardModel->getStats($leaderboard->user_quiz_id);
+				$user_quiz_id = $this->leaderboardModel->getStats($item->id);
 
-				$stats[$leaderboard->user_id] = $user_quiz_id;		
+				$stats[$item->user_id] = $user_quiz_id;		
 			}
 
 			$output = json_encode([
@@ -46,23 +44,9 @@ class Leaderboard extends CI_Controller
 				'results' => $stats
 			]);
 
-			return $this->output->set_content_type('application/json')->set_content($output);
+			return $this->output->set_content_type('application/json')->set_output($output);
 		}
 
 		return false;
 	}
-
-	// public function getLeaderboardByQuizId($quiz_id)
-	// {
-	// 	$json_data = json_decode(file_get_contents('php://input'), true);
-
-	// 	if(is_numeric($json_data))
-	// 	{
-	// 		$output = json_encode($this->leaderboardModel->getLeaderboard($json_data));
-
-	// 		return $this->output->set_content_type('application/json')->set_content($output);
-	// 	}
-
-	// 	return false;
-	// }
 }
