@@ -25,13 +25,13 @@ class Leaderboard extends CI_Controller
 
 	public function getLeaderboard($quiz_id)
 	{
-		$json_data = json_decode(file_get_contents('php://input'), true);
+		// $json_data = json_decode(file_get_contents('php://input'), true);
 
-		if(is_numeric($json_data))
+		if(is_numeric($quiz_id))
 		{
-			$leaderboard = $this->leaderboardModel->getLeaderboard($json_data);
+			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
 			$stats       = [];
-			$count       = $this->leaderboardModel->getQuestionCount($json_data);
+			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
 
 			foreach($leaderboard->id as $leaderboard)
 			{
@@ -41,7 +41,7 @@ class Leaderboard extends CI_Controller
 			}
 
 			$output = json_encode([
-				'quiz_name' => $json_data,
+				'quiz_name' => $quiz_id,
 				'question_count' => $count,
 				'results' => $stats
 			]);
