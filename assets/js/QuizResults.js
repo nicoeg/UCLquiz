@@ -17,7 +17,7 @@ export default class QuizResults extends React.Component {
 
     render() {
         return (
-            <div className="quiz-container big">
+            <div className="quiz-container quiz-container--big">
                 <div className="tribox-container main-container result">
                     <h1>Resultat</h1>
 

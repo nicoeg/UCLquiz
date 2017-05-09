@@ -6,33 +6,12 @@
 @import 'layout/main-container';
 
 /* Modules */
+@import 'modules/button';
 @import 'modules/login';
 @import 'modules/quiz';
 @import 'modules/quiz-overview';
 @import 'modules/quiz-result';
 @import 'modules/donut';
-
-
-.button {
-    color: #fff;
-    padding: 15px;
-    border: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    font-weight: bold;
-    font-size: 12px;
-    cursor: pointer;
-
-    &.primary {
-        background-color: $accent;
-    }
-
-    &.disabled {
-        background: #a9a9a9;
-        cursor: default;
-    }
-}
 
 div.tab {
     overflow: hidden;
@@ -107,9 +86,6 @@ div.tab button.active {
     height: 100%;
     width: 150%;
     opacity: 0.5;
-    -webkit-transition: .5s ease;
-    -o-transition: .5s ease;
-    -moz-transition: .5s ease;
     transition: .5s ease;
     background-color: #ACAF33;
 }
@@ -121,11 +97,7 @@ div.tab button.active {
     position: absolute;
     top: 50%;
     left: 75%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
 }
 
 .support-container {
@@ -233,41 +205,19 @@ h2 {
             color: #4d4d4d;
             font-size: 20px;
         }
-        .button{
-            display: inline-block;
-        }
-        .orangeButton{
-            color: #fff;
-            background-color: #ec9200; 
-            padding: 5px 15px; 
-            border-radius: 4px; 
-            border: none;
-            font-weight: bold;
-            position: absolute;
-            bottom:25%;
-            left:5%;
-            box-shadow: 0px 0px 3px #888;
+
+        .button {
+            padding: 5px 15px;
             text-transform: uppercase;
             font-size: smaller;
-
-        }      
-
-        .whiteButton{
-            color: #4d4d4d;
-            background-color: white; 
-            padding: 5px 15px; 
-            border-radius: 4px; 
-            border: none;
-            font-weight: bold;
             position: absolute;
             bottom:25%;
             left:25%;
-            box-shadow: 0px 0px 3px #888;
-            text-transform: uppercase;
-            font-size: smaller;
 
-        }      
-
+            &--primary {
+                left: 5%;
+            }
+        }  
     }
 }
 

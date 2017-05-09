@@ -38,8 +38,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>
@@ -48,8 +48,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>
@@ -58,8 +58,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>
@@ -68,8 +68,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>
@@ -78,8 +78,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>
@@ -88,8 +88,8 @@
         <div class="col-xs-4">
             <div class="singleQuiz">                
                 <img src="<?php echo base_url(); ?>/images/hands.jpg">
-                <input type=button class="orangeButton" value="Level 10">
-                <input type=button class="whiteButton" value="Muskler">
+                <input type=button class="button button--primary" value="Level 10">
+                <input type=button class="button" value="Muskler">
                 <article>
                     <h1>Korrekt håndtering af ældre</h1> 
                 </article>

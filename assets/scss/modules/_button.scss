@@ -1,0 +1,27 @@
+.button {
+	color: #4d4d4d;
+	background-color: white; 
+    padding: 15px;
+    border: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+
+    &--primary {
+		color: #fff;
+        background-color: $accent;
+    }
+
+    &--disabled {
+		color: #fff;
+        background: #a9a9a9;
+        cursor: default;
+    }
+
+	&--inline {
+		display: inline-block;
+	}
+}
