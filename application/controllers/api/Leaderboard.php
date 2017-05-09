@@ -35,7 +35,7 @@ class Leaderboard extends CI_Controller
 			{
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
 
-				$stats[$item->user_id] = [
+				$results[$item->user_id] = [
 					$correct_answers,
 					$item->time
 				];		
