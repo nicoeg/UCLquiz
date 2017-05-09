@@ -19,17 +19,7 @@ class Leaderboard extends CI_Controller
 	{
 		if(is_numeric($quiz_id))
 		{
-			$this->leaderboardModel->
+			
 		}
-	}
-
-	/**
-	 * Gets the
-	 * @param  int    $quiz_id [description]
-	 * @return [type]     [description]
-	 */
-	public function getFiveBestResults(int $quiz_id)
-	{
-
 	}
 }
