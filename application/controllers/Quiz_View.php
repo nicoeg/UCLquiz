@@ -10,9 +10,10 @@ class Quiz_View extends CI_Controller {
             'teacher' => $this->session->userdata('user_type') == 1
         ]);
 
-        $this->load->view('quizview', [
-            'quizzes' => $this->quizModel->get(),
-        ]);
+         $this->load->view('quizview', [ 
+            'quizzes' => $this->quizModel->get(), 
+            'quizzes' => $this->quizModel->getCompleted(), 
+        ]); 
 
         $this->load->view('footer');
     }

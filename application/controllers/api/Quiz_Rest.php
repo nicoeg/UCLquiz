@@ -68,8 +68,9 @@ class Quiz_Rest extends CI_Controller
 
         $request_data = json_decode(file_get_contents('php://input'), true);
 
-        $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid'));
-        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers']);
+      	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid')); 
+        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers'], $user_quiz_id); 
+ 
 
         return $this->output->set_content_type('application/json')->set_output(json_encode($this->quizModel->getCorrectAnswers($quiz_id)));
 	}
