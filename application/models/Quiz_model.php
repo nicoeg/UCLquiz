@@ -46,6 +46,38 @@ class Quiz_model extends CI_Model
 		return $query->result();
 	}
 
+	public function getNew($limit)
+	{
+		$query = $this->db->from('quizzes')
+			->order_by('id', 'DESC')
+			->limit($limit)
+			->get();
+
+		return $query->result();
+	}
+
+	public function getByCourse($course) 
+	{
+		$query = $this->db->from('quizzes')
+            ->select('*')
+            ->join('courses', 'courses.id = quizzes.course_id')
+            ->where('name', $course)
+            ->get();
+
+		return $query->result();
+	}
+
+	public function getCompleted()
+	{
+		if(null !== $this->session->userdata('uid'))
+		{
+			$id = $this->session->userdata('uid');
+			$query = $this->db->join('quizzes', 'quizzes.id = user_quiz.quiz_id')->where('user_id', $id)->get('user_quiz');
+
+			return $query->result();
+		}
+	}
+
 	/**
 	*  Method to set a quiz
 	*
@@ -161,6 +193,8 @@ class Quiz_model extends CI_Model
             'user_id' => $user_id,
             'quiz_id' => $quiz_id
         ]);
+
+        return $this->db->insert_id();
 	}
 
     public function getCorrectAnswers($quiz_id)

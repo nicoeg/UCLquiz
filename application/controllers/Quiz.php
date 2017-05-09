@@ -26,17 +26,17 @@ class Quiz extends CI_Controller
 	*
 	*/
 	
-	public function index()
-	{
-		if ($this->session->userdata('logged_in') === true) {
-			$data['quizzes'] = $this->quizModel->get();
-			$this->load->view('quiz_overview-view', $data);	
-		} else {
-			redirect(base_url());
-		}
+	// public function index()
+	// {
+	// 	if ($this->session->userdata('logged_in') === true) {
+	// 		$data['quizzes'] = $this->quizModel->getNew(1);
+	// 		$this->load->view('quiz_overview-view', $data);	
+	// 	} else {
+	// 		redirect(base_url());
+	// 	}
 		
 		
-	}
+	// }
 
 	/**
 	*  View a quiz by id.
