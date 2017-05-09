@@ -12,7 +12,6 @@ class Quiz_View extends CI_Controller {
 
          $this->load->view('quizview', [ 
             'quizzes' => $this->quizModel->get(), 
-            'quizzes' => $this->quizModel->getCompleted(), 
         ]); 
 
         $this->load->view('footer');

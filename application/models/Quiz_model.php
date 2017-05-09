@@ -152,7 +152,7 @@ class Quiz_model extends CI_Model
 				$safe = [
 					'answer'  => filter_var($answer['answer'], FILTER_SANITIZE_STRING),
 					'correct' => filter_var($answer['correct'], FILTER_SANITIZE_NUMBER_INT)
-				],
+				];
 
 				if(is_string($safe['answer']) && filter_var($safe['correct'], FILTER_VALIDATE_INT))
 				{
@@ -174,7 +174,7 @@ class Quiz_model extends CI_Model
 			'question_id' => filter_var($data['question_id'], FILTER_SANITIZE_NUMBER_INT),
 			'answer' => filter_var($data['answer'], FILTER_SANITIZE_STRING),
 			'correct' => filter_var($data['correct'], FILTER_SANITIZE_NUMBER_INT),
-		],
+		];
 
 		if(filter_var($safe['question_id'], FILTER_VALIDATE_INT) && is_string($safe['answer']) && filter_var($safe['correct'], FILTER_VALIDATE_INT))
 		{
@@ -226,7 +226,7 @@ class Quiz_model extends CI_Model
     	$safe = [
     		'quiz_id' => filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT),
     		'user_id' => filter_var($user_id, FILTER_SANITIZE_NUMBER_INT)
-    	],
+    	];
 
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) && filter_var($safe['user_id'], FILTER_VALIDATE_INT))
     	{
@@ -241,7 +241,7 @@ class Quiz_model extends CI_Model
 
     public function getCorrectAnswers($quiz_id)
     {
-    	$safe['quiz_id'] => filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    	$safe['quiz_id'] = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
 
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT))
     	{
