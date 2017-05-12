@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom';
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import { render } from 'react-dom'
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
-import MultipleChoiceQuestionBuilder from './questionTypes/MultipleChoiceQuestionBuilder';
+import AddQuestionBlock from './AddQuestionBlock'
+import MultipleChoiceQuestionBuilder from './questionTypes/MultipleChoiceQuestionBuilder'
 
-const SortableItem = SortableElement(({ question, updateQuestion }) => {
+const SortableItem = SortableElement(({ position, question, updateQuestion, addQuestion }) => {
 	let element
 
 	if (question.type == 1) {
@@ -13,21 +15,29 @@ const SortableItem = SortableElement(({ question, updateQuestion }) => {
 
 	return (
 		<div className="question-builder">
+			<AddQuestionBlock addQuestion={addQuestion} position={position}  />
+
 			<div style={{ margin: '25px auto' }} className="main-container main-container--fill">
 				{element}
 			</div>
-			
-			<div className="question-builder__add-question">Tilføj spørgsmål</div>
 		</div>
 	)
 });
 
-const SortableList = SortableContainer(({ questions, updateQuestion }) => {
+const SortableList = SortableContainer(({ questions, updateQuestion, addQuestion }) => {
+	questions = questions.map((question, index) => (
+		<SortableItem key={`item-${question.id}`} index={question.id} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
+	))
+
 	return (
 		<div className="quiz-container quiz-container--big quiz-container--horizontal">
-			{questions.map((question, index) => (
-				<SortableItem key={`item-${index}`} index={index} updateQuestion={updateQuestion} question={question} />
-			))}
+			<CSSTransitionGroup
+				style={{ width: '100%' }}
+				transitionName="scale"
+				transitionEnterTimeout={300}
+				transitionLeaveTimeout={300}>
+				{questions}
+			</CSSTransitionGroup>
 		</div>
 	);
 });
@@ -42,6 +52,7 @@ class CreateQuiz extends Component {
 
 		this.onSortEnd = this.onSortEnd.bind(this)
 		this.updateQuestion = this.updateQuestion.bind(this)
+		this.addQuestion = this.addQuestion.bind(this)
 	}
 
 	updateQuestion(question) {
@@ -53,15 +64,30 @@ class CreateQuiz extends Component {
 		this.setState({ questions })
 	}
 
-	onSortEnd({ oldIndex, newIndex }) {
+	onSortEnd({ oldId, newId }) {
+		oldIndex = this.state.questions.find(q => q.id == oldId)
+		newIndex = this.state.questions.find(q => q.id == newId)
+		
 		this.setState({
 			questions: arrayMove(this.state.questions, oldIndex, newIndex),
 		})
 	}
 
+	addQuestion(position, question) {
+		let questions = this.state.questions
+		question.id = questions.sort((a, b) => b.id - a.id)[0].id + 1
+		questions.splice(position, 0, question)
+
+		this.setState({
+			questions: questions
+		})
+	}
+
 	render() {
 		return <SortableList helperClass="question-builder--dragging" 
-							 lockAxis="y" 
+							 lockAxis="y"
+							 distance={20}
+							 addQuestion={this.addQuestion}
 							 updateQuestion={this.updateQuestion} 
 							 questions={this.state.questions} 
 							 onSortEnd={this.onSortEnd} />
