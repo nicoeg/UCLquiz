@@ -34,17 +34,24 @@ class Leaderboard extends CI_Controller
 			foreach($leaderboard as $item)
 			{
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
+				$name = $this->leaderboardModel->getName($item->id);
 
 				$results[$item->user_id] = [
-					$correct_answers,
-					$item->time
+					'name'                  => $name,
+					'correct_answers_count' => $correct_answers,
+					'time_seconds'          => $item->time
 				];		
 			}
 
+			$score = array_sum(array_column($results, 'correct_answers_count')) / count($results);
+			$time = array_sum(array_column($results, 'time_seconds')) / count($results);
+
 			$output = json_encode([
-				'quiz_name' => $quiz_id,
+				'quiz_name'      => $quiz_id,
 				'question_count' => $count,
-				'results' => $results
+				'results'        => $results,
+				'average_score'  => $score,
+				'average_time'   => $time
 			]);
 
 			return $this->output->set_content_type('application/json')->set_output($output);

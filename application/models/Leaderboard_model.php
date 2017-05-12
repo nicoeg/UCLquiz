@@ -5,6 +5,10 @@ class Leaderboard_Model extends CI_Model
 {
 	private $quizTable = 'quizzes';
 	private $userQuizTable = 'user_quiz';
+	private $answerTable = 'answers';
+	private $userAnswers = 'user_answer';
+	private $questions = 'questions';
+	private $users = 'users';
 
 
 	/**
@@ -31,9 +35,22 @@ class Leaderboard_Model extends CI_Model
 
 	public function getStats($user_quiz_id)
 	{
-		$query = $this->db->select_sum('correct')->where('user_quiz_id', $user_quiz_id)->join('answers', 'answers.id = user_answer.answer_id')->get('user_answer');
+		$query = $this->db->select_sum('correct')
+			->where('user_quiz_id', $user_quiz_id)
+			->join($this->answerTable, $this->answerTable.'.id = '.$this->userAnswers.'.answer_id')
+			->get($this->userAnswers);
 
 		return $query->row('correct');
+	}
+
+	public function getName($user_quiz_id)
+	{
+		$query = $this->db
+			->where($this->userQuizTable.'.id', $user_quiz_id)
+			->join($this->users, $this->users.'.id = '.$this->userQuizTable.'.user_id')
+			->get($this->userQuizTable);
+
+			return $query->row('username');
 	}
 
 
@@ -46,7 +63,7 @@ class Leaderboard_Model extends CI_Model
 
 	public function getQuestionCount($quiz_id)
 	{
-		$query = $this->db->where('quiz_id', $quiz_id)->count_all_results('questions');
+		$query = $this->db->where('quiz_id', $quiz_id)->count_all_results($this->questions);
 
 		return $query;
 	}
