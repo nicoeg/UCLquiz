@@ -13,7 +13,7 @@
                 Husk mit login til næste gang
             </label>
 
-            <input type="submit" class="button primary" value="Login">
+            <input type="submit" class="button button--primary" value="Login">
 
             <a class="forgot-login" href="<?= base_url('support') ?>">Har du glemt din adgangskode?</a>
         </form>

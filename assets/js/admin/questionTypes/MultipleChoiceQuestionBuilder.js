@@ -4,26 +4,14 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
-			question: props.question.question,
-			answers: props.question.answers
-		}
-
 		this.handleQuestionChange = this.handleQuestionChange.bind(this)
-		this.updateQuestion = this.updateQuestion.bind(this)
 	}
 
 	handleQuestionChange(event) {
-		this.setState({
-			question: event.target.value
-		}, this.updateQuestion)
-	}
-
-	updateQuestion() {
 		this.props.updateQuestion(
 			Object.assign(this.props.question, {
-				question: this.state.question,
-				answers: this.state.answers
+				question: event.target.value,
+				answers: this.props.question.answers
 			})
 		)
 	}
@@ -37,7 +25,7 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 					<button className="button button--small button--primary">Multiple choice</button>
 				</div>
 				<div className={blockName + '__body'}>
-					<input type="text" className="textfield" placeholder="Skriv spørgsmål her" value={this.state.question} onChange={this.handleQuestionChange} />
+					<input type="text" className="textfield" placeholder="Skriv spørgsmål her" value={this.props.question.question} onChange={this.handleQuestionChange} />
 
 					<hr/>
 				</div>
