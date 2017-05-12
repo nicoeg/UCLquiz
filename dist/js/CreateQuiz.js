@@ -24210,8 +24210,17 @@ var SortableItem = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sorta
 
 	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 		'div',
-		{ className: 'main-container main-container--fill' },
-		element
+		{ className: 'question-builder' },
+		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			'div',
+			{ style: { margin: '25px auto' }, className: 'main-container main-container--fill' },
+			element
+		),
+		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			'div',
+			{ className: 'question-builder__add-question' },
+			'Tilf\xF8j sp\xF8rgsm\xE5l'
+		)
 	);
 });
 
@@ -24237,7 +24246,7 @@ var CreateQuiz = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (CreateQuiz.__proto__ || Object.getPrototypeOf(CreateQuiz)).call(this, props));
 
 		_this.state = {
-			questions: [{ id: 1, type: 1, answers: [], question: 'Heyt' }]
+			questions: [{ id: 1, type: 1, answers: [], question: 'Heyt' }, { id: 2, type: 1, answers: [], question: 'Hedasdasyt' }]
 		};
 
 		_this.onSortEnd = _this.onSortEnd.bind(_this);
@@ -24270,7 +24279,11 @@ var CreateQuiz = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SortableList, { updateQuestion: this.updateQuestion, questions: this.state.questions, onSortEnd: this.onSortEnd });
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SortableList, { helperClass: 'question-builder--dragging',
+				lockAxis: 'y',
+				updateQuestion: this.updateQuestion,
+				questions: this.state.questions,
+				onSortEnd: this.onSortEnd });
 		}
 	}]);
 

@@ -12,8 +12,12 @@ const SortableItem = SortableElement(({ question, updateQuestion }) => {
 	}
 
 	return (
-		<div className="main-container main-container--fill">
-			{element}
+		<div className="question-builder">
+			<div style={{ margin: '25px auto' }} className="main-container main-container--fill">
+				{element}
+			</div>
+			
+			<div className="question-builder__add-question">Tilføj spørgsmål</div>
 		</div>
 	)
 });
@@ -33,7 +37,7 @@ class CreateQuiz extends Component {
 		super(props)
 
 		this.state = {
-			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}]
+			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
@@ -56,7 +60,11 @@ class CreateQuiz extends Component {
 	}
 
 	render() {
-		return <SortableList updateQuestion={this.updateQuestion} questions={this.state.questions} onSortEnd={this.onSortEnd} />
+		return <SortableList helperClass="question-builder--dragging" 
+							 lockAxis="y" 
+							 updateQuestion={this.updateQuestion} 
+							 questions={this.state.questions} 
+							 onSortEnd={this.onSortEnd} />
 	}
 }
 

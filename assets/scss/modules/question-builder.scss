@@ -1,0 +1,16 @@
+.question-builder {
+	width: 100%;
+
+	&--dragging &__add-question {
+		visibility: hidden;
+	}
+
+	&__add-question {
+		padding: 15px 0;
+		text-align: center;
+		color: #fff;
+		border: 3px dashed $light-grey;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+}
