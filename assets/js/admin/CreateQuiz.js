@@ -47,7 +47,7 @@ class CreateQuiz extends Component {
 		super(props)
 
 		this.state = {
-			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}]
+			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, , {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
@@ -65,8 +65,8 @@ class CreateQuiz extends Component {
 	}
 
 	onSortEnd({ oldId, newId }) {
-		oldIndex = this.state.questions.find(q => q.id == oldId)
-		newIndex = this.state.questions.find(q => q.id == newId)
+		const oldIndex = this.state.questions.find(q => q.id == oldId)
+		const newIndex = this.state.questions.find(q => q.id == newId)
 		
 		this.setState({
 			questions: arrayMove(this.state.questions, oldIndex, newIndex),
@@ -87,6 +87,8 @@ class CreateQuiz extends Component {
 		return <SortableList helperClass="question-builder--dragging" 
 							 lockAxis="y"
 							 distance={20}
+							 lockToContainerEdges={true}
+							 useDragHandle={true}
 							 addQuestion={this.addQuestion}
 							 updateQuestion={this.updateQuestion} 
 							 questions={this.state.questions} 

@@ -1,6 +1,17 @@
 .multiple-choice-builder {
 	padding: 15px 25px;
 
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__handle {
+		user-select: none;
+		font-size: 15px;
+		cursor: row-resize;
+	}
+
 	&__body {
 		margin-top: 20px;
 	}
