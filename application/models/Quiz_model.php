@@ -231,8 +231,8 @@ class Quiz_model extends CI_Model
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) && filter_var($safe['user_id'], FILTER_VALIDATE_INT))
     	{
     		$this->db->insert('user_quiz', [
-    		    'user_id' => $safe['quiz_id'],
-    		    'quiz_id' => $safe['user_id']
+    		    'user_id' => $safe['user_id'],
+    		    'quiz_id' => $safe['quiz_id']
     		]);
     	}
 

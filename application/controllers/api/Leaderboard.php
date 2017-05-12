@@ -36,24 +36,44 @@ class Leaderboard extends CI_Controller
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
 				$name = $this->leaderboardModel->getName($item->id);
 
-				$results[$item->user_id] = [
+				$results['userId'.$item->user_id] = [
 					'name'                  => $name,
+					'user_id'               => $item->user_id, 
 					'correct_answers_count' => $correct_answers,
 					'time_seconds'          => $item->time
 				];		
 			}
 
+			$userId = $this->session->userdata('uid');
+			$userResult = $results['userId'.$userId];
 			$score = array_sum(array_column($results, 'correct_answers_count')) / count($results);
 			$time = array_sum(array_column($results, 'time_seconds')) / count($results);
+
+			usort($results, function ($item1, $item2) {
+				if (($item2['correct_answers_count'] <=> $item1['correct_answers_count']) == 0) {
+					return $item1['time_seconds'] <=> $item2['time_seconds'];
+				}
+			    return $item2['correct_answers_count'] <=> $item1['correct_answers_count'];
+			});
+			$topFive = array_slice($results, 0, 5, true);
+			$userInTopFive = array_search($userId, array_column($topFive, 'user_id'));
+
+			if (count($results) < 6) {
+				$topFive = $results;
+			} 
+			elseif($userInTopFive !== false) {
+				$topFive = array_slice($results, 0, 6, true);
+			}
 
 			$output = json_encode([
 				'quiz_name'      => $quiz_id,
 				'question_count' => $count,
-				'results'        => $results,
+				'leaderboard'    => $topFive,
 				'average_score'  => $score,
-				'average_time'   => $time
+				'average_time'   => $time,
+				'user_result'    => $userResult
 			]);
-
+			
 			return $this->output->set_content_type('application/json')->set_output($output);
 		}
 
