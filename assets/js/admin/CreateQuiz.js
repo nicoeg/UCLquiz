@@ -3,30 +3,15 @@ import { render } from 'react-dom'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
-import AddQuestionBlock from './AddQuestionBlock'
-import MultipleChoiceQuestionBuilder from './questionTypes/MultipleChoiceQuestionBuilder'
+import QuestionBuilder from './QuestionBuilder'
 
-const SortableItem = SortableElement(({ position, question, updateQuestion, addQuestion }) => {
-	let element
-
-	if (question.type == 1) {
-		element = <MultipleChoiceQuestionBuilder updateQuestion={updateQuestion} question={question}></MultipleChoiceQuestionBuilder>
-	}
-
-	return (
-		<div className="question-builder">
-			<AddQuestionBlock addQuestion={addQuestion} position={position}  />
-
-			<div style={{ margin: '25px auto' }} className="main-container main-container--fill">
-				{element}
-			</div>
-		</div>
-	)
-});
+const QuestionBuilderItem = SortableElement(({ position, question, updateQuestion, addQuestion }) => 
+	<QuestionBuilder position={position} question={question} updateQuestion={updateQuestion} addQuestion={addQuestion} />
+)
 
 const SortableList = SortableContainer(({ questions, updateQuestion, addQuestion }) => {
 	questions = questions.map((question, index) => (
-		<SortableItem key={`item-${question.id}`} index={question.id} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
+		<QuestionBuilderItem key={`item-${question.id}`} index={question.id} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
 	))
 
 	return (
@@ -47,7 +32,7 @@ class CreateQuiz extends Component {
 		super(props)
 
 		this.state = {
-			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, , {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
+			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
@@ -74,6 +59,7 @@ class CreateQuiz extends Component {
 	}
 
 	addQuestion(position, question) {
+		console.log('f');
 		let questions = this.state.questions
 		question.id = questions.sort((a, b) => b.id - a.id)[0].id + 1
 		questions.splice(position, 0, question)

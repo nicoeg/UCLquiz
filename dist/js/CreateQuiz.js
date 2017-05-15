@@ -24295,8 +24295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AddQuestionBlock__ = __webpack_require__(312);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__questionTypes_MultipleChoiceQuestionBuilder__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__QuestionBuilder__ = __webpack_require__(482);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24312,29 +24311,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-var SortableItem = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__["SortableElement"])(function (_ref) {
+var QuestionBuilderItem = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__["SortableElement"])(function (_ref) {
 	var position = _ref.position,
 	    question = _ref.question,
 	    updateQuestion = _ref.updateQuestion,
 	    addQuestion = _ref.addQuestion;
-
-	var element = void 0;
-
-	if (question.type == 1) {
-		element = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__questionTypes_MultipleChoiceQuestionBuilder__["a" /* default */], { updateQuestion: updateQuestion, question: question });
-	}
-
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-		'div',
-		{ className: 'question-builder' },
-		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__AddQuestionBlock__["a" /* default */], { addQuestion: addQuestion, position: position }),
-		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			'div',
-			{ style: { margin: '25px auto' }, className: 'main-container main-container--fill' },
-			element
-		)
-	);
+	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__QuestionBuilder__["a" /* default */], { position: position, question: question, updateQuestion: updateQuestion, addQuestion: addQuestion });
 });
 
 var SortableList = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__["SortableContainer"])(function (_ref2) {
@@ -24343,7 +24325,7 @@ var SortableList = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sorta
 	    addQuestion = _ref2.addQuestion;
 
 	questions = questions.map(function (question, index) {
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SortableItem, { key: 'item-' + question.id, index: question.id, position: index, addQuestion: addQuestion, updateQuestion: updateQuestion, question: question });
+		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(QuestionBuilderItem, { key: 'item-' + question.id, index: question.id, position: index, addQuestion: addQuestion, updateQuestion: updateQuestion, question: question });
 	});
 
 	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -24370,7 +24352,7 @@ var CreateQuiz = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (CreateQuiz.__proto__ || Object.getPrototypeOf(CreateQuiz)).call(this, props));
 
 		_this.state = {
-			questions: [{ id: 1, type: 1, answers: [], question: 'Heyt' }, { id: 2, type: 1, answers: [], question: 'Hedasdasyt' },, { id: 3, type: 1, answers: [], question: 'Hedasdasyt' }]
+			questions: [{ id: 1, type: 1, answers: [], question: 'Heyt' }, { id: 2, type: 1, answers: [], question: 'Hedasdasyt' }, { id: 3, type: 1, answers: [], question: 'Hedasdasyt' }]
 		};
 
 		_this.onSortEnd = _this.onSortEnd.bind(_this);
@@ -24411,6 +24393,7 @@ var CreateQuiz = function (_Component) {
 	}, {
 		key: 'addQuestion',
 		value: function addQuestion(position, question) {
+			console.log('f');
 			var questions = this.state.questions;
 			question.id = questions.sort(function (a, b) {
 				return b.id - a.id;
@@ -24537,7 +24520,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var blockName = 'multiple-choice-builder';
+var blockName = 'mc-create-answer';
 
 var DragHandle = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_sortable_hoc__["SortableHandle"])(function () {
 	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -24555,41 +24538,118 @@ var MultipleChoiceQuestionBuilder = function (_Component) {
 
 		var _this = _possibleConstructorReturn(this, (MultipleChoiceQuestionBuilder.__proto__ || Object.getPrototypeOf(MultipleChoiceQuestionBuilder)).call(this, props));
 
-		_this.handleQuestionChange = _this.handleQuestionChange.bind(_this);
+		_this.renderAnswer = _this.renderAnswer.bind(_this);
+		_this.addAnswer = _this.addAnswer.bind(_this);
+		_this.updateAnswer = _this.updateAnswer.bind(_this);
+		_this.toggleCorrect = _this.toggleCorrect.bind(_this);
+		_this.inputChange = _this.inputChange.bind(_this);
+		_this.deleteAnswer = _this.deleteAnswer.bind(_this);
 		return _this;
 	}
 
 	_createClass(MultipleChoiceQuestionBuilder, [{
-		key: 'handleQuestionChange',
-		value: function handleQuestionChange(event) {
-			this.props.updateQuestion(Object.assign(this.props.question, {
-				question: event.target.value,
-				answers: this.props.question.answers
-			}));
+		key: 'renderAnswer',
+		value: function renderAnswer(answer, index) {
+			var _this2 = this;
+
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ key: answer.id, className: blockName },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'span',
+					{ className: 'number' },
+					index + 1,
+					'.'
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: blockName + '__input textfield', type: 'text', value: answer.value, onChange: function onChange(event) {
+						return _this2.inputChange(answer, event.target.value);
+					} }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'span',
+					{ className: 'button ' + (answer.correct ? 'button--success' : 'button--grey'), onClick: function onClick() {
+							return _this2.toggleCorrect(answer);
+						} },
+					'Korrekt svar'
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'span',
+					{ className: blockName + '__delete-button button button--grey', onClick: function onClick() {
+							return _this2.deleteAnswer(index);
+						} },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'i',
+						{ className: 'material-icons' },
+						'delete'
+					)
+				)
+			);
+		}
+	}, {
+		key: 'inputChange',
+		value: function inputChange(answer, value) {
+			answer.value = value;
+
+			this.updateAnswer(answer);
+		}
+	}, {
+		key: 'toggleCorrect',
+		value: function toggleCorrect(answer) {
+			answer.correct = !answer.correct;
+
+			this.updateAnswer(answer);
+		}
+	}, {
+		key: 'updateAnswer',
+		value: function updateAnswer(answer) {
+			var answers = this.props.answers;
+			var index = answers.find(function (a) {
+				return a.id == answer.id;
+			});
+
+			answers[index] = answer;
+
+			this.props.updateAnswers(answers);
+		}
+	}, {
+		key: 'addAnswer',
+		value: function addAnswer() {
+			var answers = this.props.answers;
+			var latest = answers.sort(function (a, b) {
+				return b.id - a.id;
+			})[0];
+			answers.push({ id: latest ? latest.id + 1 : 1, value: 'g' });
+
+			this.props.updateAnswers(answers);
+		}
+	}, {
+		key: 'deleteAnswer',
+		value: function deleteAnswer(index) {
+			var answers = this.props.answers;
+
+			answers.splice(index, 1);
+
+			this.props.updateAnswers(answers);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
+			var _this3 = this;
+
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
-				{ className: blockName },
+				null,
+				this.props.answers.map(function (answer, index) {
+					return _this3.renderAnswer(answer, index);
+				}),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
-					{ className: blockName + '__header' },
+					{ style: { margin: '20px 0' } },
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'button',
-						{ className: 'button button--small button--primary' },
-						'Multiple choice'
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(DragHandle, null)
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ className: blockName + '__body' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'textfield', placeholder: 'Skriv sp\xF8rgsm\xE5l her', value: this.props.question.question, onChange: this.handleQuestionChange }),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
-				),
-				this.props.question.question
+						'span',
+						{ className: 'button button--primary', onClick: this.addAnswer },
+						'Tilf\xF8j svar'
+					)
+				)
 			);
 		}
 	}]);
@@ -29666,6 +29726,133 @@ module.exports = warning;
 
 module.exports = __webpack_require__(291);
 
+
+/***/ }),
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_sortable_hoc__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_sortable_hoc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_sortable_hoc__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AddQuestionBlock__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionTypes_MultipleChoiceQuestionBuilder__ = __webpack_require__(313);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+var blockName = 'question-builder';
+
+var DragHandle = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_sortable_hoc__["SortableHandle"])(function () {
+	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+		'span',
+		{ className: blockName + '__handle' },
+		'::'
+	);
+});
+
+var QuestionBuilder = function (_Component) {
+	_inherits(QuestionBuilder, _Component);
+
+	function QuestionBuilder(props) {
+		_classCallCheck(this, QuestionBuilder);
+
+		var _this = _possibleConstructorReturn(this, (QuestionBuilder.__proto__ || Object.getPrototypeOf(QuestionBuilder)).call(this, props));
+
+		_this.handleQuestionChange = _this.handleQuestionChange.bind(_this);
+		_this.updateAnswers = _this.updateAnswers.bind(_this);
+		return _this;
+	}
+
+	_createClass(QuestionBuilder, [{
+		key: 'handleQuestionChange',
+		value: function handleQuestionChange(event) {
+			this.props.updateQuestion(Object.assign(this.props.question, {
+				question: event.target.value,
+				answers: this.props.question.answers
+			}));
+		}
+	}, {
+		key: 'updateAnswers',
+		value: function updateAnswers(answers) {
+			this.props.updateQuestion(Object.assign(this.props.question, {
+				question: this.props.question.question,
+				answers: answers
+			}));
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props = this.props,
+			    position = _props.position,
+			    question = _props.question,
+			    updateQuestion = _props.updateQuestion,
+			    addQuestion = _props.addQuestion;
+
+
+			var questionType = void 0,
+			    questionTypeElement = void 0;
+
+			if (question.type == 1) {
+				questionType = 'Multiple choice';
+				questionTypeElement = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__questionTypes_MultipleChoiceQuestionBuilder__["a" /* default */], { updateAnswers: this.updateAnswers, answers: question.answers });
+			}
+
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ className: blockName },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__AddQuestionBlock__["a" /* default */], { addQuestion: addQuestion, position: position }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ style: { margin: '25px auto' }, className: 'main-container main-container--fill' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: blockName + '__container' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'div',
+							{ className: blockName + '__header' },
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'button',
+								{ className: 'button button--small button--primary' },
+								questionType
+							),
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(DragHandle, null)
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'div',
+							{ className: blockName + '__body' },
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'textfield', placeholder: 'Skriv sp\xF8rgsm\xE5l her', value: this.props.question.question, onChange: this.handleQuestionChange }),
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
+						)
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: blockName + '__answers' },
+						questionTypeElement
+					)
+				)
+			);
+		}
+	}]);
+
+	return QuestionBuilder;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (QuestionBuilder);
 
 /***/ })
 /******/ ]);

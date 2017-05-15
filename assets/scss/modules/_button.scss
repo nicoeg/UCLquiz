@@ -14,6 +14,16 @@
         background-color: $accent;
     }
 
+    &--grey {
+        background: #F5F5F5;
+        color: #C9C9C9;
+    }
+
+    &--success {
+        background: #39CA74;
+        color: #fff;
+    }
+
     &--disabled {
 		color: #fff;
         background: #a9a9a9;
