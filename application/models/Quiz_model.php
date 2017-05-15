@@ -84,99 +84,77 @@ class Quiz_model extends CI_Model
 	*  @param array $data Array with data from input fields
 	*/
 
-	public function setQuiz($data)
+	public function setQuiz($course_id, $level, $title)
 	{	
 		$safe = [
-			'course_id' => filter_var($data['cID'], FILTER_SANITIZE_NUMBER_INT),
-			'level'     => filter_var($data['level'], FILTER_SANITIZE_NUMBER_INT),
-			'user_id'   => filter_var($data['uID'], FILTER_SANITIZE_NUMBER_INT),
-			'title'     => filter_var($data['title'], FILTER_SANITIZE_STRING)
+			'course_id' => filter_var($course_id, FILTER_SANITIZE_NUMBER_INT),
+			'level'     => filter_var($level, FILTER_SANITIZE_NUMBER_INT),
+			'user_id'   => filter_var($this->session->userdata('uid'), FILTER_SANITIZE_NUMBER_INT),
+			'title'     => filter_var($title, FILTER_SANITIZE_STRING)
 		];
 
-		if(filter_var($safe['course_id'], FILTER_VALIDATE_INT) && filter_var($safe['level'], FILTER_VALIDATE_INT) && filter_var($safe['user_id'], FILTER_VALIDATE_INT) && is_string($safe['title']))
+		if(
+			filter_var($safe['course_id'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['level'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['user_id'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['title'])
+			)
 		{
 			$this->db->insert($this->table, [
-				'cID'   => $safe['course_id'],
-				'level' => $safe['level'],
-				'uID'   => $safe['user_id'],
-				'title' => $safe['title'],
+				'course_id'   => $safe['course_id'],
+				'level'       => $safe['level'],
+				'uID'         => $safe['user_id'],
+				'title'       => $safe['title']
 			]);
 
-			$last_id = $this->db->insert_id();
-
-			foreach($data['questions'] as $question)
-			{
-				$safe = [
-					'question' => filter_var($question['question'], FILTER_SANITIZE_STRING),
-					'type'     => filter_var($question['type'], FILTER_SANITIZE_NUMBER_INT),
-					'answers'  => filter_var($question['answers'], FILTER_SANITIZE_STRING),
-					'hint'     => filter_var($question['hint'], FILTER_SANITIZE_STRING), 
-				];
-
-				if(is_string($safe['question']) && filter_var($safe['type'], FILTER_VALIDATE_INT) && is_string($safe['answers']) && is_string($safe['hint']))
-				{
-					$data = [
-						'qID'      => $last_id,
-						'question' => $safe['question'],
-						'type'     => $safe['type'],
-						'answers'  => $safe['answers'],
-						'hint'     => $safe['hint']
-					];
-
-					$this->setQuestions($data);
-				}
-			}
+			return $this->db->insert_id();
 		}
+
+		die('Quiz data not valid');
 	}
 
-	public function setQuestions($data)
+	public function setQuestions($quiz_id, $question, $type, $hint)
 	{
 		$safe = [
-			'quiz_id'  => filter_var($data['qID'], FILTER_SANITIZE_NUMBER_INT),
-			'question' => filter_var($data['question'], FILTER_SANITIZE_STRING),
-			'type'     => filter_var($data['type'], FILTER_SANITIZE_NUMBER_INT)
+			'quiz_id'  => filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT),
+			'question' => filter_var($question, FILTER_SANITIZE_STRING),
+			'type'     => filter_var($type, FILTER_SANITIZE_NUMBER_INT),
+			'hint'     => filter_var($hint,  FILTER_SANITIZE_STRING)
 		];
 
-		if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) && is_string($safe['question']) && filter_var($safe['type'], FILTER_VALIDATE_INT))
+		if(
+			filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['question']) 
+			&& filter_var($safe['type'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['hint'])
+			)
 		{
 			$this->db->insert('questions', [
 				'quiz_id'  => $safe['quiz_id'],
 				'question' => $safe['question'],
-				'type'     => $safe['type']
+				'type'     => $safe['type'],
+				'hint'     => $safe['hint']
 			]);
 
-			$last_id = $this->db->insert_id();
-
-			foreach($data['answers'] as $answer)
-			{
-				$safe = [
-					'answer'  => filter_var($answer['answer'], FILTER_SANITIZE_STRING),
-					'correct' => filter_var($answer['correct'], FILTER_SANITIZE_NUMBER_INT)
-				];
-
-				if(is_string($safe['answer']) && filter_var($safe['correct'], FILTER_VALIDATE_INT))
-				{
-					$data = [
-						'question_id' => $last_id,
-						'answer'      => $safe['answer'],
-						'correct'     => $safe['correct'],
-					];
-
-					$this->setAnswers($answer);
-				}
-			}
+			return $this->db->insert_id();
 		}
+
+		die('Question data not valid');
 	}
 
-	public function setAnswers($data)
+	public function setAnswers($question_id, $answer, $correct)
 	{
 		$safe = [
 			'question_id' => filter_var($data['question_id'], FILTER_SANITIZE_NUMBER_INT),
-			'answer' => filter_var($data['answer'], FILTER_SANITIZE_STRING),
-			'correct' => filter_var($data['correct'], FILTER_SANITIZE_NUMBER_INT),
+			'answer'      => filter_var($data['answer'], FILTER_SANITIZE_STRING),
+			'correct'     => filter_var($data['correct'], FILTER_SANITIZE_NUMBER_INT),
 		];
 
-		if(filter_var($safe['question_id'], FILTER_VALIDATE_INT) && is_string($safe['answer']) && filter_var($safe['correct'], FILTER_VALIDATE_INT))
+		if(
+			filter_var($safe['question_id'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['answer']) 
+			&& filter_var($safe['correct'], FILTER_VALIDATE_INT)
+			)
 		{
 			$this->db->insert('answers', [
 				'question_id' => $safe['question_id'],
