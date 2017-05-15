@@ -101,15 +101,26 @@ class Quiz_Rest extends CI_Controller
 				{
 					if(is_string($question['question']))
 					{
-						array_push($questions, $question['question']);
+						$question = [
+							'question' => $question['question'],
+							'type'     => $question['type'],
+							'hint'     => $question['hint']
+						];
+
+						array_push($questions, $question);
 					}
 				}
 
 				foreach($array['answers'] as $answer)
 				{
+					$answer = [
+						'answer'  => $answer['answer'],
+						'correct' => $answer['correct']
+					];
+
 					if(is_string($answer['answer']))
 					{
-						array_push($answers, $answer['answer']);
+						array_push($answers, $answer);
 					}
 				}
 
@@ -121,6 +132,10 @@ class Quiz_Rest extends CI_Controller
 					'questions' => $questions,
 					'answers'   => $answers
 				];
+
+				echo '<pre>';
+				print_r($dataToInsert);
+				die();
 
 				$query = $this->quizModel->setQuiz($dataToInsert);
 
