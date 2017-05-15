@@ -24617,7 +24617,7 @@ var MultipleChoiceQuestionBuilder = function (_Component) {
 			var latest = answers.sort(function (a, b) {
 				return b.id - a.id;
 			})[0];
-			answers.push({ id: latest ? latest.id + 1 : 1, value: 'g' });
+			answers.push({ id: latest ? latest.id + 1 : 1, value: '' });
 
 			this.props.updateAnswers(answers);
 		}

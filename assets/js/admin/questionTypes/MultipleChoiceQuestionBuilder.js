@@ -56,7 +56,7 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 	addAnswer() {
 		let answers = this.props.answers
 		const latest = answers.sort((a, b) => b.id - a.id)[0]
-		answers.push({ id: latest ? latest.id + 1 : 1, value: 'g' })
+		answers.push({ id: latest ? latest.id + 1 : 1, value: '' })
 
 		this.props.updateAnswers(answers)
 	}
