@@ -24295,7 +24295,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_transition_group_CSSTransitionGroup__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__QuestionBuilder__ = __webpack_require__(482);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Header__ = __webpack_require__(483);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__QuestionBuilder__ = __webpack_require__(482);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24311,12 +24312,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var QuestionBuilderItem = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__["SortableElement"])(function (_ref) {
 	var position = _ref.position,
 	    question = _ref.question,
 	    updateQuestion = _ref.updateQuestion,
 	    addQuestion = _ref.addQuestion;
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__QuestionBuilder__["a" /* default */], { position: position, question: question, updateQuestion: updateQuestion, addQuestion: addQuestion });
+	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuestionBuilder__["a" /* default */], { position: position, question: question, updateQuestion: updateQuestion, addQuestion: addQuestion });
 });
 
 var SortableList = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_sortable_hoc__["SortableContainer"])(function (_ref2) {
@@ -24352,12 +24354,14 @@ var CreateQuiz = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (CreateQuiz.__proto__ || Object.getPrototypeOf(CreateQuiz)).call(this, props));
 
 		_this.state = {
+			current_step: 1,
 			questions: [{ id: 1, type: 1, answers: [], question: 'Heyt' }, { id: 2, type: 1, answers: [], question: 'Hedasdasyt' }, { id: 3, type: 1, answers: [], question: 'Hedasdasyt' }]
 		};
 
 		_this.onSortEnd = _this.onSortEnd.bind(_this);
 		_this.updateQuestion = _this.updateQuestion.bind(_this);
 		_this.addQuestion = _this.addQuestion.bind(_this);
+		_this.setStep = _this.setStep.bind(_this);
 		return _this;
 	}
 
@@ -24393,7 +24397,6 @@ var CreateQuiz = function (_Component) {
 	}, {
 		key: 'addQuestion',
 		value: function addQuestion(position, question) {
-			console.log('f');
 			var questions = this.state.questions;
 			question.id = questions.sort(function (a, b) {
 				return b.id - a.id;
@@ -24405,17 +24408,31 @@ var CreateQuiz = function (_Component) {
 			});
 		}
 	}, {
+		key: 'setStep',
+		value: function setStep(index) {
+			this.setState({
+				current_step: index
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SortableList, { helperClass: 'question-builder--dragging',
-				lockAxis: 'y',
-				distance: 20,
-				lockToContainerEdges: true,
-				useDragHandle: true,
-				addQuestion: this.addQuestion,
-				updateQuestion: this.updateQuestion,
-				questions: this.state.questions,
-				onSortEnd: this.onSortEnd });
+			var steps = [{ value: '1' }, { value: '2' }, { value: '3' }];
+
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				null,
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Header__["a" /* default */], { steps: steps, active: this.state.current_step, setStep: this.setStep }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SortableList, { helperClass: 'question-builder--dragging',
+					lockAxis: 'y',
+					distance: 20,
+					lockToContainerEdges: true,
+					useDragHandle: true,
+					addQuestion: this.addQuestion,
+					updateQuestion: this.updateQuestion,
+					questions: this.state.questions,
+					onSortEnd: this.onSortEnd })
+			);
 		}
 	}]);
 
@@ -29853,6 +29870,87 @@ var QuestionBuilder = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (QuestionBuilder);
+
+/***/ }),
+/* 483 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var blockName = 'create-quiz-header';
+
+var Header = function (_Component) {
+	_inherits(Header, _Component);
+
+	function Header(props) {
+		_classCallCheck(this, Header);
+
+		var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
+
+		_this.renderSteps = _this.renderSteps.bind(_this);
+		return _this;
+	}
+
+	_createClass(Header, [{
+		key: 'renderSteps',
+		value: function renderSteps() {
+			var _this2 = this;
+
+			return this.props.steps.map(function (step, index) {
+				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ key: index, className: 'steps__section' + (index <= _this2.props.active ? ' steps__section--active' : '') },
+					index > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'steps__indicator' }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'steps__step', onClick: function onClick() {
+								return _this2.props.setStep(index);
+							} },
+						index + 1
+					)
+				);
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ className: blockName + ' quiz-container quiz-container--big', style: { minHeight: '0' } },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'span',
+					{ className: 'button button--primary' },
+					'Se quiz'
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: 'steps' },
+					this.renderSteps()
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: blockName + '__next-button button button--primary' },
+					'N\xE6ste'
+				)
+			);
+		}
+	}]);
+
+	return Header;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Header);
 
 /***/ })
 /******/ ]);

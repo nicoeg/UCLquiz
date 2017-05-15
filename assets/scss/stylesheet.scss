@@ -15,9 +15,11 @@
 @import 'modules/quiz-result';
 @import 'modules/donut';
 @import 'modules/question-builder';
+@import 'modules/create-quiz-header';
 
 @import 'animations';
 
+/* Question types */
 @import 'modules/question-types/mc-create-answer';
 
 div.tab {

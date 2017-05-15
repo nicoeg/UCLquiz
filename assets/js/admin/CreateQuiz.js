@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
+import Header from './Header'
 import QuestionBuilder from './QuestionBuilder'
 
 const QuestionBuilderItem = SortableElement(({ position, question, updateQuestion, addQuestion }) => 
@@ -32,12 +33,14 @@ class CreateQuiz extends Component {
 		super(props)
 
 		this.state = {
+			current_step: 1,
 			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
 		this.updateQuestion = this.updateQuestion.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
+		this.setStep = this.setStep.bind(this)
 	}
 
 	updateQuestion(question) {
@@ -59,7 +62,6 @@ class CreateQuiz extends Component {
 	}
 
 	addQuestion(position, question) {
-		console.log('f');
 		let questions = this.state.questions
 		question.id = questions.sort((a, b) => b.id - a.id)[0].id + 1
 		questions.splice(position, 0, question)
@@ -69,16 +71,29 @@ class CreateQuiz extends Component {
 		})
 	}
 
+	setStep(index) {
+		this.setState({
+			current_step: index
+		})
+	}
+
 	render() {
-		return <SortableList helperClass="question-builder--dragging" 
-							 lockAxis="y"
-							 distance={20}
-							 lockToContainerEdges={true}
-							 useDragHandle={true}
-							 addQuestion={this.addQuestion}
-							 updateQuestion={this.updateQuestion} 
-							 questions={this.state.questions} 
-							 onSortEnd={this.onSortEnd} />
+		const steps = [{value: '1'}, {value: '2'}, {value: '3'}]
+
+		return (
+			<div>
+				<Header steps={steps} active={this.state.current_step} setStep={this.setStep} />
+				<SortableList helperClass="question-builder--dragging" 
+							  lockAxis="y"
+							  distance={20}
+							  lockToContainerEdges={true}
+							  useDragHandle={true}
+							  addQuestion={this.addQuestion}
+							  updateQuestion={this.updateQuestion} 
+							  questions={this.state.questions} 
+							  onSortEnd={this.onSortEnd} />
+			</div>
+		)
 	}
 }
 
