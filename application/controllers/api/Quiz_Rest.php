@@ -82,13 +82,67 @@ class Quiz_Rest extends CI_Controller
     	    ->set_output(json_encode($this->quizModel
     	    ->getCorrectAnswers($quiz_id)));
 	}
+
+	public function createQuiz()
+	{
+		if($this->input->method() == 'post')
+		{
+			$receivedData = json_decode(file_get_contents('php://input'), true);
+			$questions    = [];
+
+			if(is_string($receivedData['title']) && is_numeric($receivedData['course_id']) && is_numeric($receivedData['level']) && is_array($receivedData['questions']) && is_array($receivedData['answers'])) 
+			{
+				/**
+				 * Needs to be sanitized
+				 */
+				
+				$title  = $receivedData['title'];
+				$course = $receivedData['course_id'];
+				$level  = $receivedData['level'];
+
+				$quizId = $this->quizModel
+					->setQuiz(
+						$course, 
+						$level,
+						$title
+					);
+
+				foreach($receivedData as $question)
+				{
+					if(is_string($question['question']) && is_numeric($question['type']) && is_string($question['hint']) && is_numeric($question['question_id']))
+					{
+						/**
+						 * Needs to be sanitized
+						 */
+
+						$question = $question['question'];
+						$type     = $question['type'];
+						$hint     = $question['hint'];
+						$qId      = $question['question_id'];
+
+						$insert = [
+							'question'    => $question,
+							'type'        => $type,
+							'hint'        => $hint,
+							'question_id' => $qId
+						];
+
+						$this->quizModel->setQuestions($question, $type, $hint);
+						array_push($questions, $insert);
+					}
+				}
+			}
+
+			return false;
+		}
+	}
 	
 	/**
 	 * Creates a quiz
 	 */
 	public function post()
 	{
-		if($this->input->method() === 'post')
+		if($this->input->method() == 'post')
 		{
 			$array = json_decode(file_get_contents('php://input'), true);
 
@@ -104,7 +158,7 @@ class Quiz_Rest extends CI_Controller
 						$question = [
 							'question' => $question['question'],
 							'type'     => $question['type'],
-							'hint'     => $question['hint']
+							'hint'     => $question['hint'],
 						];
 
 						array_push($questions, $question);
