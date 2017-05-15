@@ -80,7 +80,62 @@ class Quiz_Rest extends CI_Controller
 	 */
 	public function post()
 	{
-		
+		if($this->input->method() === 'post')
+		{
+			$array = json_decode(file_get_contents('php://input'), true);
+
+			if(is_string($array['title']) && is_numeric($array['course_id']) && is_numeric($array['level'] && is_array($array['questions']) && is_array($array['answers'])))
+			{
+				$questions = [];
+				$answers   = [];
+
+				foreach($array['questions'] as $question)
+				{
+					if(is_string($question['question']))
+					{
+						$question = [
+							'question' => $question['question'],
+							'type'     => $question['type'],
+							'hint'     => $question['hint']
+						];
+
+						array_push($questions, $question);
+					}
+				}
+
+				foreach($array['answers'] as $answer)
+				{
+					$answer = [
+						'answer'  => $answer['answer'],
+						'correct' => $answer['correct']
+					];
+
+					if(is_string($answer['answer']))
+					{
+						array_push($answers, $answer);
+					}
+				}
+
+				$dataToInsert = [
+					'title'     => $array['title'],
+					'cID'       => $array['course_id'],
+					'level'     => $array['level'],
+					'user_id'   => 2,
+					'questions' => $questions,
+					'answers'   => $answers
+				];
+
+				echo '<pre>';
+				print_r($dataToInsert);
+				die();
+
+				$query = $this->quizModel->setQuiz($dataToInsert);
+
+				return $query;
+			}
+		}
+
+		return false;
 	}
 
 	/**
