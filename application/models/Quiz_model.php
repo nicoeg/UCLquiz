@@ -208,14 +208,6 @@ class Quiz_model extends CI_Model
 
     public function saveUserResult($quiz_id, $user_id)
     {
-<<<<<<< HEAD
-        $this->db->insert('user_quiz', [
-            'user_id' => $user_id,
-            'quiz_id' => $quiz_id
-        ]);
-
-        return $this->db->insert_id();
-=======
     	$safe = [
     		'quiz_id' => filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT),
     		'user_id' => filter_var($user_id, FILTER_SANITIZE_NUMBER_INT)
@@ -230,7 +222,6 @@ class Quiz_model extends CI_Model
     	}
 
     	return $this->db->insert_id(); 
->>>>>>> fa711a65b24fe1be2cff5e5aa7aeb2af9575eb78
 	}
 
     public function getCorrectAnswers($quiz_id)
