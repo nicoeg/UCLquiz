@@ -159,6 +159,6 @@ class Quiz_Rest extends CI_Controller
 	{
 		$courses = $this->quizModel->getCourses();
 
-		return json_encode($courses);
+		return $this->output->set_content_type('application/json')->set_output(json_encode($courses));
 	}
 }

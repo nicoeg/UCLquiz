@@ -6,7 +6,7 @@ export default class ClassSelect extends Component {
 		super(props);
 
 		this.state = {
-			courses: [{id: 1, name: "curs 1"}, {id: 2, name:"kurs2"}, {id: 3, name: "les"}],
+			courses: [],
 			selectedCourse: null,
 			searchQuery: ''
 		}
@@ -19,8 +19,9 @@ export default class ClassSelect extends Component {
 
 	getCourses() {
 		axios.get('/api/quiz_rest/getcourses').then(response => {
+			console.log(response.data)
 			this.setState({
-				courses: respose.data
+				courses: response.data
 			})
 		})
 	}

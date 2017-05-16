@@ -28098,7 +28098,7 @@ var ClassSelect = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (ClassSelect.__proto__ || Object.getPrototypeOf(ClassSelect)).call(this, props));
 
 		_this.state = {
-			courses: [{ id: 1, name: "curs 1" }, { id: 2, name: "kurs2" }, { id: 3, name: "les" }],
+			courses: [],
 			selectedCourse: null,
 			searchQuery: ''
 		};
@@ -28116,8 +28116,9 @@ var ClassSelect = function (_Component) {
 			var _this2 = this;
 
 			__WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/quiz_rest/getcourses').then(function (response) {
+				console.log(response.data);
 				_this2.setState({
-					courses: respose.data
+					courses: response.data
 				});
 			});
 		}
