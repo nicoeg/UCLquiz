@@ -12,6 +12,16 @@ class User_Model extends CI_Model
 		return $query->row();
 	}
 
+	public function get_user_by_id($id) 
+	{
+		$query = $this->db
+			->where('id', $id)
+			->limit(1)
+			->get('users');
+
+		return $query->row();
+	}
+
 	public function access() 
 	{	
 		$headers = getallheaders();
@@ -38,7 +48,7 @@ class User_Model extends CI_Model
 			if(password_verify($password, $userData->password)) 
 			{
 
-				$newdata = array(
+				$sessionData = array(
                    'username'  => $userData->username,
                    'email'     => $userData->email,
                    'logged_in' => TRUE,
@@ -46,10 +56,19 @@ class User_Model extends CI_Model
                    'user_type' => $userData->userType
                	);
 
-				$this->session->set_userdata($newdata);
+				$this->session->set_userdata($sessionData);
 				
 				return true;
 			}
 		}
+	}
+
+	public function getCookieToken($token)
+	{
+		$query = $this->db->where('token', $token)
+			->limit(1)
+			->get('cookie_data');
+
+		return $query->row();
 	}
 }
