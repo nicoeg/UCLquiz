@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.5-10.2.4-MariaDB)
-# Database: uclquiz
-# Generation Time: 2017-05-12 08:48:57 +0000
+# Host: localhost (MySQL 5.5.5-10.1.23-MariaDB)
+# Database: ucl
+# Generation Time: 2017-05-16 09:38:25 +0000
 # ************************************************************
 
 
@@ -29,7 +29,7 @@ CREATE TABLE `answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL,
   `answer` varchar(200) NOT NULL,
-  `correct` tinyint(1) NOT NULL DEFAULT 0,
+  `correct` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -73,6 +73,55 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table classes
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `classes`;
+
+CREATE TABLE `classes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `classes` WRITE;
+/*!40000 ALTER TABLE `classes` DISABLE KEYS */;
+
+INSERT INTO `classes` (`id`, `name`)
+VALUES
+	(1,'opbwu17fint'),
+	(2,'mmd17fint');
+
+/*!40000 ALTER TABLE `classes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table cookie_data
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cookie_data`;
+
+CREATE TABLE `cookie_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `token` varchar(40) DEFAULT NULL,
+  `expiration_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `cookie_data` WRITE;
+/*!40000 ALTER TABLE `cookie_data` DISABLE KEYS */;
+
+INSERT INTO `cookie_data` (`id`, `user_id`, `token`, `expiration_date`)
+VALUES
+	(9,1,'d2e36e14e70880879a9424362c66fac355d69c74','2017-06-15 08:44:51'),
+	(11,1,'3fca8d32b45675a29e5ce00e8cc51cb62625b53d','2017-06-15 09:08:06'),
+	(12,3,'4ce9013e79b94972e85e9a744b342ea9c0684d18','2017-06-15 09:32:15');
+
+/*!40000 ALTER TABLE `cookie_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table courses
 # ------------------------------------------------------------
 
@@ -107,7 +156,7 @@ CREATE TABLE `questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_id` int(11) unsigned NOT NULL,
   `question` text NOT NULL,
-  `type` int(11) DEFAULT 1,
+  `type` int(11) DEFAULT '1',
   `hint` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -193,7 +242,27 @@ VALUES
 	(106,NULL,1,25),
 	(107,NULL,1,28),
 	(108,NULL,1,3),
-	(109,NULL,1,5);
+	(109,NULL,1,5),
+	(110,125,1,9),
+	(111,125,1,11),
+	(112,126,3,3),
+	(113,126,3,5),
+	(114,127,4,3),
+	(115,127,4,4),
+	(116,128,5,1),
+	(117,128,5,4),
+	(118,129,3,3),
+	(119,129,3,4),
+	(120,130,4,1),
+	(121,130,4,4),
+	(122,131,5,1),
+	(123,131,5,4),
+	(124,132,6,1),
+	(125,132,6,4),
+	(126,133,7,2),
+	(127,133,7,5),
+	(128,134,8,2),
+	(129,134,8,5);
 
 /*!40000 ALTER TABLE `user_answer` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -341,7 +410,17 @@ VALUES
 	(121,1,1,NULL),
 	(122,1,1,NULL),
 	(123,1,1,NULL),
-	(124,1,3,NULL);
+	(124,1,3,NULL),
+	(125,2,1,NULL),
+	(126,1,3,NULL),
+	(127,1,4,NULL),
+	(128,1,5,NULL),
+	(129,3,1,20),
+	(130,4,1,25),
+	(131,5,1,30),
+	(132,6,1,NULL),
+	(133,7,1,NULL),
+	(134,8,1,NULL);
 
 /*!40000 ALTER TABLE `user_quiz` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -358,15 +437,23 @@ CREATE TABLE `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(70) NOT NULL,
   `userType` tinyint(1) NOT NULL,
+  `class_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `userType`)
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `userType`, `class_id`)
 VALUES
-	(1,'nicomanden@gmail.com','nico9699','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0);
+	(1,'nicomanden@gmail.com','nico9699','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,1),
+	(2,'j@gmail.com','jesper','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',1,1),
+	(3,'test@test.com','test1','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',1,1),
+	(4,'testity@test.com','test2','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,1),
+	(5,'testitytest@test.com','test3','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,1),
+	(6,'a@gmail.com','a','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,2),
+	(7,'b@gmail.com','b','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,1),
+	(8,'c@gmail.com','c','$2y$10$XskxvGLFjGeJpQHR1t0RS.rJRmMdZL5gWjIg/BrBqqRVWuX3VqktK',0,1);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
