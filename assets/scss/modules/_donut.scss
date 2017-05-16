@@ -12,6 +12,7 @@ $c1: #fff; // chart color
   background: $c1 linear-gradient(to right, $c1 50%, $accent 50%);
   color: $accent;
   border-radius: 50%;
+  border: 1px solid;
   
   
   @keyframes spin {
@@ -46,8 +47,8 @@ $c1: #fff; // chart color
     background-color: inherit;
     height: 100%;
     width: 50%;
-    bottom: -1px;
-    right: -1px;
+    bottom: 0;
+    right: 0;
     border-radius: 0 100% 100% 0 / 50%;
     transform: rotate(0);
     transform-origin: 0 50%;
