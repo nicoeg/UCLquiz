@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 
 export default class QuizResults extends React.Component {
     constructor(props) {
@@ -11,8 +12,41 @@ export default class QuizResults extends React.Component {
         this.state = {
             correctAnswerCount: correctAnswerCount,
             questionCount: props.questions.length,
-            percent: correctAnswerCount / props.questions.length * 100
+            percent: correctAnswerCount / props.questions.length * 100,
+            leaderboard: [],
+            average_score: null,
+            average_time: null,
+            current_user: null
         }
+
+        this.renderLeaderboard = this.renderLeaderboard.bind(this)
+
+        this.getResults()
+    }
+
+    getResults() {
+        const quizId = this.props.questions[0].quiz_id
+
+        axios.get('/api/leaderboard/getleaderboard/' + quizId).then(response => {
+            const minutes = Math.floor(response.data.average_time / 60)
+            const seconds = Math.round(response.data.average_time % 60)
+
+            this.setState({
+                leaderboard: response.data.leaderboard,
+                average_score: response.data.average_score,
+                average_time: `${minutes}m ${seconds}s`,
+                current_user: response.data.user_result.user_id
+            })
+        })
+    }
+
+    renderLeaderboard() {
+        return this.state.leaderboard.map((result, index) => (
+            <div key={result.user_id} className={'highscore' + (result.user_id == this.state.current_user ? ' highlighted' : '')}>
+                <div className="place">{index + 1}. {result.name}</div>
+                <div className="score">{result.correct_answers_count}/{this.state.questionCount}</div>
+            </div>
+        ))
     }
 
     render() {
@@ -32,41 +66,18 @@ export default class QuizResults extends React.Component {
                     <h1>Placering</h1>
 
                     <div className="highscores">
-                        <div className="highscore">
-                            <div className="place">1. Sofie Jensen</div>
-                            <div className="score">5/5</div>
-                        </div>
-                        <div className="highscore">
-                            <div className="place">2. Sofie Nielsen</div>
-                            <div className="score">5/5</div>
-                        </div>
-                        <div className="highscore">
-                            <div className="place">3. Sofie Hansen</div>
-                            <div className="score">5/5</div>
-                        </div>
-                        <div className="highscore">
-                            <div className="place">4. Sofie Olesen</div>
-                            <div className="score">5/5</div>
-                        </div>
-                        <div className="highscore">
-                            <div className="place">4. Sofie Mikkelsen</div>
-                            <div className="score">5/5</div>
-                        </div>
-                        <div className="highscore highlighted">
-                            <div className="place">8. Dig</div>
-                            <div className="score">4/5</div>
-                        </div>
+                        {this.renderLeaderboard()}
                     </div>
                 </div>
 
                 <div className="tribox-container main-container result">
                     <h1>Gennemsnit</h1>
 
-                    <div className="donut-chart" style={{animationDelay: '-60s'}}>
-                        <span>3 ud af 5 rigtige</span>
+                    <div className="donut-chart" style={{animationDelay: '-' + this.state.average_score * 100 + 's'}}>
+                        <span>{this.state.average_score} ud af {this.state.questionCount} rigtige</span>
                     </div>
 
-                    <h1 className="time"><b>Tid</b> 5m 47s</h1>
+                    <h1 className="time"><b>Tid</b> {this.state.average_time}</h1>
                 </div>
             </div>
         )

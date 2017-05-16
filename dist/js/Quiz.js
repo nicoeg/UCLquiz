@@ -27806,6 +27806,8 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27813,6 +27815,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -27833,171 +27836,145 @@ var QuizResults = function (_React$Component) {
         _this.state = {
             correctAnswerCount: correctAnswerCount,
             questionCount: props.questions.length,
-            percent: correctAnswerCount / props.questions.length * 100
+            percent: correctAnswerCount / props.questions.length * 100,
+            leaderboard: [],
+            average_score: null,
+            average_time: null,
+            current_user: null
         };
+
+        _this.renderLeaderboard = _this.renderLeaderboard.bind(_this);
+
+        _this.getResults();
         return _this;
     }
 
     _createClass(QuizResults, [{
-        key: "render",
+        key: 'getResults',
+        value: function getResults() {
+            var _this2 = this;
+
+            var quizId = this.props.questions[0].quiz_id;
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/leaderboard/getleaderboard/' + quizId).then(function (response) {
+                var minutes = Math.floor(response.data.average_time / 60);
+                var seconds = Math.round(response.data.average_time % 60);
+
+                _this2.setState({
+                    leaderboard: response.data.leaderboard,
+                    average_score: response.data.average_score,
+                    average_time: minutes + 'm ' + seconds + 's',
+                    current_user: response.data.user_result.user_id
+                });
+            });
+        }
+    }, {
+        key: 'renderLeaderboard',
+        value: function renderLeaderboard() {
+            var _this3 = this;
+
+            return this.state.leaderboard.map(function (result, index) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { key: result.user_id, className: 'highscore' + (result.user_id == _this3.state.current_user ? ' highlighted' : '') },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'place' },
+                        index + 1,
+                        '. ',
+                        result.name
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'score' },
+                        result.correct_answers_count,
+                        '/',
+                        _this3.state.questionCount
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "div",
-                { className: "quiz-container quiz-container--big" },
+                'div',
+                { className: 'quiz-container quiz-container--big' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "div",
-                    { className: "tribox-container main-container result" },
+                    'div',
+                    { className: 'tribox-container main-container result' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "h1",
+                        'h1',
                         null,
-                        "Resultat"
+                        'Resultat'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "div",
-                        { className: "donut-chart", style: { animationDelay: '-' + this.state.percent + 's' } },
+                        'div',
+                        { className: 'donut-chart', style: { animationDelay: '-' + this.state.percent + 's' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "span",
+                            'span',
                             null,
                             this.state.correctAnswerCount,
-                            " ud af ",
+                            ' ud af ',
                             this.state.questionCount,
-                            " rigtige"
+                            ' rigtige'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "h1",
-                        { className: "time" },
+                        'h1',
+                        { className: 'time' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "b",
+                            'b',
                             null,
-                            "Tid"
+                            'Tid'
                         ),
-                        " 5m 03s"
+                        ' 5m 03s'
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "div",
-                    { className: "tribox-container main-container result" },
+                    'div',
+                    { className: 'tribox-container main-container result' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "h1",
+                        'h1',
                         null,
-                        "Placering"
+                        'Placering'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "div",
-                        { className: "highscores" },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "1. Sofie Jensen"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "5/5"
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "2. Sofie Nielsen"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "5/5"
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "3. Sofie Hansen"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "5/5"
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "4. Sofie Olesen"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "5/5"
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "4. Sofie Mikkelsen"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "5/5"
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "highscore highlighted" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "place" },
-                                "8. Dig"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "score" },
-                                "4/5"
-                            )
-                        )
+                        'div',
+                        { className: 'highscores' },
+                        this.renderLeaderboard()
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "div",
-                    { className: "tribox-container main-container result" },
+                    'div',
+                    { className: 'tribox-container main-container result' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "h1",
+                        'h1',
                         null,
-                        "Gennemsnit"
+                        'Gennemsnit'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "div",
-                        { className: "donut-chart", style: { animationDelay: '-60s' } },
+                        'div',
+                        { className: 'donut-chart', style: { animationDelay: '-' + this.state.average_score * 100 + 's' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "span",
+                            'span',
                             null,
-                            "3 ud af 5 rigtige"
+                            this.state.average_score,
+                            ' ud af ',
+                            this.state.questionCount,
+                            ' rigtige'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "h1",
-                        { className: "time" },
+                        'h1',
+                        { className: 'time' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "b",
+                            'b',
                             null,
-                            "Tid"
+                            'Tid'
                         ),
-                        " 5m 47s"
+                        ' ',
+                        this.state.average_time
                     )
                 )
             );
