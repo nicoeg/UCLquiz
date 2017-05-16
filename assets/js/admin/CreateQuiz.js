@@ -1,39 +1,18 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+import { arrayMove } from 'react-sortable-hoc'
 
+import { QuestionBuilderItem, SortableList } from './SortableBlocks'
 import Header from './Header'
-import QuestionBuilder from './QuestionBuilder'
-
-const QuestionBuilderItem = SortableElement(({ position, question, updateQuestion, addQuestion }) => 
-	<QuestionBuilder position={position} question={question} updateQuestion={updateQuestion} addQuestion={addQuestion} />
-)
-
-const SortableList = SortableContainer(({ questions, updateQuestion, addQuestion }) => {
-	questions = questions.map((question, index) => (
-		<QuestionBuilderItem key={`item-${question.id}`} index={question.id} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
-	))
-
-	return (
-		<div className="quiz-container quiz-container--big quiz-container--horizontal">
-			<CSSTransitionGroup
-				style={{ width: '100%' }}
-				transitionName="scale"
-				transitionEnterTimeout={300}
-				transitionLeaveTimeout={300}>
-				{questions}
-			</CSSTransitionGroup>
-		</div>
-	);
-});
+import ClassSelect from './ClassSelect'
 
 class CreateQuiz extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			current_step: 1,
+			current_step: 0,
+			course_id: null,
 			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
 		}
 
@@ -41,6 +20,7 @@ class CreateQuiz extends Component {
 		this.updateQuestion = this.updateQuestion.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
 		this.setStep = this.setStep.bind(this)
+		this.setCourse = this.setCourse.bind(this)
 	}
 
 	updateQuestion(question) {
@@ -77,13 +57,18 @@ class CreateQuiz extends Component {
 		})
 	}
 
+	setCourse(id) {
+		this.setState({
+			course_id: id
+		})
+	}
+
 	render() {
 		const steps = [{value: '1'}, {value: '2'}, {value: '3'}]
+		let view;
 
-		return (
-			<div>
-				<Header steps={steps} active={this.state.current_step} setStep={this.setStep} />
-				<SortableList helperClass="question-builder--dragging" 
+		if (this.state.current_step == 0) {
+			view = (<SortableList helperClass="question-builder--dragging" 
 							  lockAxis="y"
 							  distance={20}
 							  lockToContainerEdges={true}
@@ -91,7 +76,18 @@ class CreateQuiz extends Component {
 							  addQuestion={this.addQuestion}
 							  updateQuestion={this.updateQuestion} 
 							  questions={this.state.questions} 
-							  onSortEnd={this.onSortEnd} />
+							  onSortEnd={this.onSortEnd} />)
+		}else if (this.state.current_step == 1) {
+			
+		}else if (this.state.current_step == 2) {
+			view = <ClassSelect setCourse={this.setCourse} />
+		}
+
+		return (
+			<div>
+				<Header steps={steps} active={this.state.current_step} setStep={this.setStep} />
+
+				{view}
 			</div>
 		)
 	}

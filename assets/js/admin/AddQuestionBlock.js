@@ -15,7 +15,26 @@ export default class AddQuestionBlock extends Component {
 
 	render() {
 		return (
-			<div className="question-builder__add-question" onClick={() => {this.addQuestion(1)}}>Tilføj spørgsmål</div>
+			<div className="question-builder__add-question">
+				<div className="question-builder__question-type" onClick={() => {this.addQuestion(1)}}>
+					<i className="material-icons">videocam</i>
+					<span>
+						Video svar
+					</span>
+				</div>
+				<div className="question-builder__question-type" onClick={() => {this.addQuestion(2)}}>
+					<i className="material-icons">question_answer</i>
+					<span>
+						Multiple Choice
+					</span>
+				</div>
+				<div className="question-builder__question-type" onClick={() => {this.addQuestion(2)}}>
+					<i className="material-icons">videocam</i>
+					<span>
+						Video Svar
+					</span>
+				</div>
+			</div>
 		)
 	}
 }

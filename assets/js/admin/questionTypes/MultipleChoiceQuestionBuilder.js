@@ -18,19 +18,6 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 		this.deleteAnswer = this.deleteAnswer.bind(this)
 	}
 
-	renderAnswer(answer, index) {
-		return (
-			<div key={answer.id} className={blockName}>
-				<span className="number">{index+1}.</span>
-
-				<input className={blockName + '__input textfield'} type="text" value={answer.value} onChange={event => this.inputChange(answer, event.target.value)} />
-
-				<span className={'button ' + (answer.correct ? 'button--success' : 'button--grey')} onClick={() => this.toggleCorrect(answer)}>Korrekt svar</span>
-
-				<span className={blockName + '__delete-button button button--grey'} onClick={() => this.deleteAnswer(index)}><i className="material-icons">delete</i></span>
-			</div>
-		)
-	}
 
 	inputChange(answer, value) {
 		answer.value = value
@@ -68,13 +55,27 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 
 		this.props.updateAnswers(answers)
 	}
+	
+	renderAnswer(answer, index) {
+		return (
+			<div key={answer.id} className={blockName}>
+				<span className="number">{index+1}.</span>
+
+				<input className={blockName + '__input textfield'} type="text" value={answer.value} onChange={event => this.inputChange(answer, event.target.value)} />
+
+				<span className={'button ' + (answer.correct ? 'button--success' : 'button--grey')} onClick={() => this.toggleCorrect(answer)}>Korrekt svar</span>
+
+				<span className={blockName + '__delete-button button button--grey'} onClick={() => this.deleteAnswer(index)}><i className="material-icons">delete</i></span>
+			</div>
+		)
+	}
 
 	render() {
 		return (
 			<div>
 				{this.props.answers.map((answer, index) => this.renderAnswer(answer, index))}
 
-				<div style={{margin: '20px 0'}}>
+				<div style={{margin: '30px 0'}}>
 					<span className="button button--primary" onClick={this.addAnswer}>Tilføj svar</span>
 				</div>
 			</div>

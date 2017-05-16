@@ -7,6 +7,17 @@ export default class Header extends Component {
 		super(props)
 
 		this.renderSteps = this.renderSteps.bind(this)
+		this.nextStep = this.nextStep.bind(this)
+	}
+
+	isLastStep() {
+		return this.props.active == this.props.steps.length -1
+	}
+
+	nextStep() {
+		if (this.props.active < this.props.steps.length) {
+			this.props.setStep(this.props.active + 1)
+		}
 	}
 
 	renderSteps() {
@@ -29,7 +40,7 @@ export default class Header extends Component {
 					{this.renderSteps()}
 				</div>
 
-				<div className={blockName + '__next-button button button--primary'}>Næste</div>
+				<div className={blockName + '__next-button button button--primary'} onClick={this.nextStep}>{this.isLastStep() ? 'Gem Quiz' : 'Næste'}</div>
 			</div>
 		)
 	}
