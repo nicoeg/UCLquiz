@@ -10,12 +10,12 @@ class Answer_Model extends CI_Model {
         return $query->result();
     }
 
-    public function saveUserAnswers($user_id, $answers, $user_quiz_id) {
+    public function saveUserAnswers($user_id, $answers, $user_quiz_id) { 
         foreach ($answers as $answer) {
             $this->db->insert('user_answer', [
                 'user_id' => $user_id,
-                'answer_id' => $answer['answer_id'],
-                'user_quiz_id' => $user_quiz_id
+                'answer_id' => $answer['answer_id'], 
+                'user_quiz_id' => $user_quiz_id 
             ]);
         }
     }

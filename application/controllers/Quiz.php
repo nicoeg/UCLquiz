@@ -161,4 +161,18 @@ class Quiz extends CI_Controller
 
 		$this->load->view('quiz_update-view', $data);
 	}
+
+	public function Test()
+	{
+		$this->load->model('Leaderboard_model');
+		echo '<pre>';
+		var_dump($this->Leaderboard_model->getLeaderboard(1));
+	}
+
+	public function Test2()
+	{
+		$this->load->model('Leaderboard_model');
+		echo '<pre>';
+		var_dump($this->Leaderboard_model->getQuestionCount(2));
+	}
 }

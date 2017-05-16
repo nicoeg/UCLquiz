@@ -68,8 +68,8 @@ class Quiz_Rest extends CI_Controller
 
         $request_data = json_decode(file_get_contents('php://input'), true);
 
-        $user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid'));
-        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers'], $user_quiz_id);
+      	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid')); 
+        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers'], $user_quiz_id); 
 
         return $this->output->set_content_type('application/json')->set_output(json_encode($this->quizModel->getCorrectAnswers($quiz_id)));
 	}
@@ -79,7 +79,62 @@ class Quiz_Rest extends CI_Controller
 	 */
 	public function post()
 	{
-		
+		if($this->input->method() === 'post')
+		{
+			$array = json_decode(file_get_contents('php://input'), true);
+
+			if(is_string($array['title']) && is_numeric($array['course_id']) && is_numeric($array['level'] && is_array($array['questions']) && is_array($array['answers'])))
+			{
+				$questions = [];
+				$answers   = [];
+
+				foreach($array['questions'] as $question)
+				{
+					if(is_string($question['question']))
+					{
+						$question = [
+							'question' => $question['question'],
+							'type'     => $question['type'],
+							'hint'     => $question['hint']
+						];
+
+						array_push($questions, $question);
+					}
+				}
+
+				foreach($array['answers'] as $answer)
+				{
+					$answer = [
+						'answer'  => $answer['answer'],
+						'correct' => $answer['correct']
+					];
+
+					if(is_string($answer['answer']))
+					{
+						array_push($answers, $answer);
+					}
+				}
+
+				$dataToInsert = [
+					'title'     => $array['title'],
+					'cID'       => $array['course_id'],
+					'level'     => $array['level'],
+					'user_id'   => 2,
+					'questions' => $questions,
+					'answers'   => $answers
+				];
+
+				echo '<pre>';
+				print_r($dataToInsert);
+				die();
+
+				$query = $this->quizModel->setQuiz($dataToInsert);
+
+				return $query;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -98,5 +153,12 @@ class Quiz_Rest extends CI_Controller
 	public function delete()
 	{
 
+	}
+
+	public function getCourses()
+	{
+		$courses = $this->quizModel->getCourses();
+
+		return json_encode($courses);
 	}
 }

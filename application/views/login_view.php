@@ -35,6 +35,12 @@ $('form').on('submit', function(e) {
         return base_url + string;
     }
 
+    var cookie = false;
+
+    if ($('#remember').is(":checked")) {
+        cookie = true;
+    }
+
     var path = "api/user";
 
     var base64data = btoa(data);
@@ -48,7 +54,7 @@ $('form').on('submit', function(e) {
         headers: {
             Authorization: 'Basic ' + base64data
         },
-        data: {keyName: data},
+        data: {setCookie: cookie},
         contentType: 'application/json',
         success: function (response) {
             response = jQuery.parseJSON(response);
