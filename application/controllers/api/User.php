@@ -15,7 +15,7 @@ class User extends CI_controller
 		if ($this->userModel->access()) 
 		{
 			$json_data = ['redirect' => base_url('quiz_view')];
-			
+
 			if($_GET['setCookie'])
 			{
 				$token = random_string('sha1');
@@ -41,6 +41,6 @@ class User extends CI_controller
 		$token = get_cookie('loginData');
 		$cookie = $this->userModel->getCookieToken($token);
 
-		var_dump($cookie->user_id);
+		var_dump($this->session->userdata('class'));
 	}
 }

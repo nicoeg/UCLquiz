@@ -25,13 +25,16 @@ class Login extends CI_Controller {
 			if($dbToken !== null)
 			{
 				$user = $this->userModel->get_user_by_id($dbToken->user_id);
+				$class = $this->userModel->getClassById($user->class_id);
+				$className = $class->name;
 
 				$sessionData = array(
                    'username'  => $user->username,
                    'email'     => $user->email,
                    'logged_in' => TRUE,
                    'uid' 	   => $user->id,
-                   'user_type' => $user->userType
+                   'user_type' => $user->userType,
+                   'class'     => $className
                	);
 
 				$this->session->set_userdata($sessionData);
@@ -48,7 +51,7 @@ class Login extends CI_Controller {
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		delete_cookie();
+		delete_cookie('loginData');
 		redirect(base_url());
 	}
 }

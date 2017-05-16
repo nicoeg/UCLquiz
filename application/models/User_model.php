@@ -47,13 +47,16 @@ class User_Model extends CI_Model
 		{
 			if(password_verify($password, $userData->password)) 
 			{
+				$class = $this->getClassById($userData->class_id);
+				$className = $class->name;
 
 				$sessionData = array(
                    'username'  => $userData->username,
                    'email'     => $userData->email,
                    'logged_in' => TRUE,
                    'uid' 	   => $userData->id,
-                   'user_type' => $userData->userType
+                   'user_type' => $userData->userType,
+                   'class'     => $className
                	);
 
 				$this->session->set_userdata($sessionData);
@@ -68,6 +71,15 @@ class User_Model extends CI_Model
 		$query = $this->db->where('token', $token)
 			->limit(1)
 			->get('cookie_data');
+
+		return $query->row();
+	}
+
+	public function getClassById($id)
+	{
+		$query = $this->db->where('id', $id)
+			->limit(1)
+			->get('classes');
 
 		return $query->row();
 	}

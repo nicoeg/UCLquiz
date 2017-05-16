@@ -155,4 +155,11 @@ class Quiz_Rest extends CI_Controller
 	{
 
 	}
+
+	public function getCourses()
+	{
+		$courses = $this->quizModel->getCourses();
+
+		return json_encode($courses);
+	}
 }

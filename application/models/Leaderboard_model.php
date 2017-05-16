@@ -3,13 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Leaderboard_Model extends CI_Model
 {
-	private $quizTable = 'quizzes';
-	private $userQuizTable = 'user_quiz';
-	private $answerTable = 'answers';
-	private $userAnswers = 'user_answer';
-	private $questions = 'questions';
-	private $users = 'users';
-
 
 	/**
 	 * use this to get the user_quiz_id, user_id, quiz_id, time
@@ -20,7 +13,9 @@ class Leaderboard_Model extends CI_Model
 
 	public function getLeaderboard($quiz_id)
 	{
-		$query = $this->db->where('quiz_id', $quiz_id)->group_by('user_id')->get($this->userQuizTable); 
+		$query = $this->db->where('quiz_id', $quiz_id)
+		->group_by('user_id')
+		->get('user_quiz'); 
 
 		return $query->result(); 
 	}
@@ -37,8 +32,8 @@ class Leaderboard_Model extends CI_Model
 	{
 		$query = $this->db->select_sum('correct')
 			->where('user_quiz_id', $user_quiz_id)
-			->join($this->answerTable, $this->answerTable.'.id = '.$this->userAnswers.'.answer_id')
-			->get($this->userAnswers);
+			->join('answers', 'answers.id = user_answer.answer_id')
+			->get('user_answer');
 
 		return $query->row('correct');
 	}
@@ -46,9 +41,9 @@ class Leaderboard_Model extends CI_Model
 	public function getName($user_quiz_id)
 	{
 		$query = $this->db
-			->where($this->userQuizTable.'.id', $user_quiz_id)
-			->join($this->users, $this->users.'.id = '.$this->userQuizTable.'.user_id')
-			->get($this->userQuizTable);
+			->where('user_quiz.id', $user_quiz_id)
+			->join('users', 'users.id = user_quiz.user_id')
+			->get('user_quiz');
 
 			return $query->row('username');
 	}
@@ -63,7 +58,8 @@ class Leaderboard_Model extends CI_Model
 
 	public function getQuestionCount($quiz_id)
 	{
-		$query = $this->db->where('quiz_id', $quiz_id)->count_all_results($this->questions);
+		$query = $this->db->where('quiz_id', $quiz_id)
+			->count_all_results('questions');
 
 		return $query;
 	}

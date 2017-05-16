@@ -78,6 +78,13 @@ class Quiz_model extends CI_Model
 		} 
 	} 
 
+	public function getCourses()
+	{
+		$query = $this->db->get('courses');
+
+		return $query->result();
+	}
+
 	/**
 	*  Method to set a quiz
 	*
