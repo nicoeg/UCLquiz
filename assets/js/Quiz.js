@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
-import MultipleChoiceQuestion from './QuestionTypes/MultipleChoiceQuestion'
-import VideoQuestion from './QuestionTypes/VideoQuestion'
+import MultipleChoiceQuestion from './questionTypes/MultipleChoiceQuestion'
+import VideoQuestion from './questionTypes/VideoQuestion'
 import QuizResults from './QuizResults'
 
 class Quiz extends React.Component {
@@ -124,7 +124,7 @@ class Quiz extends React.Component {
 
         questions = questions.map(index => {
             return this.state.finished && this.state.showAnswers || !this.state.finished ? (
-                <div key={index} className="main-container quiz-container questions">
+                <div key={index} className="main-container quiz-container quiz-container--horizontal">
                     <div className="question">
                         <h1>{this.state.questions[index].question}</h1>
                     </div>
@@ -140,23 +140,23 @@ class Quiz extends React.Component {
                     <QuizResults questions={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
 
                     <div className="quiz-actions finished">
-                        <div className="button primary" onClick={this.toggleAnswers}>Se svar</div>
+                        <div className="button button--primary" onClick={this.toggleAnswers}>Se svar</div>
 
-                        <div className="button primary next">Afslut</div>
+                        <div className="button button--primary">Afslut</div>
                     </div>
                 </div>
             )
         }
 
         if (this.state.currentQuestion == this.state.questions.length - 1) {
-            nextButton = <div className="button primary" onClick={this.handleFinish}>Afslut</div>
+            nextButton = <div className="button button--primary" onClick={this.handleFinish}>Afslut</div>
         }else {
-            nextButton = <div className="button primary next" onClick={this.handleNextQuestion}>Næste</div>
+            nextButton = <div className="button button--primary" onClick={this.handleNextQuestion}>Næste</div>
         }
 
         const quizActions = !this.state.finished ? (
             <div className="quiz-actions">
-                <div className={'button primary previous ' + (this.state.currentQuestion == 0 ? 'disabled' : '')} onClick={this.handlePreviousQuestion}>Forrige</div>
+                <div className={'button button--primary previous ' + (this.state.currentQuestion == 0 ? 'button--disabled' : '')} onClick={this.handlePreviousQuestion}>Forrige</div>
 
                 {nextButton}
             </div>

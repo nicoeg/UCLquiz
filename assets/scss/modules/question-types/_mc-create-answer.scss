@@ -1,0 +1,17 @@
+.mc-create-answer {
+	margin: 10px 0;
+	display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+
+	&__input {
+		flex: 1 0;
+		margin: 0 10px;
+	}
+
+	&__delete-button {
+		padding: 10px 10px 9px 10px;
+		margin-left: 10px;
+	}
+}

@@ -5,15 +5,15 @@
 
             <h1>Login</h1>
 
-            <input type="email" name="username" id="email" placeholder="Email">
-            <input type="password" name="password" id="password" placeholder="Adgangskode">
+            <input class="textfield textfield--center" type="email" name="username" id="email" placeholder="Email">
+            <input class="textfield textfield--center" type="password" name="password" id="password" placeholder="Adgangskode">
 
             <label class="remember" for="remember">
                 <input type="checkbox" id="remember" name="remember">
                 Husk mit login til næste gang
             </label>
 
-            <input type="submit" class="button primary" value="Login">
+            <input type="submit" class="button button--primary" value="Login">
 
             <a class="forgot-login" href="<?= base_url('support') ?>">Har du glemt din adgangskode?</a>
         </form>

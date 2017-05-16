@@ -1,0 +1,19 @@
+.textfield {
+	width: 100%;
+    padding: 15px 10px;
+    background-color: $light-grey;
+    border: none;
+    margin: 10px 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    outline: none;
+    
+    &--center {
+        text-align: center;
+    }
+
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px $light-grey inset !important;
+    }
+}

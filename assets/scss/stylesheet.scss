@@ -1,0 +1,331 @@
+@import 'variables.scss';
+@import 'base.scss';
+
+/* Layout */
+@import 'layout/header';
+@import 'layout/quiz-container';
+@import 'layout/main-container';
+
+/* Modules */
+@import 'modules/textfield';
+@import 'modules/button';
+@import 'modules/login';
+@import 'modules/quiz';
+@import 'modules/quiz-overview';
+@import 'modules/quiz-result';
+@import 'modules/donut';
+@import 'modules/question-builder';
+@import 'modules/create-quiz-header';
+
+@import 'animations';
+
+/* Question types */
+@import 'modules/question-types/mc-create-answer';
+
+div.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    width: 50%;
+    -webkit-box-shadow: 0px 0px 8px #888;
+    -moz-box-shadow: 0px 0px 8px #888;
+    box-shadow: 0px 0px 8px #888;
+    margin: auto;
+}
+
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    margin: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    outline: none;
+    color: $dark-grey;
+    font-weight: bold;
+}
+
+div.tab button:hover {
+    background-color: #f6ad65;
+    color: #fff;
+}
+
+div.tab button.active {
+    background-color: rgb(243, 146, 51);
+    color: #fff;
+}
+
+.tabcontent {
+    display: none;
+    border: none;
+    border-top: none;
+    background: white;
+    width: 50%;
+    margin: auto;
+}
+
+.imagecontainer {
+    position: relative;
+    width: 50%;
+    -webkit-box-shadow: 0px 0px 8px #888;
+    -moz-box-shadow: 0px 0px 8px #888;
+    box-shadow: 0px 0px 8px #888;
+}
+
+.imagecontainer:hover .overlay {
+    opacity: 0.7;
+    background-color: rgb(243, 146, 51);
+}
+
+.quizimage {
+    display: block;
+    width: 150%;
+    height: auto;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 150%;
+    opacity: 0.5;
+    transition: .5s ease;
+    background-color: #ACAF33;
+}
+
+.imagetext {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+}
+
+.support-container {
+    max-width: 400px;
+    padding: 40px;
+
+    h1 {
+        font-size: 22px;
+    }
+
+    label {
+        display: block;
+        margin-top: 20px;
+    }
+
+    form {
+        text-align: center;
+
+        textarea {
+            resize: none;
+            height: 150px;
+        }
+    }
+}
+
+.createquizbox {
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    .col-xs-7 {
+        .box {
+            padding: 40px;
+            padding-top: 0;
+        }
+    }
+
+    input[type="submit"] {
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+        background: $accent;
+        margin-bottom: 20px;
+    }
+}
+
+h2 {
+    font-size: 22px;
+    padding: 24px 16px;
+}
+
+.qustiontype {
+    width: 100%;
+    padding: 24px 16px;
+    text-align: left;
+
+    &:nth-of-type(odd) {
+        background: #f1f1f1;
+    }
+
+    p {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        line-height: 24px;
+    }
+
+    i {
+        vertical-align: middle;
+    }
+}
+
+.quizContent{
+    width: 80%;
+    margin: 20px 0;
+    height: auto;
+    padding: 40px;
+    position: absolute;
+    right: 0;
+
+    .col-xs-4{
+        background: white;
+        margin: 20px;
+        box-shadow: 0px 0px 8px #888;
+        height: 258px;
+        padding: 0px;
+    }
+    img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .singleQuiz{
+        position: relative;
+
+        article{
+            padding: 10px 20px;
+        }
+        h1{
+            color: #4d4d4d;
+            font-size: 20px;
+        }
+
+        .button {
+            position: absolute;
+            bottom:25%;
+            left:25%;
+
+            &--primary {
+                left: 5%;
+            }
+        }  
+    }
+}
+
+.topButtons{
+
+    margin: 50px 0px -30px 65px;
+    a{
+        color:white;
+        float: left;
+        margin-right: 10px;
+        text-transform: uppercase;
+    }
+    #viewModeText{
+        padding-top: 5px;
+                
+    }
+    .addQuizButton{
+        background-color: rgb(243, 146, 51);
+        color: #fff;
+        background-color: #ec9200; 
+        padding: 12px 25px; 
+        border-radius: 4px; 
+        border: none;
+        font-weight: bold;
+    }
+
+    #viewModeButton1{
+        margin-left: 10px;
+        background-color: white; 
+        padding-top: 3px; 
+        border-radius: 4px 0px 0px 4px; 
+        border: none; 
+        display: block; 
+        float: left;
+        i{
+            color: #535353;
+        }
+    }
+    #viewModeButton1:focus{
+        background-color: #ec9200;
+        i{
+            color: white;
+        }
+        outline: none;
+
+    }
+    #viewModeButton2{
+        background-color: white; 
+        padding-top: 3px;
+        border-radius: 0px 4px 4px 0px; 
+        border: none; 
+        display: block; 
+        float: left;
+        i{
+            color: #4d4d4d;
+        }
+    }
+
+    #viewModeButton2:focus{
+        background-color: #ec9200;
+        outline: none;
+        i{
+            color: white;
+        }
+    }
+
+}
+
+
+
+.sideMenu{
+    width: 20%;
+    height: auto;
+    padding: 30px;
+    margin: 50px;
+    position: absolute;
+
+
+    .category{
+        padding: 20px;
+        background: white;
+        vertical-align: top;
+        box-shadow: 0px 0px 8px #888;
+    }
+    a{
+        color: #535353;
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        text-transform: uppercase;
+    }
+    .underCategory a{
+        color: #888;
+        text-decoration: none;
+        display: block;
+        text-transform: uppercase;
+    }
+    ul{
+        margin: 0px;
+        padding: 0px;
+    }
+    ul li{
+        list-style: none;
+    }
+}

@@ -1,0 +1,41 @@
+.button {
+	color: #4d4d4d;
+	background-color: white; 
+    padding: 15px;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+
+    &--primary {
+		color: #fff;
+        background-color: $accent;
+    }
+
+    &--grey {
+        background: #F5F5F5;
+        color: #C9C9C9;
+    }
+
+    &--success {
+        background: #39CA74;
+        color: #fff;
+    }
+
+    &--disabled {
+		color: #fff;
+        background: #a9a9a9;
+        cursor: default;
+    }
+
+	&--inline {
+		display: inline-block;
+	}
+
+    &--small {
+        padding: 5px 15px;
+        font-size: smaller;
+    }
+}
