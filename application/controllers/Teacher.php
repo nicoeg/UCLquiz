@@ -10,7 +10,7 @@ class Teacher extends CI_Controller {
             'teacher' => $this->session->userdata('user_type') == 1
         ]);
 
-        $this->load->view('quizpreview', [
+        $this->load->view('quiz_preview', [
             'quizzes' => $this->quizModel->get(),
         ]);
 
@@ -21,7 +21,7 @@ class Teacher extends CI_Controller {
         $this->load->view('header', [
             'logged_in' => $this->session->userdata('logged_in')
         ]);
-        $this->load->view('createquiz');
+        $this->load->view('quiz_create');
         $this->load->view('footer');
     }
 }

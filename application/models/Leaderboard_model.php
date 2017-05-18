@@ -13,11 +13,11 @@ class Leaderboard_Model extends CI_Model
 
 	public function getLeaderboard($quiz_id)
 	{
-		$query = $this->db->where('quiz_id', $quiz_id)
-		->group_by('user_id')
-		->get('user_quiz'); 
-
-		return $query->result(); 
+		return $this->db
+			->where('quiz_id', $quiz_id)
+			->group_by('user_id')
+			->get('user_quiz')
+			->result(); 
 	}
 
 
@@ -30,22 +30,21 @@ class Leaderboard_Model extends CI_Model
 
 	public function getStats($user_quiz_id)
 	{
-		$query = $this->db->select_sum('correct')
+		return $this->db
+			->select_sum('correct')
 			->where('user_quiz_id', $user_quiz_id)
 			->join('answers', 'answers.id = user_answer.answer_id')
-			->get('user_answer');
-
-		return $query->row('correct');
+			->get('user_answer')
+			->row('correct');
 	}
 
 	public function getName($user_quiz_id)
 	{
-		$query = $this->db
+		return $this->db
 			->where('user_quiz.id', $user_quiz_id)
 			->join('users', 'users.id = user_quiz.user_id')
-			->get('user_quiz');
-
-			return $query->row('username');
+			->get('user_quiz')
+			->row('username');
 	}
 
 
@@ -58,9 +57,8 @@ class Leaderboard_Model extends CI_Model
 
 	public function getQuestionCount($quiz_id)
 	{
-		$query = $this->db->where('quiz_id', $quiz_id)
+		return $this->db
+			->where('quiz_id', $quiz_id)
 			->count_all_results('questions');
-
-		return $query;
 	}
 }

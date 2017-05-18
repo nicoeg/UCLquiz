@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Quiz_Results extends CI_Controller
+class Result extends CI_Controller
 {
 	public function __construct()
 	{

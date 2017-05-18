@@ -4,22 +4,20 @@ class User_Model extends CI_Model
 {
 	public function get_user_by_email($email) 
 	{
-		$query = $this->db
+		return $this->db
 			->where('email', $email)
 			->limit(1)
-			->get('users');
-
-		return $query->row();
+			->get('users')
+			->row();
 	}
 
 	public function get_user_by_id($id) 
 	{
-		$query = $this->db
+		return $this->db
 			->where('id', $id)
 			->limit(1)
-			->get('users');
-
-		return $query->row();
+			->get('users')
+			->row();
 	}
 
 	public function access() 
@@ -33,7 +31,6 @@ class User_Model extends CI_Model
 			$loginData = explode(':', $userPass);
 
 			return $this->login($loginData[0], $loginData[1]);
-
 		}
 
 		return false;
@@ -43,44 +40,43 @@ class User_Model extends CI_Model
 	{
 		$userData = $this->get_user_by_email($email);
 
-		if($userData !== null) 
+		if($userData === null || password_verify($password, $userData->password)) 
 		{
-			if(password_verify($password, $userData->password)) 
-			{
-				$class = $this->getClassById($userData->class_id);
-				$className = $class->name;
-
-				$sessionData = array(
-                   'username'  => $userData->username,
-                   'email'     => $userData->email,
-                   'logged_in' => TRUE,
-                   'uid' 	   => $userData->id,
-                   'user_type' => $userData->userType,
-                   'class'     => $className
-               	);
-
-				$this->session->set_userdata($sessionData);
-				
-				return true;
-			}
+			return false;
 		}
+		
+		$class = $this->getClassById($userData->class_id);
+		$className = $class->name;
+
+		$sessionData = array(
+			'username'  => $userData->username,
+			'email'     => $userData->email,
+			'logged_in' => TRUE,
+			'uid' 	    => $userData->id,
+			'user_type' => $userData->userType,
+			'class'     => $className
+		);
+
+		$this->session->set_userdata($sessionData);
+		
+		return true;
 	}
 
 	public function getCookieToken($token)
 	{
-		$query = $this->db->where('token', $token)
+		return $this->db
+			->where('token', $token)
 			->limit(1)
-			->get('cookie_data');
-
-		return $query->row();
+			->get('cookie_data')
+			->row();
 	}
 
 	public function getClassById($id)
 	{
-		$query = $this->db->where('id', $id)
+		return $this->db
+			->where('id', $id)
 			->limit(1)
-			->get('classes');
-
-		return $query->row();
+			->get('classes')
+			->row();
 	}
 }

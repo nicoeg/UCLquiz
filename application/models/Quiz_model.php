@@ -3,13 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Quiz_model extends CI_Model
 {
-	/**
-	*  Table name
-	*
-	*  @var string
-	*/
-
-	private $table = 'quizzes';
 
 	/**
 	*  Method to get quiz by id
@@ -23,12 +16,11 @@ class Quiz_model extends CI_Model
 
 		if(filter_var($safeId, FILTER_VALIDATE_INT)) 
 		{
-			$query = $this->db
+			return $this->db
 				->where('id', $safeId)
 				->limit(1)
-				->get($this->table);
-
-			return $query->row();
+				->get('quizzes')
+				->row();
 		}
 
 		return false;
@@ -41,30 +33,30 @@ class Quiz_model extends CI_Model
 
 	public function get()
 	{
-		$query = $this->db->get('quizzes');
-
-		return $query->result();
+		return $this->db
+			->get('quizzes')
+			->result();
 	}
 
 	public function getNew($limit) 
 	{ 
-		$query = $this->db->from('quizzes') 
-		  ->order_by('id', 'DESC') 
-		  ->limit($limit) 
-		  ->get(); 
-
-		return $query->result(); 
+		return $this->db
+			->from('quizzes') 
+		  	->order_by('id', 'DESC') 
+		  	->limit($limit) 
+		  	->get()
+			->result(); 
 	} 
 
 	public function getByCourse($course)  
 	{ 
-		$query = $this->db->from('quizzes') 
-		        ->select('*') 
-		        ->join('courses', 'courses.id = quizzes.course_id') 
-		        ->where('name', $course) 
-		        ->get(); 
-
-		return $query->result(); 
+		return $this->db
+			->from('quizzes') 
+		    ->select('*') 
+		    ->join('courses', 'courses.id = quizzes.course_id') 
+		    ->where('name', $course) 
+		    ->get()
+			->result(); 
 	} 
 
 	public function getCompleted() 
@@ -72,17 +64,20 @@ class Quiz_model extends CI_Model
 		if(null !== $this->session->userdata('uid')) 
 		{ 
 			$id = $this->session->userdata('uid'); 
-			$query = $this->db->join('quizzes', 'quizzes.id = user_quiz.quiz_id')->where('user_id', $id)->get('user_quiz'); 
 
-			return $query->result(); 
+			return $this->db
+				->join('quizzes', 'quizzes.id = user_quiz.quiz_id')
+				->where('user_id', $id)
+				->get('user_quiz')
+				->result(); 
 		} 
 	} 
 
 	public function getCourses()
 	{
-		$query = $this->db->get('courses');
-
-		return $query->result();
+		return $this->db
+			->get('courses')
+			->result();
 	}
 
 	/**
@@ -107,7 +102,7 @@ class Quiz_model extends CI_Model
 			&& is_string($safe['title'])
 			)
 		{
-			$this->db->insert($this->table, [
+			$this->db->insert('quizzes', [
 				'course_id'   => $safe['course_id'],
 				'level'       => $safe['level'],
 				'uID'         => $safe['user_id'],
@@ -142,10 +137,10 @@ class Quiz_model extends CI_Model
 				'type'     => $safe['type'],
 				'hint'     => $safe['hint']
 			]);
-		}
 
 			return $this->db->insert_id();
-
+		}
+		
 		die('Question data not valid');
 	}
 
@@ -161,7 +156,7 @@ class Quiz_model extends CI_Model
 			filter_var($safe['question_id'], FILTER_VALIDATE_INT) 
 			&& is_string($safe['answer']) 
 			&& filter_var($safe['correct'], FILTER_VALIDATE_INT)
-			)
+		)
 		{
 			$this->db->insert('answers', [
 				'question_id' => $safe['question_id'],
@@ -185,7 +180,7 @@ class Quiz_model extends CI_Model
 		{
 			$query = $this->db
 				->where('id', $safeId)
-				->delete($this->table);
+				->delete('quizzes');
 		}
 
 		return false;
@@ -202,8 +197,9 @@ class Quiz_model extends CI_Model
 		$data['level'] = $level;
 		$data['title'] = $title;
 
-		$this->db->where('id', $safeId)
-			->update($this->table, $data);
+		$this->db
+			->where('id', $safeId)
+			->update('quizzes', $data);
 	}
 
     public function saveUserResult($quiz_id, $user_id)
@@ -230,14 +226,13 @@ class Quiz_model extends CI_Model
 
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT))
     	{
-    		$query = $this->db->from('answers')
+    		return $this->db->from('answers')
     		    ->select('answers.id, answers.question_id')
     		    ->join('questions', 'questions.id = answers.question_id')
     		    ->where('quiz_id', $safe['quiz_id'])
     		    ->where('correct', 1)
-    		    ->get();
-
-    		return $query->result();
+    		    ->get()
+				->result();
     	}
 	}
 }
