@@ -14,8 +14,6 @@ class User extends CI_controller
 	{	
 		if ($this->userModel->access()) 
 		{
-			$json_data = ['redirect' => base_url('quiz_view')];
-
 			if($_GET['setCookie'])
 			{
 				$token = random_string('sha1');
@@ -27,6 +25,8 @@ class User extends CI_controller
 					'token'           => $token
 				]);
 			}
+
+			$json_data = ['redirect' => $this->redirect()];
 		} 
 		else 
 		{
@@ -36,11 +36,7 @@ class User extends CI_controller
 		echo json_encode($json_data);
 	}
 
-	public function test()
-	{
-		$token = get_cookie('loginData');
-		$cookie = $this->userModel->getCookieToken($token);
-
-		var_dump($this->session->userdata('class'));
+	public function redirect() {
+		return base_url($this->session->userdata('user_type') == 0 ? 'student' : 'teacher');
 	}
 }

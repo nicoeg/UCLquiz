@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Quiz_Rest extends CI_Controller
+class Quiz extends CI_Controller
 {
 	private $status;
 
@@ -91,89 +91,78 @@ class Quiz_Rest extends CI_Controller
 
 	public function createQuiz()
 	{
-		if($this->input->method() == 'post')
+		if($this->input->method() != 'post')
 		{
-			$receivedData = json_decode(file_get_contents('php://input'), true);
+			return false;
+		}
+		
+		$receivedData = json_decode(file_get_contents('php://input'), true);
 
-			if(is_string($receivedData['title']) && is_numeric($receivedData['course_id']) && is_numeric($receivedData['level']) && is_array($receivedData['questions'])) 
+		if(is_string($receivedData['title']) || is_numeric($receivedData['course_id']) || is_numeric($receivedData['level']) || is_array($receivedData['questions'])) 
+		{
+			return false;
+		}
+
+		/**
+		 * Needs to be sanitized
+		 */
+		
+		$title     = $receivedData['title'];
+		$course    = $receivedData['course_id'];
+		$level     = $receivedData['level'];
+		$questions = $receivedData['questions'];
+
+		$quizId = $this->quizModel->setQuiz(
+				$course, 
+				$level,
+				$title
+			);
+
+		foreach($questions as $question)
+		{
+			if(is_string($question['question']) || is_numeric($question['type']) || is_string($question['hint']))
 			{
+				//Delete quiz here
+				return false;
+			}
+
+			/**
+			 * Needs to be sanitized
+			 */
+
+			$qString  = $question['question'];
+			$type     = $question['type'];
+			$hint     = $question['hint'];
+			$qId      = $quizId;
+			$answers  = $question['answers'];
+
+			$questionId = $this->quizModel->setQuestions(
+				$qId,
+				$qString, 
+				$type, 
+				$hint
+			);
+
+			foreach($answers as $answer)
+			{
+				if(is_string($answer['answer']) || is_numeric($answer['correct']))
+				{
+					//Delete quiz here
+					return false;
+				}
+
 				/**
 				 * Needs to be sanitized
 				 */
-				
-				$title     = $receivedData['title'];
-				$course    = $receivedData['course_id'];
-				$level     = $receivedData['level'];
-				$questions = $receivedData['questions'];
 
-				$quizId = $this->quizModel->setQuiz(
-						$course, 
-						$level,
-						$title
-					);
+				$aString = $answer['answer'];
+				$correct = $answer['correct'];
 
-				foreach($questions as $question)
-				{
-					if(is_string($question['question']) && is_numeric($question['type']) && is_string($question['hint']))
-					{
-						/**
-						 * Needs to be sanitized
-						 */
+				$this->quizModel->setAnswers($questionId, $aString, $correct);
 
-						$qString  = $question['question'];
-						$type     = $question['type'];
-						$hint     = $question['hint'];
-						$qId      = $quizId;
-						$answers  = $question['answers'];
-
-						$questionId = $this->quizModel->setQuestions(
-							$qId,
-							$qString, 
-							$type, 
-							$hint
-						);
-
-						foreach($answers as $answer)
-						{
-							if(is_string($answer['answer']) && is_numeric($answer['correct']))
-							{
-								/**
-								 * Needs to be sanitized
-								 */
-
-								$aString = $answer['answer'];
-								$correct = $answer['correct'];
-
-								$this->quizModel->setAnswers($questionId, $aString, $correct);
-
-								return true;
-							}
-						}
-					}
-				}
+				return true;
 			}
-
-			return false;
 		}
-	}
-
-	/**
-	 * Updates a quiz
-	 * @return [type] [description]
-	 */
-	
-	public function put()
-	{
-
-	}
-
-	/**
-	 * Deletes a quiz
-	 * @return [type] [description]
-	 */
-	public function delete()
-	{
-
 	}
 
 	public function getCourses()

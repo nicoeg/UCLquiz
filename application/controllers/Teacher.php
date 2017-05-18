@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class QuizPreview extends CI_Controller {
+class Teacher extends CI_Controller {
     public function index() {
         $this->load->model('Quiz_Model', 'quizModel');
 
@@ -14,6 +14,14 @@ class QuizPreview extends CI_Controller {
             'quizzes' => $this->quizModel->get(),
         ]);
 
+        $this->load->view('footer');
+    }
+
+    public function create() {
+        $this->load->view('header', [
+            'logged_in' => $this->session->userdata('logged_in')
+        ]);
+        $this->load->view('createquiz');
         $this->load->view('footer');
     }
 }

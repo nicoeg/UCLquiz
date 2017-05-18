@@ -27989,7 +27989,7 @@ var CreateQuiz = function (_Component) {
 				questions: questions_modified
 			};
 
-			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz_rest/createquiz', data).then(function (response) {
+			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/createquiz', data).then(function (response) {
 				alert('gemt!');
 			}, function (response) {
 				console.log(response);
@@ -28180,7 +28180,7 @@ var ClassSelect = function (_Component) {
 		value: function getCourses() {
 			var _this2 = this;
 
-			__WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/quiz_rest/getcourses').then(function (response) {
+			__WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/quiz/getcourses').then(function (response) {
 				_this2.setState({
 					courses: response.data
 				});

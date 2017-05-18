@@ -108,7 +108,7 @@ class CreateQuiz extends Component {
 			questions: questions_modified
 		}
 
-		axios.post('/api/quiz_rest/createquiz', data).then(response => {
+		axios.post('/api/quiz/createquiz', data).then(response => {
 			alert('gemt!');
 		}, response => {
 			console.log(response)

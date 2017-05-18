@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <nav>
         <a href="<?= base_url('support') ?>">Har du brug for hjælp?</a>
         <?php if (isset($logged_in) && $logged_in) { ?>
-            <a href="<?= base_url('login/logout') ?>">Log ud</a>
+            <a href="<?= base_url('auth/logout') ?>">Log ud</a>
         <?php } ?>
         <?php if(uri_string() === 'quizview') : ?>
             <?php if($teacher) : ?> 

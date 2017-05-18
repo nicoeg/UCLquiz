@@ -30,7 +30,7 @@ class Quiz extends React.Component {
     }
 
     initialize() {
-        axios.get(window.settings.baseUrl + 'api/quiz_rest/getSingle/' + quizId).then(response => {
+        axios.get(window.settings.baseUrl + 'api/quiz/getSingle/' + quizId).then(response => {
             this.setState({
                 quiz: response.data,
                 questions: response.data.questions,
@@ -62,7 +62,7 @@ class Quiz extends React.Component {
     }
 
     handleFinish() {
-        axios.post(window.settings.baseUrl + '/api/quiz_rest/saveResult/' + this.state.quiz.id, {answers: this.state.answers}).then(response => {
+        axios.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, {answers: this.state.answers}).then(response => {
             //Get response with correct answers and display them
             this.setState({
                 finished: true,

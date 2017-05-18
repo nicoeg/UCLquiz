@@ -27604,7 +27604,7 @@ var Quiz = function (_React$Component) {
         value: function initialize() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(window.settings.baseUrl + 'api/quiz_rest/getSingle/' + quizId).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(window.settings.baseUrl + 'api/quiz/getSingle/' + quizId).then(function (response) {
                 _this2.setState({
                     quiz: response.data,
                     questions: response.data.questions,
@@ -27642,7 +27642,7 @@ var Quiz = function (_React$Component) {
         value: function handleFinish() {
             var _this3 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz_rest/saveResult/' + this.state.quiz.id, { answers: this.state.answers }).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, { answers: this.state.answers }).then(function (response) {
                 //Get response with correct answers and display them
                 _this3.setState({
                     finished: true,
