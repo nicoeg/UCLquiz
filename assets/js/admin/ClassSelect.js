@@ -19,7 +19,6 @@ export default class ClassSelect extends Component {
 
 	getCourses() {
 		axios.get('/api/quiz_rest/getcourses').then(response => {
-			console.log(response.data)
 			this.setState({
 				courses: response.data
 			})

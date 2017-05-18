@@ -4,6 +4,7 @@ import { arrayMove } from 'react-sortable-hoc'
 
 import { QuestionBuilderItem, SortableList } from './SortableBlocks'
 import Header from './Header'
+import InformationForm from './InformationForm'
 import ClassSelect from './ClassSelect'
 
 class CreateQuiz extends Component {
@@ -13,7 +14,9 @@ class CreateQuiz extends Component {
 		this.state = {
 			current_step: 0,
 			course_id: null,
-			questions: [{id: 1, type: 1, answers: [], question: 'Heyt'}, {id: 2, type: 1, answers: [], question: 'Hedasdasyt'}, {id: 3, type: 1, answers: [], question: 'Hedasdasyt'}]
+			level: null,
+			name: '',
+			questions: [{id: 1, type: 1, answers: [], question: ''}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
@@ -21,6 +24,8 @@ class CreateQuiz extends Component {
 		this.addQuestion = this.addQuestion.bind(this)
 		this.setStep = this.setStep.bind(this)
 		this.setCourse = this.setCourse.bind(this)
+		this.setLevel = this.setLevel.bind(this)
+		this.setName = this.setName.bind(this)
 	}
 
 	updateQuestion(question) {
@@ -63,6 +68,14 @@ class CreateQuiz extends Component {
 		})
 	}
 
+	setLevel(level) {
+		this.setState({ level })
+	}
+
+	setName(name) {
+		this.setState({ name })
+	}
+
 	render() {
 		const steps = [{value: '1'}, {value: '2'}, {value: '3'}]
 		let view;
@@ -78,7 +91,7 @@ class CreateQuiz extends Component {
 							  questions={this.state.questions} 
 							  onSortEnd={this.onSortEnd} />)
 		}else if (this.state.current_step == 1) {
-			
+			view = <InformationForm level={this.state.level} name={this.state.name} setLevel={this.setLevel} setName={this.setName} />
 		}else if (this.state.current_step == 2) {
 			view = <ClassSelect setCourse={this.setCourse} />
 		}
