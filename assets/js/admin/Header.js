@@ -15,8 +15,11 @@ export default class Header extends Component {
 	}
 
 	nextStep() {
-		if (this.props.active < this.props.steps.length) {
+		console.log(this.props.active, this.props.steps.length - 1)
+		if (this.props.active < this.props.steps.length - 1) {
 			this.props.setStep(this.props.active + 1)
+		}else {
+			this.props.onSave()
 		}
 	}
 

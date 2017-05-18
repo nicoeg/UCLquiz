@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { arrayMove } from 'react-sortable-hoc'
+import axios from 'axios'
 
 import { QuestionBuilderItem, SortableList } from './SortableBlocks'
 import Header from './Header'
@@ -16,7 +17,7 @@ class CreateQuiz extends Component {
 			course_id: null,
 			level: null,
 			name: '',
-			questions: [{id: 1, type: 1, answers: [], question: ''}]
+			questions: [{id: 1, type: 1, answers: [], question: '', hint: ''}]
 		}
 
 		this.onSortEnd = this.onSortEnd.bind(this)
@@ -26,6 +27,7 @@ class CreateQuiz extends Component {
 		this.setCourse = this.setCourse.bind(this)
 		this.setLevel = this.setLevel.bind(this)
 		this.setName = this.setName.bind(this)
+		this.saveQuiz = this.saveQuiz.bind(this)
 	}
 
 	updateQuestion(question) {
@@ -76,6 +78,43 @@ class CreateQuiz extends Component {
 		this.setState({ name })
 	}
 
+	saveQuiz() {
+		const { level, course_id, name, questions } = this.state
+
+		if (level === null || name.length == 0) {
+			alert('Navn og niveau skal angives i step 2')
+			return
+		}
+
+		if (course_id === null) {
+			alert('Fag skal angives i step 3')
+			return
+		}
+
+		let questions_modified = questions.map(question => {
+			question.answers = question.answers.map(answer => {
+				answer.correct = answer.correct ? 1 : 0
+
+				return answer
+			})
+
+			return question
+		})
+
+		const data = {
+			title: name,
+			course_id: parseInt(course_id),
+			level: level,
+			questions: questions_modified
+		}
+
+		axios.post('/api/quiz_rest/createquiz', data).then(response => {
+			alert('gemt!');
+		}, response => {
+			console.log(response)
+		})
+	}
+
 	render() {
 		const steps = [{value: '1'}, {value: '2'}, {value: '3'}]
 		let view;
@@ -98,7 +137,7 @@ class CreateQuiz extends Component {
 
 		return (
 			<div>
-				<Header steps={steps} active={this.state.current_step} setStep={this.setStep} />
+				<Header steps={steps} active={this.state.current_step} setStep={this.setStep} onSave={this.saveQuiz} />
 
 				{view}
 			</div>

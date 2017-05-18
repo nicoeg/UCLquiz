@@ -13,6 +13,7 @@ export default class QuestionBuilder extends Component {
 		super(props)
 
 		this.handleQuestionChange = this.handleQuestionChange.bind(this) 
+		this.handleHintChange = this.handleHintChange.bind(this) 
 		this.updateAnswers = this.updateAnswers.bind(this)
 	}
 
@@ -20,7 +21,14 @@ export default class QuestionBuilder extends Component {
 		this.props.updateQuestion(
 			Object.assign(this.props.question, {
 				question: event.target.value,
-				answers: this.props.question.answers
+			})
+		)
+	}
+
+	handleHintChange(event) {
+		this.props.updateQuestion(
+			Object.assign(this.props.question, {
+				hint: event.target.value
 			})
 		)
 	}
@@ -28,7 +36,6 @@ export default class QuestionBuilder extends Component {
 	updateAnswers(answers) {
 		this.props.updateQuestion(
 			Object.assign(this.props.question, {
-				question: this.props.question.question,
 				answers: answers
 			})
 		)
@@ -57,6 +64,8 @@ export default class QuestionBuilder extends Component {
 						</div>
 						<div className={blockName + '__body'}>
 							<input type="text" className="textfield" placeholder="Skriv spørgsmål her" value={this.props.question.question} onChange={this.handleQuestionChange} />
+
+							<input type="text" className="textfield" placeholder="Hint" value={this.props.question.hint} onChange={this.handleHintChange} />
 
 							<hr/>
 						</div>
