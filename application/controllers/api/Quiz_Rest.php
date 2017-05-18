@@ -13,14 +13,18 @@ class Quiz_Rest extends CI_Controller
         $this->load->model('Answer_Model', 'answerModel');
 	}
 
+
 	/**
 	 * Retrieves all quizzes
 	 * @return [type] [description]
 	 */
+	
+
 	public function index()
 	{
 
 	}
+
 
 	/**
 	 * Retrieves a single quiz
@@ -28,6 +32,8 @@ class Quiz_Rest extends CI_Controller
 	 *
 	 * int $id Id of quiz
 	 */
+	
+
 	public function getSingle(int $id)
 	{
 		if($this->session->userdata('logged_in') === true)
@@ -69,78 +75,93 @@ class Quiz_Rest extends CI_Controller
         $request_data = json_decode(file_get_contents('php://input'), true);
 
       	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid')); 
-        $this->answerModel->saveUserAnswers($this->session->userdata('uid'), $request_data['answers'], $user_quiz_id); 
 
-        return $this->output->set_content_type('application/json')->set_output(json_encode($this->quizModel->getCorrectAnswers($quiz_id)));
+        $this->answerModel
+    	    ->saveUserAnswers(
+    	    	$this->session->userdata('uid'), 
+    	    	$request_data['answers'], 
+    	    	$user_quiz_id
+    	   	); 
+
+        return $this->output
+    	    ->set_content_type('application/json')
+    	    ->set_output(json_encode($this->quizModel
+    	    ->getCorrectAnswers($quiz_id)));
 	}
-	
-	/**
-	 * Creates a quiz
-	 */
-	public function post()
+
+	public function createQuiz()
 	{
-		if($this->input->method() === 'post')
+		if($this->input->method() == 'post')
 		{
-			$array = json_decode(file_get_contents('php://input'), true);
+			$receivedData = json_decode(file_get_contents('php://input'), true);
 
-			if(is_string($array['title']) && is_numeric($array['course_id']) && is_numeric($array['level'] && is_array($array['questions']) && is_array($array['answers'])))
+			if(is_string($receivedData['title']) && is_numeric($receivedData['course_id']) && is_numeric($receivedData['level']) && is_array($receivedData['questions'])) 
 			{
-				$questions = [];
-				$answers   = [];
+				/**
+				 * Needs to be sanitized
+				 */
+				
+				$title     = $receivedData['title'];
+				$course    = $receivedData['course_id'];
+				$level     = $receivedData['level'];
+				$questions = $receivedData['questions'];
 
-				foreach($array['questions'] as $question)
+				$quizId = $this->quizModel->setQuiz(
+						$course, 
+						$level,
+						$title
+					);
+
+				foreach($questions as $question)
 				{
-					if(is_string($question['question']))
+					if(is_string($question['question']) && is_numeric($question['type']) && is_string($question['hint']))
 					{
-						$question = [
-							'question' => $question['question'],
-							'type'     => $question['type'],
-							'hint'     => $question['hint']
-						];
+						/**
+						 * Needs to be sanitized
+						 */
 
-						array_push($questions, $question);
+						$qString  = $question['question'];
+						$type     = $question['type'];
+						$hint     = $question['hint'];
+						$qId      = $quizId;
+						$answers  = $question['answers'];
+
+						$questionId = $this->quizModel->setQuestions(
+							$qId,
+							$qString, 
+							$type, 
+							$hint
+						);
+
+						foreach($answers as $answer)
+						{
+							if(is_string($answer['answer']) && is_numeric($answer['correct']))
+							{
+								/**
+								 * Needs to be sanitized
+								 */
+
+								$aString = $answer['answer'];
+								$correct = $answer['correct'];
+
+								$this->quizModel->setAnswers($questionId, $aString, $correct);
+
+								return true;
+							}
+						}
 					}
 				}
-
-				foreach($array['answers'] as $answer)
-				{
-					$answer = [
-						'answer'  => $answer['answer'],
-						'correct' => $answer['correct']
-					];
-
-					if(is_string($answer['answer']))
-					{
-						array_push($answers, $answer);
-					}
-				}
-
-				$dataToInsert = [
-					'title'     => $array['title'],
-					'cID'       => $array['course_id'],
-					'level'     => $array['level'],
-					'user_id'   => 2,
-					'questions' => $questions,
-					'answers'   => $answers
-				];
-
-				echo '<pre>';
-				print_r($dataToInsert);
-				die();
-
-				$query = $this->quizModel->setQuiz($dataToInsert);
-
-				return $query;
 			}
-		}
 
-		return false;
+			return false;
+		}
 	}
 
 	/**
 	 * Updates a quiz
 	 * @return [type] [description]
 	 */
+	
 	public function put()
 	{
 

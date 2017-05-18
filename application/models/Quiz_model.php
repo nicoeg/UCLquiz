@@ -134,7 +134,7 @@ class Quiz_model extends CI_Model
 			&& is_string($safe['question']) 
 			&& filter_var($safe['type'], FILTER_VALIDATE_INT) 
 			&& is_string($safe['hint'])
-			)
+		)
 		{
 			$this->db->insert('questions', [
 				'quiz_id'  => $safe['quiz_id'],
@@ -142,9 +142,9 @@ class Quiz_model extends CI_Model
 				'type'     => $safe['type'],
 				'hint'     => $safe['hint']
 			]);
+		}
 
 			return $this->db->insert_id();
-		}
 
 		die('Question data not valid');
 	}
@@ -152,9 +152,9 @@ class Quiz_model extends CI_Model
 	public function setAnswers($question_id, $answer, $correct)
 	{
 		$safe = [
-			'question_id' => filter_var($data['question_id'], FILTER_SANITIZE_NUMBER_INT),
-			'answer'      => filter_var($data['answer'], FILTER_SANITIZE_STRING),
-			'correct'     => filter_var($data['correct'], FILTER_SANITIZE_NUMBER_INT),
+			'question_id' => filter_var($question_id, FILTER_SANITIZE_NUMBER_INT),
+			'answer'      => filter_var($answer, FILTER_SANITIZE_STRING),
+			'correct'     => filter_var($correct, FILTER_SANITIZE_NUMBER_INT),
 		];
 
 		if(
