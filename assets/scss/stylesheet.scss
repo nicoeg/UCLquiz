@@ -1,5 +1,6 @@
 @import 'variables.scss';
 @import 'base.scss';
+@import 'mixins.scss';
 
 /* Layout */
 @import 'layout/header';
@@ -28,7 +29,6 @@ div.tab {
     background-color: #f1f1f1;
     width: 50%;
     -webkit-box-shadow: 0px 0px 8px #888;
-    -moz-box-shadow: 0px 0px 8px #888;
     box-shadow: 0px 0px 8px #888;
     margin: auto;
 }
@@ -42,7 +42,6 @@ div.tab button {
     padding: 8px 16px;
     margin: 10px;
     -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     outline: none;
     color: $dark-grey;
@@ -72,7 +71,6 @@ div.tab button.active {
     position: relative;
     width: 50%;
     -webkit-box-shadow: 0px 0px 8px #888;
-    -moz-box-shadow: 0px 0px 8px #888;
     box-shadow: 0px 0px 8px #888;
 }
 
@@ -96,6 +94,9 @@ div.tab button.active {
     height: 100%;
     width: 150%;
     opacity: 0.5;
+    -webkit-transition: .5s ease;
+    -o-transition: .5s ease;
+    -moz-transition: .5s ease;
     transition: .5s ease;
     background-color: #ACAF33;
 }
@@ -107,7 +108,11 @@ div.tab button.active {
     position: absolute;
     top: 50%;
     left: 75%;
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
 }
 
 .support-container {
@@ -150,7 +155,6 @@ div.tab button.active {
         padding: 8px 16px;
         border: none;
         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
         border-radius: 3px;
         font-weight: bold;
         font-size: 12px;
@@ -197,7 +201,8 @@ h2 {
     .col-xs-4{
         background: white;
         margin: 20px;
-        box-shadow: 0px 0px 8px #888;
+        -webkit-box-shadow: 0px 0px 8px #888;
+                box-shadow: 0px 0px 8px #888;
         height: 258px;
         padding: 0px;
     }
@@ -246,7 +251,8 @@ h2 {
         color: #fff;
         background-color: #ec9200; 
         padding: 12px 25px; 
-        border-radius: 4px; 
+        -webkit-border-radius: 4px; 
+                border-radius: 4px; 
         border: none;
         font-weight: bold;
     }
@@ -255,7 +261,8 @@ h2 {
         margin-left: 10px;
         background-color: white; 
         padding-top: 3px; 
-        border-radius: 4px 0px 0px 4px; 
+        -webkit-border-radius: 4px 0px 0px 4px; 
+                border-radius: 4px 0px 0px 4px; 
         border: none; 
         display: block; 
         float: left;
@@ -274,7 +281,8 @@ h2 {
     #viewModeButton2{
         background-color: white; 
         padding-top: 3px;
-        border-radius: 0px 4px 4px 0px; 
+        -webkit-border-radius: 0px 4px 4px 0px;
+                border-radius: 0px 4px 4px 0px; 
         border: none; 
         display: block; 
         float: left;
@@ -307,7 +315,8 @@ h2 {
         padding: 20px;
         background: white;
         vertical-align: top;
-        box-shadow: 0px 0px 8px #888;
+        -webkit-box-shadow: 0px 0px 8px #888;
+                box-shadow: 0px 0px 8px #888;
     }
     a{
         color: #535353;
