@@ -27960,7 +27960,7 @@ var QuizResults = function (_React$Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'quiz-container quiz-container--big' },
+                { className: 'quiz-container quiz-container--big quiz-result' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'tribox-container main-container result' },
@@ -27995,7 +27995,7 @@ var QuizResults = function (_React$Component) {
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'tribox-container main-container result' },
+                    { style: { paddingBottom: '25px' }, className: 'tribox-container main-container result' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h1',
                         null,

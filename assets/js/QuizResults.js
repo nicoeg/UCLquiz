@@ -55,7 +55,7 @@ export default class QuizResults extends React.Component {
 
     render() {
         return (
-            <div className="quiz-container quiz-container--big">
+            <div className="quiz-container quiz-container--big quiz-result">
                 <div className="tribox-container main-container result">
                     <h1>Resultat</h1>
 
@@ -66,7 +66,7 @@ export default class QuizResults extends React.Component {
                     <h1 className="time"><b>Tid</b> {this.formatTime(this.props.time)}</h1>
                 </div>
 
-                <div className="tribox-container main-container result">
+                <div style={{paddingBottom: '25px'}} className="tribox-container main-container result">
                     <h1>Placering</h1>
 
                     <div className="highscores">
