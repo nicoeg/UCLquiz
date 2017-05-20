@@ -24,17 +24,21 @@ export default class QuizResults extends React.Component {
         this.getResults()
     }
 
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60)
+        seconds = Math.round(seconds % 60)
+
+        return `${minutes}m ${seconds}s`
+    }
+
     getResults() {
         const quizId = this.props.questions[0].quiz_id
 
         axios.get('/api/leaderboard/getleaderboard/' + quizId).then(response => {
-            const minutes = Math.floor(response.data.average_time / 60)
-            const seconds = Math.round(response.data.average_time % 60)
-
             this.setState({
                 leaderboard: response.data.leaderboard,
                 average_score: response.data.average_score,
-                average_time: `${minutes}m ${seconds}s`,
+                average_time: this.formatTime(response.data.average_time),
                 current_user: response.data.user_result.user_id
             })
         })
@@ -59,7 +63,7 @@ export default class QuizResults extends React.Component {
                         <span>{this.state.correctAnswerCount} ud af {this.state.questionCount} rigtige</span>
                     </div>
 
-                    <h1 className="time"><b>Tid</b> 5m 03s</h1>
+                    <h1 className="time"><b>Tid</b> {this.formatTime(this.props.time)}</h1>
                 </div>
 
                 <div className="tribox-container main-container result">

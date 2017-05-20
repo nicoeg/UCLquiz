@@ -27588,7 +27588,9 @@ var Quiz = function (_React$Component) {
             currentQuestion: null,
             correctAnswers: [],
             finished: false,
-            showAnswers: false
+            showAnswers: false,
+            startTime: null,
+            time: null
         };
 
         _this.handleNextQuestion = _this.handleNextQuestion.bind(_this);
@@ -27610,7 +27612,8 @@ var Quiz = function (_React$Component) {
                 _this2.setState({
                     quiz: response.data,
                     questions: response.data.questions,
-                    currentQuestion: 0
+                    currentQuestion: 0,
+                    startTime: new Date()
                 });
             });
         }
@@ -27644,11 +27647,14 @@ var Quiz = function (_React$Component) {
         value: function handleFinish() {
             var _this3 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, { answers: this.state.answers }).then(function (response) {
+            var time = Math.round((new Date() - this.state.startTime) / 1000);
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, { answers: this.state.answers, time: time }).then(function (response) {
                 //Get response with correct answers and display them
                 _this3.setState({
                     finished: true,
-                    correctAnswers: response.data
+                    correctAnswers: response.data,
+                    time: time
                 });
             });
         }
@@ -27736,7 +27742,7 @@ var Quiz = function (_React$Component) {
                 message = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuizResults__["a" /* default */], { questions: this.state.questions, answers: this.state.answers, correctAnswers: this.state.correctAnswers }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuizResults__["a" /* default */], { questions: this.state.questions, answers: this.state.answers, time: this.state.time, correctAnswers: this.state.correctAnswers }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'quiz-actions finished' },
@@ -27900,6 +27906,14 @@ var QuizResults = function (_React$Component) {
     }
 
     _createClass(QuizResults, [{
+        key: 'formatTime',
+        value: function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            seconds = Math.round(seconds % 60);
+
+            return minutes + 'm ' + seconds + 's';
+        }
+    }, {
         key: 'getResults',
         value: function getResults() {
             var _this2 = this;
@@ -27907,13 +27921,10 @@ var QuizResults = function (_React$Component) {
             var quizId = this.props.questions[0].quiz_id;
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/leaderboard/getleaderboard/' + quizId).then(function (response) {
-                var minutes = Math.floor(response.data.average_time / 60);
-                var seconds = Math.round(response.data.average_time % 60);
-
                 _this2.setState({
                     leaderboard: response.data.leaderboard,
                     average_score: response.data.average_score,
-                    average_time: minutes + 'm ' + seconds + 's',
+                    average_time: _this2.formatTime(response.data.average_time),
                     current_user: response.data.user_result.user_id
                 });
             });
@@ -27978,7 +27989,8 @@ var QuizResults = function (_React$Component) {
                             null,
                             'Tid'
                         ),
-                        ' 5m 03s'
+                        ' ',
+                        this.formatTime(this.props.time)
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

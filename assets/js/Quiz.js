@@ -18,7 +18,9 @@ class Quiz extends React.Component {
             currentQuestion: null,
             correctAnswers: [],
             finished: false,
-            showAnswers: false
+            showAnswers: false,
+            startTime: null,
+            time: null
         }
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this)
@@ -35,7 +37,8 @@ class Quiz extends React.Component {
             this.setState({
                 quiz: response.data,
                 questions: response.data.questions,
-                currentQuestion: 0
+                currentQuestion: 0,
+                startTime: new Date
             })
         })
     }
@@ -63,11 +66,14 @@ class Quiz extends React.Component {
     }
 
     handleFinish() {
-        axios.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, {answers: this.state.answers}).then(response => {
+        const time = Math.round((new Date - this.state.startTime) / 1000)
+
+        axios.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, {answers: this.state.answers, time}).then(response => {
             //Get response with correct answers and display them
             this.setState({
                 finished: true,
-                correctAnswers: response.data
+                correctAnswers: response.data,
+                time: time
             })
         })
     }
@@ -138,7 +144,7 @@ class Quiz extends React.Component {
         if (this.state.finished) {
             message = (
                 <div>
-                    <QuizResults questions={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
+                    <QuizResults questions={this.state.questions} answers={this.state.answers} time={this.state.time} correctAnswers={this.state.correctAnswers} />
 
                     <div className="quiz-actions finished">
                         <div className="button button--primary" onClick={this.toggleAnswers}>Se svar</div>
