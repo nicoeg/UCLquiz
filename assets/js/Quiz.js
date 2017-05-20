@@ -5,6 +5,7 @@ import axios from 'axios'
 import MultipleChoiceQuestion from './questionTypes/MultipleChoiceQuestion'
 import VideoQuestion from './questionTypes/VideoQuestion'
 import QuizResults from './QuizResults'
+import ProgressBar from './ProgressBar'
 
 class Quiz extends React.Component {
     constructor(props) {
@@ -123,7 +124,7 @@ class Quiz extends React.Component {
             message
 
         questions = questions.map(index => {
-            return this.state.finished && this.state.showAnswers || !this.state.finished ? (
+            return (this.state.finished && this.state.showAnswers) || !this.state.finished ? (
                 <div key={index} className="main-container quiz-container quiz-container--horizontal">
                     <div className="question">
                         <h1>{this.state.questions[index].question}</h1>
@@ -167,6 +168,8 @@ class Quiz extends React.Component {
                 {message}
 
                 {questions}
+
+                {!this.state.finished ? <ProgressBar currentQuestion={this.state.currentQuestion + 1} quizLength={this.state.questions.length} /> : ''}
 
                 {quizActions}
             </div>
