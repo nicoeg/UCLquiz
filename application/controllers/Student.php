@@ -23,7 +23,7 @@ class Student extends CI_Controller {
             'teacher' => $this->session->userdata('user_type') == 1
         ]);
 
-        $this->load->view('quizview', [
+        $this->load->view('quiz_preview', [
             'quizzes' => $this->quizModel->getCompleted(),
         ]);
 
