@@ -13,19 +13,6 @@ class Quiz extends CI_Controller
         $this->load->model('Answer_Model', 'answerModel');
 	}
 
-
-	/**
-	 * Retrieves all quizzes
-	 * @return [type] [description]
-	 */
-	
-
-	public function index()
-	{
-
-	}
-
-
 	/**
 	 * Retrieves a single quiz
 	 * @return Object JSON data with quiz questions and answers

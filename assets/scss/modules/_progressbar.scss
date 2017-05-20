@@ -1,0 +1,29 @@
+.progressbar {
+	position: relative;
+	height: 10px;
+	background: $accent;
+	transition: width .3s;
+
+	&:hover::after {
+		position: absolute;
+		content: attr(data-progress);
+		width: 25px;
+		right: -27.5px;
+		text-align: center;
+		top: 15px;
+		background: rgba(0,0,0,.5);
+		color: #fff;
+		padding: 10px 15px;
+		border-radius: 5px;
+	}
+
+	&:hover::before {
+		position: absolute;
+		content: '';
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid rgba(0,0,0,.5);
+		right: -5px;
+		top: 10px;
+	}
+}
