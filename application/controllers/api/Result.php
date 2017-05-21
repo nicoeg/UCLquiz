@@ -12,11 +12,15 @@ class Result extends CI_Controller
         $this->load->model('Results_Model', 'resultsModel');
 	}
 
+	/**
+	 * @return list of classes as JSON
+	 */
 	public function getClassList()
 	{
 		if ($this->session->userdata('user_type') == 1) 
 		{
-			$query = $this->db->from('classes')
+			$query = $this->db
+				->from('classes')
 				->select('*')
 				->get();
 
@@ -25,6 +29,9 @@ class Result extends CI_Controller
 		return json_encode('Not teacher');
 	}
 
+	/**
+	 * @return the user quiz ids of the quizzes each user in the class has taken of that specific quiz
+	 */
 	public function getClassResults()
 	{
 		if($this->input->method() === 'post')

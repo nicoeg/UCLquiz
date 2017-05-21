@@ -61,7 +61,7 @@ class Quiz extends CI_Controller
 
         $request_data = json_decode(file_get_contents('php://input'), true);
 
-      	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid')); 
+      	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid'), $request_data['time']); 
 
         $this->answerModel
     	    ->saveUserAnswers(
