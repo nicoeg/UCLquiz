@@ -20,6 +20,10 @@ class CreateQuiz extends Component {
 			questions: [{id: 1, type: 1, answers: [], question: '', hint: ''}]
 		}
 
+		if (window.quiz_id) (
+			this.getQuiz(window.quiz_id)
+		)
+
 		this.onSortEnd = this.onSortEnd.bind(this)
 		this.updateQuestion = this.updateQuestion.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
@@ -28,6 +32,17 @@ class CreateQuiz extends Component {
 		this.setLevel = this.setLevel.bind(this)
 		this.setName = this.setName.bind(this)
 		this.saveQuiz = this.saveQuiz.bind(this)
+	}
+
+	getQuiz(id) {
+		axios.get('/api/quiz/getSingle/' + id).then(response => {
+			this.setState({
+				course_id: response.data.course_id,
+				level: response.data.level,
+				name: response.data.name,
+				questions: response.data.questions
+			})
+		})
 	}
 
 	updateQuestion(question) {
@@ -108,11 +123,19 @@ class CreateQuiz extends Component {
 			questions: questions_modified
 		}
 
-		axios.post('/api/quiz/createquiz', data).then(response => {
-			alert('gemt!');
-		}, response => {
-			console.log(response)
-		})
+		if (window.quiz_id) {
+			axios.post('/api/quiz/updatequiz', data).then(response => {
+				alert('gemt!');
+			}, response => {
+				console.log(response)
+			})
+		}else {
+			axios.post('/api/quiz/createquiz', data).then(response => {
+				alert('gemt!');
+			}, response => {
+				console.log(response)
+			})
+		}
 	}
 
 	render() {

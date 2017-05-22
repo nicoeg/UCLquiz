@@ -27875,6 +27875,8 @@ var CreateQuiz = function (_Component) {
 			questions: [{ id: 1, type: 1, answers: [], question: '', hint: '' }]
 		};
 
+		if (window.quiz_id) _this.getQuiz(window.quiz_id);
+
 		_this.onSortEnd = _this.onSortEnd.bind(_this);
 		_this.updateQuestion = _this.updateQuestion.bind(_this);
 		_this.addQuestion = _this.addQuestion.bind(_this);
@@ -27887,6 +27889,20 @@ var CreateQuiz = function (_Component) {
 	}
 
 	_createClass(CreateQuiz, [{
+		key: 'getQuiz',
+		value: function getQuiz(id) {
+			var _this2 = this;
+
+			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/quiz/getSingle/' + id).then(function (response) {
+				_this2.setState({
+					course_id: response.data.course_id,
+					level: response.data.level,
+					name: response.data.name,
+					questions: response.data.questions
+				});
+			});
+		}
+	}, {
 		key: 'updateQuestion',
 		value: function updateQuestion(question) {
 			var questions = this.state.questions;
@@ -27989,11 +28005,19 @@ var CreateQuiz = function (_Component) {
 				questions: questions_modified
 			};
 
-			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/createquiz', data).then(function (response) {
-				alert('gemt!');
-			}, function (response) {
-				console.log(response);
-			});
+			if (window.quiz_id) {
+				__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/updatequiz', data).then(function (response) {
+					alert('gemt!');
+				}, function (response) {
+					console.log(response);
+				});
+			} else {
+				__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/createquiz', data).then(function (response) {
+					alert('gemt!');
+				}, function (response) {
+					console.log(response);
+				});
+			}
 		}
 	}, {
 		key: 'render',
@@ -28554,7 +28578,7 @@ var QuestionBuilder = function (_Component) {
 							'div',
 							{ className: blockName + '__body' },
 							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'textfield', placeholder: 'Skriv sp\xF8rgsm\xE5l her', value: this.props.question.question, onChange: this.handleQuestionChange }),
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'textfield', placeholder: 'Hint', value: this.props.question.hint, onChange: this.handleHintChange }),
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'textfield', placeholder: 'Hint', value: this.props.question.hint ? this.props.question.hint : '', onChange: this.handleHintChange }),
 							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
 						)
 					),
@@ -28606,7 +28630,7 @@ var SortableList = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_sorta
 	    addQuestion = _ref2.addQuestion;
 
 	questions = questions.map(function (question, index) {
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(QuestionBuilderItem, { key: 'item-' + question.id, index: question.id, position: index, addQuestion: addQuestion, updateQuestion: updateQuestion, question: question });
+		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(QuestionBuilderItem, { key: 'item-' + question.id, index: parseInt(question.id), position: index, addQuestion: addQuestion, updateQuestion: updateQuestion, question: question });
 	});
 
 	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

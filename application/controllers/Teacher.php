@@ -24,4 +24,14 @@ class Teacher extends CI_Controller {
         $this->load->view('quiz_create');
         $this->load->view('footer');
     }
+
+    public function edit($id) {
+        $this->load->view('header', [
+            'logged_in' => $this->session->userdata('logged_in')
+        ]);
+        $this->load->view('quiz_create', [
+            'quiz_id' => $id
+        ]);
+        $this->load->view('footer');
+    }
 }
