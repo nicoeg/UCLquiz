@@ -36,11 +36,21 @@ class CreateQuiz extends Component {
 
 	getQuiz(id) {
 		axios.get('/api/quiz/getSingle/' + id).then(response => {
+			const questions = response.data.questions.map(question => {
+				question.answers = question.answers.map(answer => {
+					answer.correct = parseInt(answer.correct)
+
+					return answer
+				})
+
+				return question
+			})
+
 			this.setState({
-				course_id: response.data.course_id,
-				level: response.data.level,
-				name: response.data.name,
-				questions: response.data.questions
+				course_id: parseInt(response.data.course_id),
+				level: parseInt(response.data.level),
+				name: response.data.title,
+				questions: questions
 			})
 		})
 	}
@@ -124,7 +134,7 @@ class CreateQuiz extends Component {
 		}
 
 		if (window.quiz_id) {
-			axios.post('/api/quiz/updatequiz', data).then(response => {
+			axios.post('/api/quiz/updatequiz/' + window.quiz_id, data).then(response => {
 				alert('gemt!');
 			}, response => {
 				console.log(response)
@@ -155,7 +165,7 @@ class CreateQuiz extends Component {
 		}else if (this.state.current_step == 1) {
 			view = <InformationForm level={this.state.level} name={this.state.name} setLevel={this.setLevel} setName={this.setName} />
 		}else if (this.state.current_step == 2) {
-			view = <ClassSelect setCourse={this.setCourse} />
+			view = <ClassSelect selectedCourse={this.state.course_id} setCourse={this.setCourse} />
 		}
 
 		return (

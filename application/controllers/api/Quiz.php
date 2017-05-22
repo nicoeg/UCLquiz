@@ -174,8 +174,6 @@ class Quiz extends CI_Controller
 				$correct = $answer['correct'];
 
 				$this->quizModel->setAnswers($questionId, $aString, $correct);
-
-				return true;
 			}
 		}
 	}

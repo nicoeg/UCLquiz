@@ -27894,11 +27894,21 @@ var CreateQuiz = function (_Component) {
 			var _this2 = this;
 
 			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/quiz/getSingle/' + id).then(function (response) {
+				var questions = response.data.questions.map(function (question) {
+					question.answers = question.answers.map(function (answer) {
+						answer.correct = parseInt(answer.correct);
+
+						return answer;
+					});
+
+					return question;
+				});
+
 				_this2.setState({
-					course_id: response.data.course_id,
-					level: response.data.level,
-					name: response.data.name,
-					questions: response.data.questions
+					course_id: parseInt(response.data.course_id),
+					level: parseInt(response.data.level),
+					name: response.data.title,
+					questions: questions
 				});
 			});
 		}
@@ -28006,7 +28016,7 @@ var CreateQuiz = function (_Component) {
 			};
 
 			if (window.quiz_id) {
-				__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/updatequiz', data).then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/quiz/updatequiz/' + window.quiz_id, data).then(function (response) {
 					alert('gemt!');
 				}, function (response) {
 					console.log(response);
@@ -28038,7 +28048,7 @@ var CreateQuiz = function (_Component) {
 			} else if (this.state.current_step == 1) {
 				view = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__InformationForm__["a" /* default */], { level: this.state.level, name: this.state.name, setLevel: this.setLevel, setName: this.setName });
 			} else if (this.state.current_step == 2) {
-				view = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__ClassSelect__["a" /* default */], { setCourse: this.setCourse });
+				view = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__ClassSelect__["a" /* default */], { selectedCourse: this.state.course_id, setCourse: this.setCourse });
 			}
 
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -28190,7 +28200,6 @@ var ClassSelect = function (_Component) {
 
 		_this.state = {
 			courses: [],
-			selectedCourse: null,
 			searchQuery: ''
 		};
 
@@ -28222,10 +28231,6 @@ var ClassSelect = function (_Component) {
 	}, {
 		key: 'setCourse',
 		value: function setCourse(courseId) {
-			this.setState({
-				selectedCourse: this.state.selectedCourse == courseId ? null : courseId
-			});
-
 			this.props.setCourse(courseId);
 		}
 	}, {
@@ -28235,8 +28240,8 @@ var ClassSelect = function (_Component) {
 
 			var _state = this.state,
 			    courses = _state.courses,
-			    selectedCourse = _state.selectedCourse,
 			    searchQuery = _state.searchQuery;
+			var selectedCourse = this.props.selectedCourse;
 
 
 			return courses.filter(function (course) {
