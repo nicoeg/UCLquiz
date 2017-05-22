@@ -173,9 +173,9 @@ class Quiz extends CI_Controller
 		return $this->output->set_content_type('application/json')->set_output(json_encode($new));
 	}
 
-	public function getQuizzesByCourse($course)
+	public function getQuizzesByCourse($id)
 	{
-		$quizByCourse = $this->quizModel->getByCourse($course);
+		$quizByCourse = $this->quizModel->getByCourse($id);
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($quizByCourse));
 	}

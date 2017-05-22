@@ -48,13 +48,13 @@ class Quiz_model extends CI_Model
 			->result(); 
 	} 
 
-	public function getByCourse($course)  
+	public function getByCourse($id)  
 	{ 
 		return $this->db
 			->from('quizzes') 
 		    ->select('*') 
 		    ->join('courses', 'courses.id = quizzes.course_id') 
-		    ->where('name', $course) 
+		    ->where('id', $id) 
 		    ->get()
 			->result(); 
 	} 
