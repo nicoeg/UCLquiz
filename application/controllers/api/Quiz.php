@@ -33,7 +33,7 @@ class Quiz extends CI_Controller
 				$questions = $this->questionModel->getQuestionsByQuizId($quizId);
 
 				foreach ($questions as $key => $question) {
-				    $answers                  = $this->answerModel->getAnswersByQuestionId($question->id);
+				    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
 	                $questions[$key]->answers = array_map(function($answer) {
 	                    unset($answer->correct);
 
@@ -45,7 +45,7 @@ class Quiz extends CI_Controller
 
 				$dataJSON = json_encode($data);
 			}
-			
+
 			$quizId = $id;
 			$data   = $this->quizModel->getQuizById($quizId);
 
@@ -53,6 +53,9 @@ class Quiz extends CI_Controller
 
 			foreach ($questions as $key => $question) {
 			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
+	                $questions[$key]->answers = array_map(function($answer) {
+						return $answer;
+	                }, $answers);
             }
 
             $data->questions = $questions;
