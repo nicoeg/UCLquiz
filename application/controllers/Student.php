@@ -24,7 +24,7 @@ class Student extends CI_Controller {
         ]);
 
         $this->load->view('quiz_preview', [
-            'quizzes' => $this->quizModel->getCompleted(),
+            'role' => $this->session->userdata('user_type')
         ]);
 
         $this->load->view('footer');
