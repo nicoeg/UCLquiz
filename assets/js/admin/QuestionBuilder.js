@@ -65,7 +65,7 @@ export default class QuestionBuilder extends Component {
 						<div className={blockName + '__body'}>
 							<input type="text" className="textfield" placeholder="Skriv spørgsmål her" value={this.props.question.question} onChange={this.handleQuestionChange} />
 
-							<input type="text" className="textfield" placeholder="Hint" value={this.props.question.hint} onChange={this.handleHintChange} />
+							<input type="text" className="textfield" placeholder="Hint" value={this.props.question.hint ? this.props.question.hint : ''} onChange={this.handleHintChange} />
 
 							<hr/>
 						</div>
