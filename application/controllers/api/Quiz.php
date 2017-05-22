@@ -211,7 +211,7 @@ class Quiz extends CI_Controller
 
 		$user_answer_ids = $this->db
 			->select('user_answers.id')
-			->join('user_answers', 'user_answers.user_quiz_id = user_quiz.id')
+			->join('user_answer', 'user_answer.user_quiz_id = user_quiz.id')
 			->where('quiz_id', $id)
 			->get('user_quiz')
 			->result(); 
