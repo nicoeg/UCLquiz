@@ -166,16 +166,36 @@ class Quiz_model extends CI_Model
 		}
 	}
 
-	public function deleteQuiz($quiz_id)
-	{
-		$safeId = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+	public function updateQuiz($id, $course_id, $level, $title)
+	{	
+		$safe = [
+			'id'        => filter_var($id, FILTER_SANITIZE_NUMBER_INT),
+			'course_id' => filter_var($course_id, FILTER_SANITIZE_NUMBER_INT),
+			'level'     => filter_var($level, FILTER_SANITIZE_NUMBER_INT),
+			'user_id'   => filter_var($this->session->userdata('uid'), FILTER_SANITIZE_NUMBER_INT),
+			'title'     => filter_var($title, FILTER_SANITIZE_STRING)
+		];
 
-		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		if(
+			filter_var($safe['id'], FILTER_VALIDATE_INT)
+			&& filter_var($safe['course_id'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['level'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['user_id'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['title'])
+			)
 		{
-			$this->db->delete('quizzes', [
-				'id' => $safeId
+			$this->db->replace('quizzes', [
+				'id'          => $safe['id'],
+				'course_id'   => $safe['course_id'],
+				'level'       => $safe['level'],
+				'uID'         => $safe['user_id'],
+				'title'       => $safe['title']
 			]);
+
+			return $safe['id'];
 		}
+
+		die('Quiz data not valid');
 	}
 
 	public function deleteQuestion($question_id)
@@ -202,25 +222,28 @@ class Quiz_model extends CI_Model
 		}
 	}
 
-
-	/**
-	*  Method to delete a quiz
-	*
-	*  @param int $id Id of quiz that is going to be deleted
-	*/
-
-	public function delete($id)
+	public function deleteUserQuiz($quiz_id)
 	{
-		$safeId = preg_replace('/[^0-9]/', '', $id);
+		$safeId = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
 
-		if(filter_var($safeId, FILTER_VALIDATE_INT)) 
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
 		{
-			$query = $this->db
-				->where('id', $safeId)
-				->delete('quizzes');
+			$this->db->delete('user_quiz', [
+				'id' => $safeId
+			]);
 		}
+	}
 
-		return false;
+	public function deleteUserAnswer($user_answer_id)
+	{
+		$safeId = filter_var($user_answer_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('user_answer', [
+				'id' => $safeId
+			]);
+		}
 	}
 
     public function saveUserResult($quiz_id, $user_id, $time)

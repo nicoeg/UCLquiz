@@ -95,7 +95,7 @@ class Quiz extends CI_Controller
     	    ->getCorrectAnswers($quiz_id)));
 	}
 
-	public function createQuiz()
+	public function createQuiz($id = null)
 	{
 		if($this->input->method() != 'post')
 		{
@@ -118,11 +118,21 @@ class Quiz extends CI_Controller
 		$level     = $receivedData['level'];
 		$questions = $receivedData['questions'];
 
-		$quizId = $this->quizModel->setQuiz(
+		if ($id !== null) {
+			$quizId = $this->quizModel->updateQuiz(
+				$id,
 				$course, 
 				$level,
 				$title
 			);
+		} else {
+			$quizId = $this->quizModel->setQuiz(
+				$course, 
+				$level,
+				$title
+			);
+		}
+		
 
 		foreach($questions as $question)
 		{
@@ -199,9 +209,22 @@ class Quiz extends CI_Controller
 			$this->quizModel->deleteQuestion($question_id->id);
 		}
 
-		$this->quizModel->deleteQuiz($id);
+		$user_answer_ids = $this->db
+			->select('user_answers.id')
+			->join('user_answers', 'user_answers.user_quiz_id = user_quiz.id')
+			->where('quiz_id', $id)
+			->get('user_quiz')
+			->result(); 
 
-		$this->createQuiz();
+		foreach ($user_answer_ids as $user_answer_id) {
+			$this->quizModel->deleteUserAnswer($user_answer_id->id);
+		}
+
+		$this->quizModel->deleteUserQuiz($id);
+
+		$this->quizModel->updateQuiz($id);
+
+		$this->createQuiz($id);
 	}
 
 	public function getCourses()
