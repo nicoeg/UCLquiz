@@ -25,18 +25,34 @@ class Quiz extends CI_Controller
 	{
 		if($this->session->userdata('logged_in') === true)
 		{	
+			if($this->session->userdata('user_type') == 0)
+			{
+				$quizId = $id;
+				$data   = $this->quizModel->getQuizById($quizId);
+
+				$questions = $this->questionModel->getQuestionsByQuizId($quizId);
+
+				foreach ($questions as $key => $question) {
+				    $answers                  = $this->answerModel->getAnswersByQuestionId($question->id);
+	                $questions[$key]->answers = array_map(function($answer) {
+	                    unset($answer->correct);
+
+	                    return $answer;
+	                }, $answers);
+	            }
+
+	            $data->questions = $questions;
+
+				$dataJSON = json_encode($data);
+			}
+			
 			$quizId = $id;
 			$data   = $this->quizModel->getQuizById($quizId);
 
 			$questions = $this->questionModel->getQuestionsByQuizId($quizId);
 
 			foreach ($questions as $key => $question) {
-			    $answers                  = $this->answerModel->getAnswersByQuestionId($question->id);
-                $questions[$key]->answers = array_map(function($answer) {
-                    unset($answer->correct);
-
-                    return $answer;
-                }, $answers);
+			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
             }
 
             $data->questions = $questions;
