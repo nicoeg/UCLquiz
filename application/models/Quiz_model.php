@@ -54,7 +54,7 @@ class Quiz_model extends CI_Model
 			->from('quizzes') 
 		    ->select('*') 
 		    ->join('courses', 'courses.id = quizzes.course_id') 
-		    ->where('id', $id) 
+		    ->where('course_id', $id) 
 		    ->get()
 			->result(); 
 	} 
