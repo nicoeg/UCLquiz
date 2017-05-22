@@ -158,4 +158,32 @@ class Quiz extends CI_Controller
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($courses));
 	}
+
+	public function getQuizzes()
+	{
+		$quizzes = $this->quizModel->get();
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($quizzes));
+	}
+
+	public function getNewQuizzes($limit)
+	{
+		$new = $this->quizModel->getNew($limit);
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($new));
+	}
+
+	public function getQuizzesByCourse($course)
+	{
+		$quizByCourse = $this->quizModel->getByCourse($course);
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($quizByCourse));
+	}
+
+	public function getCompletedQuizzes()
+	{
+		$completed = $this->quizModel->getCompleted();
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($completed));
+	}
 }
