@@ -221,8 +221,6 @@ class Quiz extends CI_Controller
 
 		$this->quizModel->deleteUserQuiz($id);
 
-		$this->quizModel->updateQuiz($id);
-
 		$this->createQuiz($id);
 	}
 
