@@ -11,7 +11,7 @@ class Teacher extends CI_Controller {
         ]);
 
         $this->load->view('quiz_preview', [
-            'quizzes' => $this->quizModel->get(),
+            'role' => $this->session->userdata('user_type')
         ]);
 
         $this->load->view('footer');

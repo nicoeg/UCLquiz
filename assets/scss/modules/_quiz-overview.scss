@@ -12,16 +12,11 @@
 .sidebar {
     display: inline-block;
     vertical-align: top;
-    width: -webkit-calc(30% - 25px);
-    width: -moz-calc(30% - 25px);
     width: calc(30% - 25px);
     height: auto;
     margin: 25px;
-    background: #fff;
 
     @include break(1300) {
-        width: -webkit-calc(100% - 50px);
-        width: -moz-calc(100% - 50px);
         width: calc(100% - 50px);
         background: none;
     }
@@ -29,6 +24,7 @@
     &__list {
         width: 100%;
         height: auto;
+        background: #fff;
 
         @include break(1300) {
             font-size: 0;
@@ -59,7 +55,7 @@
         text-decoration: none;
         color: $dark-grey;
 
-        &:hover {
+        &:hover, &--selected {
             color: $accent;
         }
     }
