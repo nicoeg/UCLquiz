@@ -104,7 +104,7 @@ class Quiz extends CI_Controller
 		
 		$receivedData = json_decode(file_get_contents('php://input'), true);
 
-		if(is_string($receivedData['title']) || is_numeric($receivedData['course_id']) || is_numeric($receivedData['level']) || is_array($receivedData['questions'])) 
+		if(!is_string($receivedData['title']) || !is_numeric($receivedData['course_id']) || !is_numeric($receivedData['level']) || !is_array($receivedData['questions'])) 
 		{
 			return false;
 		}
@@ -132,11 +132,10 @@ class Quiz extends CI_Controller
 				$title
 			);
 		}
-		
 
 		foreach($questions as $question)
 		{
-			if(is_string($question['question']) || is_numeric($question['type']) || is_string($question['hint']))
+			if(!is_string($question['question']) || !is_numeric($question['type']) || !is_string($question['hint']))
 			{
 				//Delete quiz here
 				return false;
@@ -161,7 +160,7 @@ class Quiz extends CI_Controller
 
 			foreach($answers as $answer)
 			{
-				if(is_string($answer['answer']) || is_numeric($answer['correct']))
+				if(!is_string($answer['answer']) || !is_numeric($answer['correct']))
 				{
 					//Delete quiz here
 					return false;
