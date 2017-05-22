@@ -40,7 +40,7 @@ class User_Model extends CI_Model
 	{
 		$userData = $this->get_user_by_email($email);
 
-		if($userData === null || password_verify($password, $userData->password)) 
+		if($userData === null || !password_verify($password, $userData->password)) 
 		{
 			return false;
 		}
