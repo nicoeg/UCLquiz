@@ -152,6 +152,39 @@ class Quiz extends CI_Controller
 		}
 	}
 
+	public function updateQuiz($id)
+	{
+		if($this->input->method() != 'post')
+		{
+			return false;
+		}
+
+		$answer_ids = $this->db
+			->select('answers.id')
+			->join('answers', 'answers.question_id = questions.id')
+			->where('quiz_id', $id)
+			->get('questions')
+			->result(); 
+
+		foreach ($answer_ids as $answer_id) {
+			$this->quizModel->deleteAnswer($answer_id->id);
+		}
+
+		$question_ids = $this->db
+			->select('id')
+			->where('quiz_id', $id)
+			->get('questions')
+			->result();
+
+		foreach ($question_ids as $question_id) {
+			$this->quizModel->deleteQuestion($question_id->id);
+		}
+
+		$this->quizModel->deleteQuiz($id);
+
+		$this->createQuiz();
+	}
+
 	public function getCourses()
 	{
 		$courses = $this->quizModel->getCourses();

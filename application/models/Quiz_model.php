@@ -166,6 +166,43 @@ class Quiz_model extends CI_Model
 		}
 	}
 
+	public function deleteQuiz($quiz_id)
+	{
+		$safeId = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('quizzes', [
+				'id' => $safeId
+			]);
+		}
+	}
+
+	public function deleteQuestion($question_id)
+	{
+		$safeId = filter_var($question_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('questions', [
+				'id' => $safeId
+			]);
+		}
+	}
+
+	public function deleteAnswer($answer_id)
+	{
+		$safeId = filter_var($answer_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('answers', [
+				'id' => $safeId
+			]);
+		}
+	}
+
+
 	/**
 	*  Method to delete a quiz
 	*
@@ -184,22 +221,6 @@ class Quiz_model extends CI_Model
 		}
 
 		return false;
-	}
-
-	public function update($id, $data)
-	{
-		$cID    = preg_replace('/[^0-9]/', '', $data['cID']);
-		$level  = preg_replace('/[^0-9]/', '', $data['level']);
-		$title  = stripslashes($data['title']);
-		$safeId = preg_replace('/[^0-9]/', '', $id);
-
-		$data['cID']   = $cID;
-		$data['level'] = $level;
-		$data['title'] = $title;
-
-		$this->db
-			->where('id', $safeId)
-			->update('quizzes', $data);
 	}
 
     public function saveUserResult($quiz_id, $user_id, $time)
