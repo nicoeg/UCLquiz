@@ -104,7 +104,7 @@ class Quiz extends CI_Controller
 		
 		$receivedData = json_decode(file_get_contents('php://input'), true);
 
-		if(is_string($receivedData['title']) || is_numeric($receivedData['course_id']) || is_numeric($receivedData['level']) || is_array($receivedData['questions'])) 
+		if(!is_string($receivedData['title']) || !is_numeric($receivedData['course_id']) || !is_numeric($receivedData['level']) || !is_array($receivedData['questions'])) 
 		{
 			return false;
 		}
@@ -132,11 +132,10 @@ class Quiz extends CI_Controller
 				$title
 			);
 		}
-		
 
 		foreach($questions as $question)
 		{
-			if(is_string($question['question']) || is_numeric($question['type']) || is_string($question['hint']))
+			if(!is_string($question['question']) || !is_numeric($question['type']) || !is_string($question['hint']))
 			{
 				//Delete quiz here
 				return false;
@@ -161,7 +160,7 @@ class Quiz extends CI_Controller
 
 			foreach($answers as $answer)
 			{
-				if(is_string($answer['answer']) || is_numeric($answer['correct']))
+				if(!is_string($answer['answer']) || !is_numeric($answer['correct']))
 				{
 					//Delete quiz here
 					return false;
@@ -175,8 +174,6 @@ class Quiz extends CI_Controller
 				$correct = $answer['correct'];
 
 				$this->quizModel->setAnswers($questionId, $aString, $correct);
-
-				return true;
 			}
 		}
 	}
@@ -210,7 +207,7 @@ class Quiz extends CI_Controller
 		}
 
 		$user_answer_ids = $this->db
-			->select('user_answers.id')
+			->select('user_answer.id')
 			->join('user_answer', 'user_answer.user_quiz_id = user_quiz.id')
 			->where('quiz_id', $id)
 			->get('user_quiz')

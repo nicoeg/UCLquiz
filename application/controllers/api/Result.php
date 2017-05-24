@@ -28,9 +28,9 @@ class Result extends CI_Controller
 
 			$classIds = array_column($query, 'class_id');
 
-			$classNames = $this->resultsModel->getClassNames($classIds);
+			$classes = $this->resultsModel->getClassNames($classIds);
 
-			return json_encode($classNames);
+			return json_encode($classes);
 		}
 		return json_encode('Not teacher');
 	}

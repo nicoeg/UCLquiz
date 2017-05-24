@@ -37,7 +37,7 @@ class Results_Model extends CI_Model
 	public function getClassNames($array)
 	{
 		return $this->db
-			->select('name')
+			->select('*')
 			->where_in('id', $array)
 			->get('classes')
 			->result();
