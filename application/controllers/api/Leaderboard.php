@@ -44,7 +44,15 @@ class Leaderboard extends CI_Controller
 				];		
 			}
 
-			$userId = $this->session->userdata('uid');
+			if(isset($_GET['user_id']))
+			{
+				$userId = $_GET['user_id'];
+			}
+			else
+			{
+				$userId = $this->session->userdata('uid');
+			}
+			
 			$userResult = key_exists('userId'.$userId, $results) ? $results['userId'.$userId] : null;
 			$score = array_sum(array_column($results, 'correct_answers_count')) / count($results);
 			$time = array_sum(array_column($results, 'time_seconds')) / count($results);
