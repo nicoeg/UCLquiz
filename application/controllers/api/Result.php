@@ -30,7 +30,7 @@ class Result extends CI_Controller
 
 			$classes = $this->resultsModel->getClassNames($classIds);
 
-			return json_encode($classes);
+			return $this->output->set_content_type('application/json')->set_output(json_encode($classes));
 		}
 		return json_encode('Not teacher');
 	}
@@ -58,7 +58,22 @@ class Result extends CI_Controller
 
 			$userQuizIds = $this->resultsModel->getUserQuizByUserId($userIds);
 
-			return $userQuizIds;
+			return $this->output->set_content_type('application/json')->set_output(json_encode($userQuizIds));
+		}
+	}
+
+	public function getUserCount()
+	{
+		if($this->input->method() === 'post')
+		{
+			$array = json_decode(file_get_contents('php://input'), true);
+
+			$class_id = $array['class_id'];
+			$quiz_id = $array['quiz_id'];
+
+			$count = $this->resultsModel->getUserCount($quiz_id, $class_id);
+
+			return $this->output->set_content_type('application/json')->set_output(json_encode($count));
 		}
 	}
 }
