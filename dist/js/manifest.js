@@ -32,7 +32,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		5: 0
+/******/ 		6: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -87,7 +87,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "dist/js/" + ({"0":"dist/js/vendor","1":"dist/js/CreateQuiz","2":"dist/js/Quiz","3":"dist/js/Overview","4":"dist/js/TeacherResult"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "dist/js/" + ({"0":"dist/js/vendor","1":"dist/js/CreateQuiz","2":"dist/js/Quiz","3":"dist/js/TeacherResult","4":"dist/js/Overview","5":"dist/js/UserQuizResult"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {

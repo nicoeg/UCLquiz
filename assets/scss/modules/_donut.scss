@@ -13,6 +13,16 @@ $c1: #fff; // chart color
   color: $accent;
   border-radius: 50%;
   border: 1px solid;
+  display: flex;
+
+  span {
+      color: #333;
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      top: 50%;
+      text-align: center;
+  }
   
   
   @keyframes spin {

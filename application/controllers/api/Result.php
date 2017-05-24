@@ -62,6 +62,16 @@ class Result extends CI_Controller
 		}
 	}
 
+	public function getUserResult($user_quiz_id) 
+	{
+		$result = $this->db
+			->where('id', $user_quiz_id)
+			->get('user_quiz')
+			->row();
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+
 	public function getUserCount()
 	{
 		if($this->input->method() === 'post')

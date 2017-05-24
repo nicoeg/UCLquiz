@@ -50,7 +50,7 @@ class Teacher extends CI_Controller {
             'logged_in' => $this->session->userdata('logged_in')
         ]);
         $this->load->view('quiz_user_result', [
-            'quiz_id' => $user_quiz_id
+            'user_quiz_id' => $user_quiz_id
         ]);
         $this->load->view('footer');
     }
