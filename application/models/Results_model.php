@@ -54,4 +54,13 @@ class Results_Model extends CI_Model
 			->get('classes')
 			->result();
 	}
+
+	public function getUserResults($quiz_id, $user_id_array)
+	{
+		return $this->db
+			->where('quiz_id', $quiz_id)
+			->where_in('id', $user_id_array)
+			->get('user_quiz')
+			->result(); 
+	}
 }
