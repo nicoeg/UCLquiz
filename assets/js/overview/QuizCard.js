@@ -5,7 +5,7 @@ export default class QuizCard extends Component {
 		const levels = ['Let', 'Middel', 'Svær']
 
 		return (
-			<a href={window.settings.baseUrl + (window.role == 1 ? 'teacher' : 'student') + '/quiz/' + this.props.quiz.id} className="card">
+			<a href={window.settings.baseUrl + (window.role == 1 ? 'teacher/edit/' : 'student/quiz/') + this.props.quiz.id} className="card">
 				<div className="card__image" style={{background: "url('" + this.props.course.image + "') 50% 50%/cover"}}>
 					<div className="card__labels">
 						<div className="card__label">

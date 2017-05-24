@@ -152,18 +152,11 @@ class Quiz_model extends CI_Model
 			'correct'     => filter_var($correct, FILTER_SANITIZE_NUMBER_INT),
 		];
 
-		if(
-			filter_var($safe['question_id'], FILTER_VALIDATE_INT) 
-			&& is_string($safe['answer']) 
-			&& filter_var($safe['correct'], FILTER_VALIDATE_INT)
-		)
-		{
-			$this->db->insert('answers', [
-				'question_id' => $safe['question_id'],
-				'answer'      => $safe['answer'],
-				'correct'     => $safe['correct']
-			]);
-		}
+		$this->db->insert('answers', [
+			'question_id' => $safe['question_id'],
+			'answer'      => $safe['answer'],
+			'correct'     => $safe['correct']
+		]);
 	}
 
 	public function updateQuiz($id, $course_id, $level, $title)
