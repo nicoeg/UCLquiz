@@ -16,7 +16,7 @@ export default class QuizResults extends React.Component {
             leaderboard: [],
             average_score: null,
             average_time: null,
-            current_user: null
+            current_user: props.current_user
         }
 
         this.renderLeaderboard = this.renderLeaderboard.bind(this)

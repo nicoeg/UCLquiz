@@ -2458,7 +2458,7 @@ var QuizResults = function (_React$Component) {
             leaderboard: [],
             average_score: null,
             average_time: null,
-            current_user: null
+            current_user: props.current_user
         };
 
         _this.renderLeaderboard = _this.renderLeaderboard.bind(_this);
