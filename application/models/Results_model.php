@@ -42,7 +42,8 @@ class Results_Model extends CI_Model
 			->where('quiz_id', $quiz_id)
 			->where('class_id', $class_id)
  			->group_by('user_id') 
- 			->count_all_results('user_quiz', false);
+ 			->get('user_quiz')
+ 			->result();
 	}
 
 	public function getClassNames($array)
@@ -52,5 +53,14 @@ class Results_Model extends CI_Model
 			->where_in('id', $array)
 			->get('classes')
 			->result();
+	}
+
+	public function getUserResults($quiz_id, $user_id_array)
+	{
+		return $this->db
+			->where('quiz_id', $quiz_id)
+			->where_in('id', $user_id_array)
+			->get('user_quiz')
+			->result(); 
 	}
 }
