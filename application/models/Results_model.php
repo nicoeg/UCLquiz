@@ -21,4 +21,25 @@ class Results_Model extends CI_Model
 			->get('user_quiz')
 			->result();
 	}
+
+	public function getClassList($id)
+	{
+		return $this->db
+			->select('class_id')
+			->from('user_quiz')
+			->where('quiz_id', $id)
+			->join('users', 'users.id = user_quiz.user_id')
+			->group_by('class_id')
+			->get()
+			->result();
+	}
+
+	public function getClassNames($array)
+	{
+		return $this->db
+			->select('name')
+			->where_in('id', $array)
+			->get('classes')
+			->result();
+	}
 }

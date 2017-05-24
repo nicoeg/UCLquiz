@@ -15,16 +15,22 @@ class Result extends CI_Controller
 	/**
 	 * @return list of classes as JSON
 	 */
-	public function getClassList()
+	public function getClassList($id)
 	{
 		if ($this->session->userdata('user_type') == 1) 
 		{
-			$query = $this->db
-				->from('classes')
-				->select('*')
-				->get();
+			$query = $this->resultsModel->getClassList($id);
 
-			return json_encode($query->result());
+			array_walk($query, function(&$item , $key)
+			{
+			   $item = (array) $item;
+			});
+
+			$classIds = array_column($query, 'class_id');
+
+			$classNames = $this->resultsModel->getClassNames($classIds);
+
+			return json_encode($classNames);
 		}
 		return json_encode('Not teacher');
 	}

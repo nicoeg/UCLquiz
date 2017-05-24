@@ -272,7 +272,8 @@ class Quiz_model extends CI_Model
 
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT))
     	{
-    		return $this->db->from('answers')
+    		return $this->db
+    			->from('answers')
     		    ->select('answers.id, answers.question_id')
     		    ->join('questions', 'questions.id = answers.question_id')
     		    ->where('quiz_id', $safe['quiz_id'])
