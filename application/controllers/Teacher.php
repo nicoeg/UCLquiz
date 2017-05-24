@@ -34,4 +34,24 @@ class Teacher extends CI_Controller {
         ]);
         $this->load->view('footer');
     }
+
+    public function results($id) {
+        $this->load->view('header', [
+            'logged_in' => $this->session->userdata('logged_in')
+        ]);
+        $this->load->view('quiz_result', [
+            'quiz_id' => $id
+        ]);
+        $this->load->view('footer');
+    }
+
+    public function userResults($user_quiz_id) {
+        $this->load->view('header', [
+            'logged_in' => $this->session->userdata('logged_in')
+        ]);
+        $this->load->view('quiz_user_result', [
+            'user_quiz_id' => $user_quiz_id
+        ]);
+        $this->load->view('footer');
+    }
 }
