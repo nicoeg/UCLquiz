@@ -34,6 +34,18 @@ class Results_Model extends CI_Model
 			->result();
 	}
 
+	public function getUserCount($quiz_id, $class_id)
+	{
+		return $this->db
+			->select('user_id')
+			->join('users', 'users.id = user_quiz.user_id')
+			->where('quiz_id', $quiz_id)
+			->where('class_id', $class_id)
+ 			->group_by('user_id') 
+ 			->get('user_quiz')
+ 			->result();
+	}
+
 	public function getClassNames($array)
 	{
 		return $this->db
