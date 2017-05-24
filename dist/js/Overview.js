@@ -141,8 +141,8 @@ var QuizCard = function (_Component) {
 			var levels = ['Let', 'Middel', 'Svær'];
 
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				'a',
-				{ href: window.settings.baseUrl + (window.role == 1 ? 'teacher/edit/' : 'student/quiz/') + this.props.quiz.id, className: 'card' },
+				'div',
+				{ className: 'card' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'card__image', style: { background: "url('" + this.props.course.image + "') 50% 50%/cover" } },
@@ -173,9 +173,31 @@ var QuizCard = function (_Component) {
 					'div',
 					{ className: 'card__title' },
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'p',
-						null,
+						'div',
+						{ className: 'card__title-text' },
 						this.props.quiz.title
+					),
+					window.role == 1 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						null,
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'a',
+							{ href: window.settings.baseUrl + 'teacher/edit/' + this.props.quiz.id, className: 'button button--primary button--small' },
+							'Rediger quiz'
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'a',
+							{ href: '/teacher/results/' + this.props.quiz.id, style: { marginLeft: '5px' }, className: 'button button--primary button--small' },
+							'Resultater'
+						)
+					) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						null,
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'a',
+							{ href: window.settings.baseUrl + 'student/quiz/' + this.props.quiz.id, className: 'button button--primary button--small' },
+							'Tag quiz'
+						)
 					)
 				)
 			);

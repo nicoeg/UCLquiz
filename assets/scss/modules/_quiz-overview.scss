@@ -184,6 +184,9 @@
         height: 110px;
         padding: 0 20px;
         background: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
         @include break(1500) {
             height: 90px;
@@ -201,14 +204,7 @@
             height: 125px;
         }
 
-        p {
-            position: absolute;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-               -moz-transform: translateY(-50%);
-                -ms-transform: translateY(-50%);
-                 -o-transform: translateY(-50%);
-                    transform: translateY(-50%);
+        .card__title-text {
             font-size: 18px;
             color: $dark-grey;
         }
