@@ -186,6 +186,13 @@ class Result extends CI_Controller
 
 		return false;
 	}
+
+	public function getUserAnswers($user_quiz_id)
+	{
+		$answer_ids = $this->resultsModel->getUserAnswers($user_quiz_id);
+		
+		return $this->output->set_content_type('application/json')->set_output(json_encode($answer_ids));
+	}
 }
 
 
