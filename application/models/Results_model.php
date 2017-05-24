@@ -63,4 +63,15 @@ class Results_Model extends CI_Model
 			->get('user_quiz')
 			->result(); 
 	}
+
+	public function getUserAnswers($user_quiz_id)
+	{
+		return $this->db
+			->select('answer_id')
+			->select('question_id')
+			->where('user_quiz_id', $user_quiz_id)
+			->join('answers', 'answers.id = user_answer.answer_id')
+			->get('user_answer')
+			->result();	
+	}
 }
