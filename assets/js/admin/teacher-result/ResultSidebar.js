@@ -12,7 +12,7 @@ export default class Sidebar extends Component {
 	}
 
 	percent() {
-		return 40;
+		return this.props.averageAnswerRate ? this.props.questionsLength / this.props.averageAnswerRate * 10 : 100;
 	}
 
 	render() {
@@ -28,20 +28,20 @@ export default class Sidebar extends Component {
 					<h1 className="sidebar__heading">Gennemsnits svarrate</h1>
 
 					<div className="donut-chart" style={{transform: 'scale(.8)', animationDelay: '-' + this.percent() + 's'}}>
-                        <span>2 ud af 5 rigtige</span>
+                        <span>{this.props.averageAnswerRate} ud af {this.props.questionsLength} rigtige</span>
                     </div>
 				</div>
 
 				<div className="sidebar__block">
 					<h1 className="sidebar__heading">Gennemsnits tid</h1>
 
-					<h1 className="sidebar__heading sidebar__heading--primary">8 min 5 sek</h1>
+					<h1 className="sidebar__heading sidebar__heading--primary">{this.props.averageTime}</h1>
 				</div>
 
 				<div className="sidebar__block">
 					<h1 className="sidebar__heading">Bedste tid</h1>
 
-					<h1 className="sidebar__heading sidebar__heading--primary">8 min 5 sek</h1>
+					<h1 className="sidebar__heading sidebar__heading--primary">{this.props.bestTime}</h1>
 				</div>
 			</div>
 		)

@@ -41,7 +41,10 @@ var TeacherResult = function (_Component) {
 		_this.state = {
 			class: null,
 			students: [],
-			questionsLength: null
+			questionsLength: null,
+			averageTime: null,
+			averageAnswerRate: null,
+			bestTime: null
 		};
 
 		__WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/quiz/getSingle/' + window.quiz_id).then(function (response) {
@@ -68,17 +71,49 @@ var TeacherResult = function (_Component) {
 
 			__WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/result/getclassresults', data).then(function (response) {
 				_this2.setState({ students: response.data });
+
+				_this2.calculate(response.data);
 			});
+		}
+	}, {
+		key: 'calculate',
+		value: function calculate(data) {
+			this.setState({
+				averageTime: this.formatTime(data.reduce(function (a, b) {
+					return a + parseInt(b.time_seconds);
+				}, 0) / data.length),
+				averageAnswerRate: Math.round(data.reduce(function (a, b) {
+					return a + parseInt(b.correct_answers_count);
+				}, 0) / data.length * 10) / 10,
+				bestTime: this.formatTime(data.sort(function (a, b) {
+					return a.time_seconds > b.time_seconds;
+				})[0].time_seconds)
+			});
+		}
+	}, {
+		key: 'formatTime',
+		value: function formatTime(seconds) {
+			var minutes = Math.floor(seconds / 60);
+			seconds = Math.round(seconds % 60);
+
+			return minutes + 'm ' + seconds + 's';
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var _this3 = this;
 
+			var _state = this.state,
+			    students = _state.students,
+			    averageTime = _state.averageTime,
+			    averageAnswerRate = _state.averageAnswerRate,
+			    questionsLength = _state.questionsLength,
+			    bestTime = _state.bestTime;
+
 			var content = void 0;
 
 			if (this.state.class) {
-				content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__StudentList__["a" /* default */], null);
+				content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__StudentList__["a" /* default */], { students: this.state.students });
 			} else {
 				content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__ClassSelect__["a" /* default */], { onClassSelected: this.onClassSelected });
 			}
@@ -86,7 +121,7 @@ var TeacherResult = function (_Component) {
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
 				{ className: 'preview-container' },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__ResultSidebar__["a" /* default */], { handleChooseClass: function handleChooseClass() {
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__ResultSidebar__["a" /* default */], { averageTime: averageTime, averageAnswerRate: averageAnswerRate, bestTime: bestTime, questionsLength: questionsLength, handleChooseClass: function handleChooseClass() {
 						return _this3.onClassSelected(null);
 					} }),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -243,7 +278,7 @@ var Sidebar = function (_Component) {
 	}, {
 		key: 'percent',
 		value: function percent() {
-			return 40;
+			return this.props.averageAnswerRate ? this.props.questionsLength / this.props.averageAnswerRate * 10 : 100;
 		}
 	}, {
 		key: 'render',
@@ -279,7 +314,10 @@ var Sidebar = function (_Component) {
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'span',
 							null,
-							'2 ud af 5 rigtige'
+							this.props.averageAnswerRate,
+							' ud af ',
+							this.props.questionsLength,
+							' rigtige'
 						)
 					)
 				),
@@ -294,7 +332,7 @@ var Sidebar = function (_Component) {
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'h1',
 						{ className: 'sidebar__heading sidebar__heading--primary' },
-						'8 min 5 sek'
+						this.props.averageTime
 					)
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -308,7 +346,7 @@ var Sidebar = function (_Component) {
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'h1',
 						{ className: 'sidebar__heading sidebar__heading--primary' },
-						'8 min 5 sek'
+						this.props.bestTime
 					)
 				)
 			);
@@ -348,8 +386,54 @@ var StudentList = function (_Component) {
 	}
 
 	_createClass(StudentList, [{
+		key: "formatTime",
+		value: function formatTime(seconds) {
+			var minutes = Math.floor(seconds / 60);
+			seconds = Math.round(seconds % 60);
+
+			return minutes + "m " + seconds + "s";
+		}
+	}, {
 		key: "render",
 		value: function render() {
+			var _this2 = this;
+
+			var students = this.props.students.map(function (student, index) {
+				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					"tr",
+					{ key: index, className: "table__item" },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						"td",
+						{ className: "table__column" },
+						index + 1
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						"td",
+						{ className: "table__column" },
+						student.name
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						"td",
+						{ className: "table__column" },
+						_this2.formatTime(student.time_seconds)
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						"td",
+						{ className: "table__column" },
+						student.correct_answers_count
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						"td",
+						{ className: "table__column" },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							"a",
+							{ style: { textDecoration: 'none' }, href: '/teacher/userresults/' + student.user_quiz_id, className: "button button--primary button--small" },
+							"V\xE6lg"
+						)
+					)
+				);
+			});
+
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				"table",
 				{ className: "table" },
@@ -378,84 +462,18 @@ var StudentList = function (_Component) {
 							"td",
 							{ className: "table__column" },
 							"Antal rigtige"
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							"td",
+							{ className: "table__column" },
+							"Handling"
 						)
 					)
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					"tbody",
 					{ className: "table__body" },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						"tr",
-						{ className: "table__item" },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Plads"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Navn"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Tid"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Antal rigtige"
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						"tr",
-						{ className: "table__item" },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Plads"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Navn"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Tid"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Antal rigtige"
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						"tr",
-						{ className: "table__item" },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Plads"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Navn"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Tid"
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							"td",
-							{ className: "table__column" },
-							"Antal rigtige"
-						)
-					)
+					students
 				)
 			);
 		}

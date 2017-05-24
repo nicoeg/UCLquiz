@@ -25,6 +25,9 @@ class UserQuizResult extends Component {
 
 			this.getQuiz(response.data.quiz_id)
 		})
+
+		axios('/api/result/getuseranswers/' + window.user_quiz_id)
+			.then(response => this.setState({ userAnswers: response.data }))
 	}
 
 	getQuiz(id) {

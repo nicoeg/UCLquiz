@@ -2138,6 +2138,10 @@ var UserQuizResult = function (_Component) {
 
 			_this.getQuiz(response.data.quiz_id);
 		});
+
+		__WEBPACK_IMPORTED_MODULE_2_axios___default()('/api/result/getuseranswers/' + window.user_quiz_id).then(function (response) {
+			return _this.setState({ userAnswers: response.data });
+		});
 		return _this;
 	}
 
