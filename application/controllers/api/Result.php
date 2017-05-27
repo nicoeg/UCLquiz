@@ -18,9 +18,16 @@ class Result extends CI_Controller
 	 */
 	public function getClassList($id)
 	{
-		if ($this->session->userdata('user_type') == 1) 
+		if(!is_numeric($id))
 		{
-			$query = $this->resultsModel->getClassList($id);
+			return false;
+		}
+
+		$safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+		if($this->session->userdata('user_type') == 1) 
+		{
+			$query = $this->resultsModel->getClassList($safeId);
 
 			array_walk($query, function(&$item , $key)
 			{
@@ -28,8 +35,7 @@ class Result extends CI_Controller
 			});
 
 			$classIds = array_column($query, 'class_id');
-
-			$classes = $this->resultsModel->getClassNames($classIds);
+			$classes  = $this->resultsModel->getClassNames($classIds);
 
 			
 
@@ -51,6 +57,7 @@ class Result extends CI_Controller
 
 			return $this->output->set_content_type('application/json')->set_output(json_encode($classNames));
 		}
+
 		return json_encode('Not teacher');
 	}
 

@@ -10,17 +10,19 @@ class Auth extends CI_Controller {
 		$this->load->model('User_model', 'userModel');
 	}
 
-	public function index() {
+	public function index() 
+	{
 		redirect(base_url('auth/login'));
 	}
 
 	public function login()
 	{
-		if ($this->session->userdata('logged_in')) {
+		if($this->session->userdata('logged_in')) 
+		{
 			$this->redirect();
 		}
 
-		if (get_cookie('loginData')) 
+		if(get_cookie('loginData')) 
 		{
 			$token = get_cookie('loginData');
 

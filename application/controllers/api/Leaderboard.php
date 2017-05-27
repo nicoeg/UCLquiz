@@ -27,9 +27,10 @@ class Leaderboard extends CI_Controller
 	{
 		if(is_numeric($quiz_id))
 		{
-			$leaderboard        = $this->leaderboardModel->getLeaderboard($quiz_id);
-			$results            = [];
-			$count              = $this->leaderboardModel->getQuestionCount($quiz_id);
+			$safeId      = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
+			$results     = [];
+			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
 
 			foreach($leaderboard as $item)
 			{
@@ -74,7 +75,7 @@ class Leaderboard extends CI_Controller
 			}
 
 			$output = json_encode([
-				'quiz_name'      => $quiz_id,
+				'quiz_name'      => $safeId,
 				'question_count' => $count,
 				'leaderboard'    => $topFive,
 				'average_score'  => $score,
