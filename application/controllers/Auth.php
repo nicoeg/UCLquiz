@@ -28,7 +28,7 @@ class Auth extends CI_Controller {
 
 			if($dbToken !== null)
 			{
-				$user = $this->userModel->get_user_by_id($dbToken->user_id);
+				$user = $this->userModel->getUserById($dbToken->user_id);
 				$class = $this->userModel->getClassById($user->class_id);
 				$className = $class->name;
 

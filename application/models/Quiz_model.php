@@ -259,6 +259,11 @@ class Quiz_model extends CI_Model
     	return $this->db->insert_id(); 
 	}
 
+	/**
+	 * gets correct answers by quiz id
+	 * @param  int $quiz_id 
+	 * @return array          with answer id and question id for each correct question
+	 */
     public function getCorrectAnswers($quiz_id)
     {
     	$safe['quiz_id'] = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);

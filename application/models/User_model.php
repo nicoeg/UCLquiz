@@ -2,7 +2,7 @@
 
 class User_Model extends CI_Model
 {
-	public function get_user_by_email($email) 
+	public function getUserByEmail($email) 
 	{
 		return $this->db
 			->where('email', $email)
@@ -11,7 +11,7 @@ class User_Model extends CI_Model
 			->row();
 	}
 
-	public function get_user_by_id($id) 
+	public function getUserById($id) 
 	{
 		return $this->db
 			->where('id', $id)
@@ -38,7 +38,7 @@ class User_Model extends CI_Model
 
 	private function login($email, $password) 
 	{
-		$userData = $this->get_user_by_email($email);
+		$userData = $this->getUserByEmail($email);
 
 		if($userData === null || !password_verify($password, $userData->password)) 
 		{
