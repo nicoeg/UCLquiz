@@ -18,9 +18,8 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 		this.deleteAnswer = this.deleteAnswer.bind(this)
 	}
 
-
 	inputChange(answer, value) {
-		answer.value = value
+		answer.answer = value
 
 		this.updateAnswer(answer)
 	}
@@ -43,7 +42,7 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 	addAnswer() {
 		let answers = this.props.answers
 		const latest = answers.sort((a, b) => b.id - a.id)[0]
-		answers.push({ id: latest ? latest.id + 1 : 1, value: '' })
+		answers.push({ id: latest ? latest.id + 1 : 1, answer: '' })
 
 		this.props.updateAnswers(answers)
 	}
@@ -61,7 +60,7 @@ export default class MultipleChoiceQuestionBuilder extends Component {
 			<div key={answer.id} className={blockName}>
 				<span className="number">{index+1}.</span>
 
-				<input className={blockName + '__input textfield'} type="text" value={answer.value} onChange={event => this.inputChange(answer, event.target.value)} />
+				<input className={blockName + '__input textfield'} type="text" value={answer.answer} onChange={event => this.inputChange(answer, event.target.value)} />
 
 				<span className={'button ' + (answer.correct ? 'button--success' : 'button--grey')} onClick={() => this.toggleCorrect(answer)}>Korrekt svar</span>
 

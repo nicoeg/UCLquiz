@@ -3,13 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Quiz_model extends CI_Model
 {
-	/**
-	*  Table name
-	*
-	*  @var string
-	*/
-
-	private $table = 'quizzes';
 
 	/**
 	*  Method to get quiz by id
@@ -23,12 +16,11 @@ class Quiz_model extends CI_Model
 
 		if(filter_var($safeId, FILTER_VALIDATE_INT)) 
 		{
-			$query = $this->db
+			return $this->db
 				->where('id', $safeId)
 				->limit(1)
-				->get($this->table);
-
-			return $query->row();
+				->get('quizzes')
+				->row();
 		}
 
 		return false;
@@ -41,30 +33,30 @@ class Quiz_model extends CI_Model
 
 	public function get()
 	{
-		$query = $this->db->get('quizzes');
-
-		return $query->result();
+		return $this->db
+			->get('quizzes')
+			->result();
 	}
 
 	public function getNew($limit) 
 	{ 
-		$query = $this->db->from('quizzes') 
-		  ->order_by('id', 'DESC') 
-		  ->limit($limit) 
-		  ->get(); 
-
-		return $query->result(); 
+		return $this->db
+			->from('quizzes') 
+		  	->order_by('id', 'DESC') 
+		  	->limit($limit) 
+		  	->get()
+			->result(); 
 	} 
 
-	public function getByCourse($course)  
+	public function getByCourse($id)  
 	{ 
-		$query = $this->db->from('quizzes') 
-		        ->select('*') 
-		        ->join('courses', 'courses.id = quizzes.course_id') 
-		        ->where('name', $course) 
-		        ->get(); 
-
-		return $query->result(); 
+		return $this->db
+			->from('quizzes') 
+		    ->select('*') 
+		    ->join('courses', 'courses.id = quizzes.course_id') 
+		    ->where('course_id', $id) 
+		    ->get()
+			->result(); 
 	} 
 
 	public function getCompleted() 
@@ -72,17 +64,20 @@ class Quiz_model extends CI_Model
 		if(null !== $this->session->userdata('uid')) 
 		{ 
 			$id = $this->session->userdata('uid'); 
-			$query = $this->db->join('quizzes', 'quizzes.id = user_quiz.quiz_id')->where('user_id', $id)->get('user_quiz'); 
 
-			return $query->result(); 
+			return $this->db
+				->join('quizzes', 'quizzes.id = user_quiz.quiz_id')
+				->where('user_id', $id)
+				->get('user_quiz')
+				->result(); 
 		} 
 	} 
 
 	public function getCourses()
 	{
-		$query = $this->db->get('courses');
-
-		return $query->result();
+		return $this->db
+			->get('courses')
+			->result();
 	}
 
 	/**
@@ -107,7 +102,7 @@ class Quiz_model extends CI_Model
 			&& is_string($safe['title'])
 			)
 		{
-			$this->db->insert($this->table, [
+			$this->db->insert('quizzes', [
 				'course_id'   => $safe['course_id'],
 				'level'       => $safe['level'],
 				'uID'         => $safe['user_id'],
@@ -134,7 +129,7 @@ class Quiz_model extends CI_Model
 			&& is_string($safe['question']) 
 			&& filter_var($safe['type'], FILTER_VALIDATE_INT) 
 			&& is_string($safe['hint'])
-			)
+		)
 		{
 			$this->db->insert('questions', [
 				'quiz_id'  => $safe['quiz_id'],
@@ -145,99 +140,144 @@ class Quiz_model extends CI_Model
 
 			return $this->db->insert_id();
 		}
-
+		
 		die('Question data not valid');
 	}
 
 	public function setAnswers($question_id, $answer, $correct)
 	{
 		$safe = [
-			'question_id' => filter_var($data['question_id'], FILTER_SANITIZE_NUMBER_INT),
-			'answer'      => filter_var($data['answer'], FILTER_SANITIZE_STRING),
-			'correct'     => filter_var($data['correct'], FILTER_SANITIZE_NUMBER_INT),
+			'question_id' => filter_var($question_id, FILTER_SANITIZE_NUMBER_INT),
+			'answer'      => filter_var($answer, FILTER_SANITIZE_STRING),
+			'correct'     => filter_var($correct, FILTER_SANITIZE_NUMBER_INT),
+		];
+
+		$this->db->insert('answers', [
+			'question_id' => $safe['question_id'],
+			'answer'      => $safe['answer'],
+			'correct'     => $safe['correct']
+		]);
+	}
+
+	public function updateQuiz($id, $course_id, $level, $title)
+	{	
+		$safe = [
+			'id'        => filter_var($id, FILTER_SANITIZE_NUMBER_INT),
+			'course_id' => filter_var($course_id, FILTER_SANITIZE_NUMBER_INT),
+			'level'     => filter_var($level, FILTER_SANITIZE_NUMBER_INT),
+			'user_id'   => filter_var($this->session->userdata('uid'), FILTER_SANITIZE_NUMBER_INT),
+			'title'     => filter_var($title, FILTER_SANITIZE_STRING)
 		];
 
 		if(
-			filter_var($safe['question_id'], FILTER_VALIDATE_INT) 
-			&& is_string($safe['answer']) 
-			&& filter_var($safe['correct'], FILTER_VALIDATE_INT)
+			filter_var($safe['id'], FILTER_VALIDATE_INT)
+			&& filter_var($safe['course_id'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['level'], FILTER_VALIDATE_INT) 
+			&& filter_var($safe['user_id'], FILTER_VALIDATE_INT) 
+			&& is_string($safe['title'])
 			)
 		{
-			$this->db->insert('answers', [
-				'question_id' => $safe['question_id'],
-				'answer'      => $safe['answer'],
-				'correct'     => $safe['correct']
+			$this->db->replace('quizzes', [
+				'id'          => $safe['id'],
+				'course_id'   => $safe['course_id'],
+				'level'       => $safe['level'],
+				'uID'         => $safe['user_id'],
+				'title'       => $safe['title']
+			]);
+
+			return $safe['id'];
+		}
+
+		die('Quiz data not valid');
+	}
+
+	public function deleteQuestion($question_id)
+	{
+		$safeId = filter_var($question_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('questions', [
+				'id' => $safeId
 			]);
 		}
 	}
 
-	/**
-	*  Method to delete a quiz
-	*
-	*  @param int $id Id of quiz that is going to be deleted
-	*/
-
-	public function delete($id)
+	public function deleteAnswer($answer_id)
 	{
-		$safeId = preg_replace('/[^0-9]/', '', $id);
+		$safeId = filter_var($answer_id, FILTER_SANITIZE_NUMBER_INT);
 
-		if(filter_var($safeId, FILTER_VALIDATE_INT)) 
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
 		{
-			$query = $this->db
-				->where('id', $safeId)
-				->delete($this->table);
+			$this->db->delete('answers', [
+				'id' => $safeId
+			]);
 		}
-
-		return false;
 	}
 
-	public function update($id, $data)
+	public function deleteUserQuiz($quiz_id)
 	{
-		$cID    = preg_replace('/[^0-9]/', '', $data['cID']);
-		$level  = preg_replace('/[^0-9]/', '', $data['level']);
-		$title  = stripslashes($data['title']);
-		$safeId = preg_replace('/[^0-9]/', '', $id);
+		$safeId = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
 
-		$data['cID']   = $cID;
-		$data['level'] = $level;
-		$data['title'] = $title;
-
-		$this->db->where('id', $safeId)
-			->update($this->table, $data);
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('user_quiz', [
+				'id' => $safeId
+			]);
+		}
 	}
 
-    public function saveUserResult($quiz_id, $user_id)
+	public function deleteUserAnswer($user_answer_id)
+	{
+		$safeId = filter_var($user_answer_id, FILTER_SANITIZE_NUMBER_INT);
+
+		if (filter_var($safeId, FILTER_VALIDATE_INT)) 
+		{
+			$this->db->delete('user_answer', [
+				'id' => $safeId
+			]);
+		}
+	}
+
+    public function saveUserResult($quiz_id, $user_id, $time)
     {
     	$safe = [
     		'quiz_id' => filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT),
-    		'user_id' => filter_var($user_id, FILTER_SANITIZE_NUMBER_INT)
+    		'user_id' => filter_var($user_id, FILTER_SANITIZE_NUMBER_INT),
+    		'time' => filter_var($time, FILTER_SANITIZE_NUMBER_INT)
     	];
 
-    	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) && filter_var($safe['user_id'], FILTER_VALIDATE_INT))
+    	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT) && filter_var($safe['user_id'], FILTER_VALIDATE_INT) && filter_var($safe['time'], FILTER_VALIDATE_INT))
     	{
     		$this->db->insert('user_quiz', [
     		    'user_id' => $safe['user_id'],
-    		    'quiz_id' => $safe['quiz_id']
+    		    'quiz_id' => $safe['quiz_id'],
+    		    'time'    => $safe['time']
     		]);
     	}
 
     	return $this->db->insert_id(); 
 	}
 
+	/**
+	 * gets correct answers by quiz id
+	 * @param  int $quiz_id 
+	 * @return array          with answer id and question id for each correct question
+	 */
     public function getCorrectAnswers($quiz_id)
     {
     	$safe['quiz_id'] = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
 
     	if(filter_var($safe['quiz_id'], FILTER_VALIDATE_INT))
     	{
-    		$query = $this->db->from('answers')
+    		return $this->db
+    			->from('answers')
     		    ->select('answers.id, answers.question_id')
     		    ->join('questions', 'questions.id = answers.question_id')
     		    ->where('quiz_id', $safe['quiz_id'])
     		    ->where('correct', 1)
-    		    ->get();
-
-    		return $query->result();
+    		    ->get()
+				->result();
     	}
 	}
 }

@@ -5,6 +5,7 @@ import axios from 'axios'
 import MultipleChoiceQuestion from './questionTypes/MultipleChoiceQuestion'
 import VideoQuestion from './questionTypes/VideoQuestion'
 import QuizResults from './QuizResults'
+import ProgressBar from './ProgressBar'
 
 class Quiz extends React.Component {
     constructor(props) {
@@ -17,7 +18,9 @@ class Quiz extends React.Component {
             currentQuestion: null,
             correctAnswers: [],
             finished: false,
-            showAnswers: false
+            showAnswers: false,
+            startTime: null,
+            time: null
         }
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this)
@@ -30,11 +33,12 @@ class Quiz extends React.Component {
     }
 
     initialize() {
-        axios.get(window.settings.baseUrl + 'api/quiz_rest/getSingle/' + quizId).then(response => {
+        axios.get(window.settings.baseUrl + 'api/quiz/getSingle/' + quizId).then(response => {
             this.setState({
                 quiz: response.data,
                 questions: response.data.questions,
-                currentQuestion: 0
+                currentQuestion: 0,
+                startTime: new Date
             })
         })
     }
@@ -62,11 +66,14 @@ class Quiz extends React.Component {
     }
 
     handleFinish() {
-        axios.post(window.settings.baseUrl + '/api/quiz_rest/saveResult/' + this.state.quiz.id, {answers: this.state.answers}).then(response => {
+        const time = Math.round((new Date - this.state.startTime) / 1000)
+
+        axios.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, {answers: this.state.answers, time}).then(response => {
             //Get response with correct answers and display them
             this.setState({
                 finished: true,
-                correctAnswers: response.data
+                correctAnswers: response.data,
+                time: time
             })
         })
     }
@@ -123,7 +130,7 @@ class Quiz extends React.Component {
             message
 
         questions = questions.map(index => {
-            return this.state.finished && this.state.showAnswers || !this.state.finished ? (
+            return (this.state.finished && this.state.showAnswers) || !this.state.finished ? (
                 <div key={index} className="main-container quiz-container quiz-container--horizontal">
                     <div className="question">
                         <h1>{this.state.questions[index].question}</h1>
@@ -137,7 +144,7 @@ class Quiz extends React.Component {
         if (this.state.finished) {
             message = (
                 <div>
-                    <QuizResults questions={this.state.questions} answers={this.state.answers} correctAnswers={this.state.correctAnswers} />
+                    <QuizResults questions={this.state.questions} answers={this.state.answers} time={this.state.time} correctAnswers={this.state.correctAnswers} />
 
                     <div className="quiz-actions finished">
                         <div className="button button--primary" onClick={this.toggleAnswers}>Se svar</div>
@@ -167,6 +174,8 @@ class Quiz extends React.Component {
                 {message}
 
                 {questions}
+
+                {!this.state.finished ? <ProgressBar currentQuestion={this.state.currentQuestion + 1} quizLength={this.state.questions.length} /> : ''}
 
                 {quizActions}
             </div>

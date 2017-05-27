@@ -13,9 +13,12 @@ let mix = require('laravel-mix');
 
 mix.setPublicPath('.')
 
-mix.react('assets/js/Quiz.js', 'dist/js/');
-
-mix.react('assets/js/admin/CreateQuiz', 'dist/js/');
+mix.react('assets/js/Quiz.js', 'dist/js/')
+   .react('assets/js/admin/CreateQuiz', 'dist/js/')
+   .react('assets/js/overview/Overview', 'dist/js/')
+   .react('assets/js/admin/teacher-result/TeacherResult', 'dist/js/')
+   .react('assets/js/admin/UserQuizResult', 'dist/js/')
+   .extract(['react', 'axios', 'react-dom']);
 
 mix.sass('assets/scss/stylesheet.scss', 'ddist/css/');
 

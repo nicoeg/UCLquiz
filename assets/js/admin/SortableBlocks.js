@@ -9,7 +9,7 @@ export const QuestionBuilderItem = SortableElement(({ position, question, update
 
 export const SortableList = SortableContainer(({ questions, updateQuestion, addQuestion }) => {
 	questions = questions.map((question, index) => (
-		<QuestionBuilderItem key={`item-${question.id}`} index={question.id} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
+		<QuestionBuilderItem key={`item-${question.id}`} index={parseInt(question.id)} position={index} addQuestion={addQuestion} updateQuestion={updateQuestion} question={question} />
 	))
 
 	return (

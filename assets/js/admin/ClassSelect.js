@@ -7,7 +7,6 @@ export default class ClassSelect extends Component {
 
 		this.state = {
 			courses: [],
-			selectedCourse: null,
 			searchQuery: ''
 		}
 
@@ -18,8 +17,7 @@ export default class ClassSelect extends Component {
 	}
 
 	getCourses() {
-		axios.get('/api/quiz_rest/getcourses').then(response => {
-			console.log(response.data)
+		axios.get('/api/quiz/getcourses').then(response => {
 			this.setState({
 				courses: response.data
 			})
@@ -33,15 +31,12 @@ export default class ClassSelect extends Component {
 	}
 
 	setCourse(courseId) {
-		this.setState({
-			selectedCourse: this.state.selectedCourse == courseId ? null : courseId
-		})
-
 		this.props.setCourse(courseId)
 	}
 
 	renderCourses() {
-		const { courses, selectedCourse, searchQuery } = this.state
+		const { courses, searchQuery } = this.state
+		const { selectedCourse } = this.props
 
 		return courses.filter(course => course.name.toLowerCase().indexOf(searchQuery) !== -1).map(course => (
 			<div key={course.id} className={'course-list__item' + (course.id == selectedCourse ? ' course-list__item--active' : '')} onClick={() => this.setCourse(course.id)}>

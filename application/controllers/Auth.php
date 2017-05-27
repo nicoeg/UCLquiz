@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Auth extends CI_Controller {
 
 	public function __construct()
 	{
@@ -10,10 +10,14 @@ class Login extends CI_Controller {
 		$this->load->model('User_model', 'userModel');
 	}
 
-	public function index()
+	public function index() {
+		redirect(base_url('auth/login'));
+	}
+
+	public function login()
 	{
 		if ($this->session->userdata('logged_in')) {
-			redirect(base_url('quiz_view'));
+			$this->redirect();
 		}
 
 		if (get_cookie('loginData')) 
@@ -24,7 +28,7 @@ class Login extends CI_Controller {
 
 			if($dbToken !== null)
 			{
-				$user = $this->userModel->get_user_by_id($dbToken->user_id);
+				$user = $this->userModel->getUserById($dbToken->user_id);
 				$class = $this->userModel->getClassById($user->class_id);
 				$className = $class->name;
 
@@ -39,7 +43,7 @@ class Login extends CI_Controller {
 
 				$this->session->set_userdata($sessionData);
 
-				redirect(base_url('quiz_view'));
+				$this->redirect();
 			}
 		}
 
@@ -48,10 +52,17 @@ class Login extends CI_Controller {
         $this->load->view('footer');
 	}
 
+
 	public function logout()
 	{
 		$this->session->sess_destroy();
 		delete_cookie('loginData');
 		redirect(base_url());
+	}
+
+	public function redirect() {
+		$endpoint = $this->session->userdata('user_type') == 0 ? 'student' : 'teacher';
+
+		redirect(base_url($endpoint));
 	}
 }

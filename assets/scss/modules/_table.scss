@@ -1,0 +1,20 @@
+.table {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: separate;
+    border-spacing: 0 5px;
+
+	&__column {
+		padding: 15px;
+	}
+
+	&__header &__item {
+		background: rgba(0, 0, 0, 0.15);
+		color: #fff;
+	}
+
+	&__body &__item {
+		background: #fff;
+		color: $dark-grey;
+	}
+}

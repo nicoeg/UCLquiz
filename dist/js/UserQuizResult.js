@@ -1,4 +1,4 @@
-webpackJsonp([2],[
+webpackJsonp([5],[
 /* 0 */,
 /* 1 */,
 /* 2 */,
@@ -2083,7 +2083,9 @@ module.exports = hasUnicode;
 /* 190 */,
 /* 191 */,
 /* 192 */,
-/* 193 */
+/* 193 */,
+/* 194 */,
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2094,10 +2096,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionTypes_MultipleChoiceQuestion__ = __webpack_require__(230);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__questionTypes_VideoQuestion__ = __webpack_require__(231);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__QuizResults__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgressBar__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__QuizResults__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__questionTypes_MultipleChoiceQuestion__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__questionTypes_VideoQuestion__ = __webpack_require__(231);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2114,246 +2115,107 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var UserQuizResult = function (_Component) {
+	_inherits(UserQuizResult, _Component);
 
-var Quiz = function (_React$Component) {
-    _inherits(Quiz, _React$Component);
+	function UserQuizResult() {
+		_classCallCheck(this, UserQuizResult);
 
-    function Quiz(props) {
-        _classCallCheck(this, Quiz);
+		var _this = _possibleConstructorReturn(this, (UserQuizResult.__proto__ || Object.getPrototypeOf(UserQuizResult)).call(this));
 
-        var _this = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
+		_this.state = {
+			user_id: null,
+			quiz_id: null,
+			quiz: null,
+			userAnswers: []
+		};
 
-        _this.state = {
-            quiz: { id: 1 },
-            questions: [],
-            answers: [],
-            currentQuestion: null,
-            correctAnswers: [],
-            finished: false,
-            showAnswers: false,
-            startTime: null,
-            time: null
-        };
+		__WEBPACK_IMPORTED_MODULE_2_axios___default()('/api/result/getuserresult/' + window.user_quiz_id).then(function (response) {
+			_this.setState({
+				user_id: response.data.user_id,
+				quiz_id: response.data.quiz_id
+			});
 
-        _this.handleNextQuestion = _this.handleNextQuestion.bind(_this);
-        _this.handlePreviousQuestion = _this.handlePreviousQuestion.bind(_this);
-        _this.toggleAnswers = _this.toggleAnswers.bind(_this);
-        _this.handleFinish = _this.handleFinish.bind(_this);
-        _this.selectAnswer = _this.selectAnswer.bind(_this);
+			_this.getQuiz(response.data.quiz_id);
+		});
 
-        _this.initialize();
-        return _this;
-    }
+		__WEBPACK_IMPORTED_MODULE_2_axios___default()('/api/result/getuseranswers/' + window.user_quiz_id).then(function (response) {
+			return _this.setState({ userAnswers: response.data });
+		});
+		return _this;
+	}
 
-    _createClass(Quiz, [{
-        key: 'initialize',
-        value: function initialize() {
-            var _this2 = this;
+	_createClass(UserQuizResult, [{
+		key: 'getQuiz',
+		value: function getQuiz(id) {
+			var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(window.settings.baseUrl + 'api/quiz/getSingle/' + quizId).then(function (response) {
-                _this2.setState({
-                    quiz: response.data,
-                    questions: response.data.questions,
-                    currentQuestion: 0,
-                    startTime: new Date()
-                });
-            });
-        }
-    }, {
-        key: 'handleNextQuestion',
-        value: function handleNextQuestion() {
-            if (this.state.questions.length > this.state.currentQuestion + 1) {
-                this.setState({
-                    currentQuestion: this.state.currentQuestion + 1
-                });
-            }
-        }
-    }, {
-        key: 'handlePreviousQuestion',
-        value: function handlePreviousQuestion() {
-            if (this.state.currentQuestion != 0) {
-                this.setState({
-                    currentQuestion: this.state.currentQuestion - 1
-                });
-            }
-        }
-    }, {
-        key: 'toggleAnswers',
-        value: function toggleAnswers() {
-            this.setState({
-                showAnswers: !this.state.showAnswers
-            });
-        }
-    }, {
-        key: 'handleFinish',
-        value: function handleFinish() {
-            var _this3 = this;
+			__WEBPACK_IMPORTED_MODULE_2_axios___default()('/api/quiz/getsingle/' + id).then(function (response) {
+				return _this2.setState({ quiz: response.data });
+			});
+		}
+	}, {
+		key: 'getQuestionData',
+		value: function getQuestionData(index) {
+			var question = this.state.quiz.questions[index],
+			    userAnswer = this.state.userAnswers.find(function (answer) {
+				return answer.question_id == question.id;
+			}),
+			    correctAnswer = question.answers.find(function (answer) {
+				return answer.correct == 1;
+			});
 
-            var time = Math.round((new Date() - this.state.startTime) / 1000);
+			if (question.type == 1) {
+				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__questionTypes_MultipleChoiceQuestion__["a" /* default */], { currentAnswer: userAnswer ? userAnswer : false,
+					answers: question.answers,
+					correctAnswer: correctAnswer ? correctAnswer : false,
+					readOnly: true });
+			} else if (question.type == 2) {
+				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__questionTypes_VideoQuestion__["a" /* default */], { currentAnswer: userAnswer ? userAnswer : false,
+					answers: question.answers,
+					correctAnswer: correctAnswer ? correctAnswer : false,
+					readOnly: true });
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.settings.baseUrl + '/api/quiz/saveResult/' + this.state.quiz.id, { answers: this.state.answers, time: time }).then(function (response) {
-                //Get response with correct answers and display them
-                _this3.setState({
-                    finished: true,
-                    correctAnswers: response.data,
-                    time: time
-                });
-            });
-        }
-    }, {
-        key: 'selectAnswer',
-        value: function selectAnswer(answer_id) {
-            var question = this.state.questions[this.state.currentQuestion],
-                answers = this.state.answers,
-                data = { question_id: question.id, answer_id: answer_id },
-                existing = answers.findIndex(function (answer) {
-                return answer.question_id == question.id;
-            });
+			var questions = this.state.quiz ? this.state.quiz.questions.map(function (question, index) {
+				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ key: index, className: 'main-container quiz-container quiz-container--horizontal' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'question' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'h1',
+							null,
+							_this3.state.quiz.questions[index].question
+						)
+					),
+					_this3.getQuestionData(index)
+				);
+			}) : '';
 
-            if (existing != -1) {
-                answers[existing] = data;
-            } else {
-                answers.push(data);
-            }
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				null,
+				questions
+			);
+		}
+	}]);
 
-            this.setState({
-                answers: answers
-            });
-        }
-    }, {
-        key: 'getQuestionData',
-        value: function getQuestionData(index) {
-            var question = this.state.questions[index],
-                userAnswer = this.state.answers.find(function (answer) {
-                return answer.question_id == question.id;
-            }),
-                correctAnswer = this.state.correctAnswers.find(function (answer) {
-                return answer.question_id == question.id;
-            }),
-                readyOnly = this.state.finished;
+	return UserQuizResult;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-            if (question.type == 1) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__questionTypes_MultipleChoiceQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
-                    currentAnswer: userAnswer ? userAnswer : false,
-                    answers: question.answers,
-                    correctAnswer: correctAnswer ? correctAnswer : false,
-                    readOnly: readyOnly });
-            } else if (question.type == 2) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__questionTypes_VideoQuestion__["a" /* default */], { selectAnswer: this.selectAnswer,
-                    currentAnswer: userAnswer ? userAnswer : false,
-                    answers: question.answers,
-                    correctAnswer: correctAnswer ? correctAnswer : false,
-                    readOnly: readyOnly });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            if (this.state.currentQuestion === null && !this.state.finished) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
-                    'Loading...'
-                );
-            }
-
-            var questions = this.state.finished ? Object.keys(this.state.questions) : [this.state.currentQuestion],
-                nextButton = void 0,
-                message = void 0;
-
-            questions = questions.map(function (index) {
-                return _this4.state.finished && _this4.state.showAnswers || !_this4.state.finished ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { key: index, className: 'main-container quiz-container quiz-container--horizontal' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'question' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h1',
-                            null,
-                            _this4.state.questions[index].question
-                        )
-                    ),
-                    _this4.getQuestionData(index)
-                ) : '';
-            });
-
-            if (this.state.finished) {
-                message = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__QuizResults__["a" /* default */], { questions: this.state.questions, answers: this.state.answers, time: this.state.time, correctAnswers: this.state.correctAnswers }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'quiz-actions finished' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'button button--primary', onClick: this.toggleAnswers },
-                            'Se svar'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'button button--primary' },
-                            'Afslut'
-                        )
-                    )
-                );
-            }
-
-            if (this.state.currentQuestion == this.state.questions.length - 1) {
-                nextButton = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'button button--primary', onClick: this.handleFinish },
-                    'Afslut'
-                );
-            } else {
-                nextButton = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'button button--primary', onClick: this.handleNextQuestion },
-                    'N\xE6ste'
-                );
-            }
-
-            var quizActions = !this.state.finished ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'quiz-actions' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'button button--primary previous ' + (this.state.currentQuestion == 0 ? 'button--disabled' : ''), onClick: this.handlePreviousQuestion },
-                    'Forrige'
-                ),
-                nextButton
-            ) : '';
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                message,
-                questions,
-                !this.state.finished ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__ProgressBar__["a" /* default */], { currentQuestion: this.state.currentQuestion + 1, quizLength: this.state.questions.length }) : '',
-                quizActions
-            );
-        }
-    }]);
-
-    return Quiz;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Quiz, null), document.getElementById('quiz'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(UserQuizResult, null), document.getElementById('userquizresult'));
 
 /***/ }),
-/* 194 */,
-/* 195 */,
 /* 196 */,
 /* 197 */,
-/* 198 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 198 */,
 /* 199 */,
 /* 200 */,
 /* 201 */,
@@ -2371,53 +2233,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /* 213 */,
 /* 214 */,
 /* 215 */,
-/* 216 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var ProgressBar = function (_Component) {
-	_inherits(ProgressBar, _Component);
-
-	function ProgressBar(props) {
-		_classCallCheck(this, ProgressBar);
-
-		return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
-	}
-
-	_createClass(ProgressBar, [{
-		key: 'progress',
-		value: function progress() {
-			return this.props.currentQuestion / this.props.quizLength * 100;
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				'div',
-				{ style: { minHeight: 0, margin: '-50px auto 50px auto' }, className: 'quiz-container' },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { style: { width: this.progress() + '%' }, className: 'progressbar', 'data-progress': this.props.currentQuestion + '/' + this.props.quizLength })
-			);
-		}
-	}]);
-
-	return ProgressBar;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (ProgressBar);
-
-/***/ }),
+/* 216 */,
 /* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7873,12 +7689,13 @@ exports.default = function () {
 module.exports = exports['default'];
 
 /***/ }),
-/* 491 */
+/* 491 */,
+/* 492 */,
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(193);
-module.exports = __webpack_require__(198);
+module.exports = __webpack_require__(195);
 
 
 /***/ })
-],[491]);
+],[493]);

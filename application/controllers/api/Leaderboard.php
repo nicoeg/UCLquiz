@@ -27,9 +27,9 @@ class Leaderboard extends CI_Controller
 	{
 		if(is_numeric($quiz_id))
 		{
-			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
-			$results     = [];
-			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
+			$leaderboard        = $this->leaderboardModel->getLeaderboard($quiz_id);
+			$results            = [];
+			$count              = $this->leaderboardModel->getQuestionCount($quiz_id);
 
 			foreach($leaderboard as $item)
 			{
@@ -44,8 +44,16 @@ class Leaderboard extends CI_Controller
 				];		
 			}
 
-			$userId = $this->session->userdata('uid');
-			$userResult = $results['userId'.$userId];
+			if(isset($_GET['user_id']))
+			{
+				$userId = $_GET['user_id'];
+			}
+			else
+			{
+				$userId = $this->session->userdata('uid');
+			}
+			
+			$userResult = key_exists('userId'.$userId, $results) ? $results['userId'.$userId] : null;
 			$score = array_sum(array_column($results, 'correct_answers_count')) / count($results);
 			$time = array_sum(array_column($results, 'time_seconds')) / count($results);
 
@@ -73,8 +81,10 @@ class Leaderboard extends CI_Controller
 				'average_time'   => $time,
 				'user_result'    => $userResult
 			]);
-			
-			return $this->output->set_content_type('application/json')->set_output($output);
+
+			return $this->output
+				->set_content_type('application/json')
+				->set_output($output);
 		}
 
 		return false;
