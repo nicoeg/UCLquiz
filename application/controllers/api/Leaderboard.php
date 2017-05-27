@@ -28,14 +28,14 @@ class Leaderboard extends CI_Controller
 		if(is_numeric($quiz_id))
 		{
 			$safeId      = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
-			$leaderboard = $this->leaderboardModel->getLeaderboard($quiz_id);
+			$leaderboard = $this->leaderboardModel->getLeaderboard($safeId);
 			$results     = [];
-			$count       = $this->leaderboardModel->getQuestionCount($quiz_id);
+			$count       = $this->leaderboardModel->getQuestionCount($safeId);
 
 			foreach($leaderboard as $item)
 			{
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
-				$name = $this->leaderboardModel->getName($item->id);
+				$name            = $this->leaderboardModel->getName($item->id);
 
 				$results['userId'.$item->user_id] = [
 					'name'                  => $name,

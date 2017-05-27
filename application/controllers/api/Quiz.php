@@ -253,7 +253,7 @@ class Quiz extends CI_Controller
 	{
 		if(is_numeric($limit))
 		{
-			$safeLimit = filter_var($limit, FILTER_SANITIZE_NUMBER_INT)
+			$safeLimit = filter_var($limit, FILTER_SANITIZE_NUMBER_INT);
 			$new = $this->quizModel->getNew($safeLimit);
 
 			return $this->output->set_content_type('application/json')->set_output(json_encode($new));
