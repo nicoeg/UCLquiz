@@ -78,7 +78,7 @@ class Quiz extends CI_Controller
 	}
 
     public function saveResult($quiz_id) {
-        if($this->input->method() != 'post') 
+        if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true) 
         {
             redirect('404');
         }
@@ -105,7 +105,7 @@ class Quiz extends CI_Controller
 
 	public function createQuiz($id = null)
 	{
-		if($this->input->method() != 'post')
+		if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true)
 		{
 			return false;
 		}
@@ -121,7 +121,7 @@ class Quiz extends CI_Controller
 		 * Needs to be sanitized
 		 */
 		
-		$title     = mysqli_real_escape_string(filter_var($data['title'], FILTER_SANITIZE_STRING));
+		$title     = filter_var($data['title'], FILTER_SANITIZE_STRING);
 		$course    = filter_var($data['course_id'], FILTER_SANITIZE_NUMBER_INT);
 		$level     = filter_var($data['level'], FILTER_SANITIZE_NUMBER_INT);
 		$questions = $data['questions'];
@@ -151,9 +151,9 @@ class Quiz extends CI_Controller
 				return false;
 			}
 
-			$qString  = mysqli_real_escape_string(filter_var($question['question'], FILTER_SANITIZE_STRING));
+			$qString  = filter_var($question['question'], FILTER_SANITIZE_STRING);
 			$type     = filter_var($question['type'], FILTER_SANITIZE_NUMBER_INT);
-			$hint     = mysqli_real_escape_string(filter_var($question['hint'], FILTER_SANITIZE_STRING));
+			$hint     = filter_var($question['hint'], FILTER_SANITIZE_STRING);
 			$qId      = filter_var($quizId, FILTER_SANITIZE_NUMBER_INT);
 			$answers  = $question['answers'];
 
@@ -171,7 +171,7 @@ class Quiz extends CI_Controller
 					return false;
 				}
 
-				$aString = mysqli_real_escape_string(filter_var($answer['answer'], FILTER_SANITIZE_STRING));
+				$aString = filter_var($answer['answer'], FILTER_SANITIZE_STRING);
 				$correct = filter_var($answer['correct'], FILTER_SANITIZE_NUMBER_INT);
 
 				$this->quizModel->setAnswers($questionId, $aString, $correct);
@@ -181,7 +181,7 @@ class Quiz extends CI_Controller
 
 	public function updateQuiz($id)
 	{
-		if($this->input->method() != 'post')
+		if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true)
 		{
 			return false;
 		}
@@ -237,6 +237,10 @@ class Quiz extends CI_Controller
 
 	public function getCourses()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+
 		$courses = $this->quizModel->getCourses();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($courses));
@@ -244,6 +248,10 @@ class Quiz extends CI_Controller
 
 	public function getQuizzes()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+
 		$quizzes = $this->quizModel->get();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($quizzes));
@@ -251,7 +259,7 @@ class Quiz extends CI_Controller
 
 	public function getNewQuizzes($limit)
 	{
-		if(is_numeric($limit))
+		if(is_numeric($limit) && !$this->session->userdata('logged_in') == true)
 		{
 			$safeLimit = filter_var($limit, FILTER_SANITIZE_NUMBER_INT);
 			$new = $this->quizModel->getNew($safeLimit);
@@ -264,7 +272,7 @@ class Quiz extends CI_Controller
 
 	public function getQuizzesByCourse($id)
 	{
-		if(is_numeric($id))
+		if(is_numeric($id) && !$this->session->userdata('logged_in') == true)
 		{
 			$safeId       = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 			$quizByCourse = $this->quizModel->getByCourse($safeId);
@@ -277,6 +285,10 @@ class Quiz extends CI_Controller
 
 	public function getCompletedQuizzes()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+		
 		$completed = $this->quizModel->getCompleted();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($completed));

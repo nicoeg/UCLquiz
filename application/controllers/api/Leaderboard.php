@@ -25,7 +25,7 @@ class Leaderboard extends CI_Controller
 
 	public function getLeaderboard($quiz_id)
 	{
-		if(is_numeric($quiz_id))
+		if(is_numeric($quiz_id) && $this->session->userdata('logged_in') == true)
 		{
 			$safeId      = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
 			$leaderboard = $this->leaderboardModel->getLeaderboard($safeId);

@@ -15,7 +15,7 @@ class Quiz_model extends CI_Model
 	public function getQuizById($id)
 	{
 		return $this->db
-			->where('id', $safeId)
+			->where('id', $id)
 			->limit(1)
 			->get('quizzes')
 			->row();
@@ -219,7 +219,7 @@ class Quiz_model extends CI_Model
 	public function deleteQuestion($question_id)
 	{
 		$this->db->delete('questions', [
-			'id' => $safeId
+			'id' => $question_id
 		]);
 
 		return true;
@@ -236,7 +236,7 @@ class Quiz_model extends CI_Model
 	public function deleteAnswer($answer_id)
 	{
 		$this->db->delete('answers', [
-			'id' => $safeId
+			'id' => $answer_id
 		]);
 
 		return true;
@@ -253,7 +253,7 @@ class Quiz_model extends CI_Model
 	public function deleteUserQuiz($quiz_id)
 	{
 		$this->db->delete('user_quiz', [
-			'id' => $safeId
+			'id' => $quiz_id
 		]);
 
 		return true;
@@ -270,7 +270,7 @@ class Quiz_model extends CI_Model
 	public function deleteUserAnswer($user_answer_id)
 	{
 		$this->db->delete('user_answer', [
-			'id' => $safeId
+			'id' => $user_answer_id
 		]);
 		
 		return true;
@@ -311,7 +311,7 @@ class Quiz_model extends CI_Model
 			->from('answers')
 		    ->select('answers.id, answers.question_id')
 		    ->join('questions', 'questions.id = answers.question_id')
-		    ->where('quiz_id', $safe['quiz_id'])
+		    ->where('quiz_id', $quiz_id)
 		    ->where('correct', 1)
 		    ->get()
 			->result();

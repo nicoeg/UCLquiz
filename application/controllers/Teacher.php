@@ -36,7 +36,7 @@ class Teacher extends CI_Controller {
     public function edit($id) {
         if(is_numeric($id))
         {
-            $safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT)
+            $safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
             $this->load->view('header', [
                 'logged_in' => $this->session->userdata('logged_in')
