@@ -3,6 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Results_Model extends CI_Model
 {
+
+
+	/**
+	 * list of users that belong to a class
+	 * @param  int $class_id 
+	 * @return array           
+	 */
+	
+
 	public function classUsers($class_id)
 	{
 		return $this->db
@@ -11,6 +20,14 @@ class Results_Model extends CI_Model
 			->get('users')
 			->result();
 	}
+
+
+	/**
+	 * gets all user quizzes taken by users with the ids passed in
+	 * @param  array $user_id_array 
+	 * @return array                with user quizzes
+	 */
+	
 
 	public function getUserQuizByUserId($user_id_array)
 	{
@@ -22,17 +39,34 @@ class Results_Model extends CI_Model
 			->result();
 	}
 
-	public function getClassList($id)
+
+	/**
+	 * shows all classes with students that has taken the quiz with the id that is passed
+	 * @param  int $quiz_id 
+	 * @return array          
+	 */
+	
+
+	public function getClassList($quiz_id)
 	{
 		return $this->db
 			->select('class_id')
 			->from('user_quiz')
-			->where('quiz_id', $id)
+			->where('quiz_id', $quiz_id)
 			->join('users', 'users.id = user_quiz.user_id')
 			->group_by('class_id')
 			->get()
 			->result();
 	}
+
+
+	/**
+	 * get all users that has taken the quiz that is passed in and from the class that is passed in
+	 * @param  int $quiz_id  
+	 * @param  int $class_id 
+	 * @return array           
+	 */
+	
 
 	public function getUserCount($quiz_id, $class_id)
 	{
@@ -46,6 +80,14 @@ class Results_Model extends CI_Model
  			->result();
 	}
 
+
+	/**
+	 * gets names of classes that has one of the ids passed in
+	 * @param  array $array array of class ids
+	 * @return array        
+	 */
+	
+
 	public function getClassNames($array)
 	{
 		return $this->db
@@ -54,6 +96,15 @@ class Results_Model extends CI_Model
 			->get('classes')
 			->result();
 	}
+
+
+	/**
+	 * gets user results to a quiz with the passed in array but only if the user matches the array of user ids
+	 * @param  int $quiz_id       
+	 * @param  array $user_id_array 
+	 * @return array                
+	 */
+	
 
 	public function getUserResults($quiz_id, $user_id_array)
 	{
@@ -64,6 +115,14 @@ class Results_Model extends CI_Model
 			->result(); 
 	}
 
+
+	/**
+	 * gets user answers to the passed in user quiz id
+	 * @param  int $user_quiz_id 
+	 * @return array               
+	 */
+	
+	
 	public function getUserAnswers($user_quiz_id)
 	{
 		return $this->db
