@@ -77,7 +77,7 @@ export default class QuizResults extends React.Component {
                 <div className="tribox-container main-container result">
                     <h1>Gennemsnit</h1>
 
-                    <div className="donut-chart" style={{animationDelay: '-' + this.state.average_score * 100 + 's'}}>
+                    <div className="donut-chart" style={{animationDelay: '-' + this.state.average_score / this.state.questionCount * 100 + 's'}}>
                         <span>{this.state.average_score} ud af {this.state.questionCount} rigtige</span>
                     </div>
 
