@@ -96,7 +96,7 @@ class Teacher extends CI_Controller {
                 'logged_in' => $this->session->userdata('logged_in')
             ]);
             $this->load->view('quiz_user_result', [
-                'quiz_id' => $safeId
+                'user_quiz_id' => $safeId
             ]);
             $this->load->view('footer');
 
