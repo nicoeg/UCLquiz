@@ -27,6 +27,10 @@ class Result extends CI_Controller
 		
 		$query = $this->resultsModel->getClassList($safeId);
 
+		if(count($query) == 0) {
+			return false;
+		}
+
 		array_walk($query, function(&$item , $key)
 		{
 		   $item = (array) $item;
