@@ -2,7 +2,16 @@
 
 class User_Model extends CI_Model
 {
-	public function get_user_by_email($email) 
+
+
+	/**
+	 * gets a user by the passed in email
+	 * @param  string $email 
+	 * @return array        
+	 */
+	
+
+	public function getUserByEmail($email) 
 	{
 		return $this->db
 			->where('email', $email)
@@ -11,7 +20,15 @@ class User_Model extends CI_Model
 			->row();
 	}
 
-	public function get_user_by_id($id) 
+
+	/**
+	 * gets user info from the database by the passed in id
+	 * @param  int $id 
+	 * @return array     
+	 */
+	
+
+	public function getUserById($id) 
 	{
 		return $this->db
 			->where('id', $id)
@@ -20,6 +37,11 @@ class User_Model extends CI_Model
 			->row();
 	}
 
+
+	/**
+	 * login method that handles the login info from the authorization header
+	 * @return bool 
+	 */
 	public function access() 
 	{	
 		$headers = getallheaders();
@@ -36,9 +58,18 @@ class User_Model extends CI_Model
 		return false;
 	}
 
+
+	/**
+	 * login method that sets a session if login info is correct
+	 * @param  string $email    
+	 * @param  string $password 
+	 * @return bool           
+	 */
+	
+
 	private function login($email, $password) 
 	{
-		$userData = $this->get_user_by_email($email);
+		$userData = $this->getUserByEmail($email);
 
 		if($userData === null || !password_verify($password, $userData->password)) 
 		{
@@ -62,6 +93,14 @@ class User_Model extends CI_Model
 		return true;
 	}
 
+
+	/**
+	 * gets the cookie token from the database
+	 * @param  string $token 
+	 * @return array        
+	 */
+	
+
 	public function getCookieToken($token)
 	{
 		return $this->db
@@ -71,6 +110,14 @@ class User_Model extends CI_Model
 			->row();
 	}
 
+
+	/**
+	 * gets class table where id is passed in
+	 * @param  int $id 
+	 * @return array     
+	 */
+	
+	
 	public function getClassById($id)
 	{
 		return $this->db

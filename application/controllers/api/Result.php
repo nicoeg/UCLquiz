@@ -18,40 +18,40 @@ class Result extends CI_Controller
 	 */
 	public function getClassList($id)
 	{
-		if ($this->session->userdata('user_type') == 1) 
+		if(!is_numeric($id) || !$this->session->userdata('user_type') == 1)
 		{
-			$query = $this->resultsModel->getClassList($id);
+			return false;
+		}
 
-			array_walk($query, function(&$item , $key)
-			{
-			   $item = (array) $item;
-			});
+		$safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+		
+		$query = $this->resultsModel->getClassList($safeId);
 
-			$classIds = array_column($query, 'class_id');
+		array_walk($query, function(&$item , $key)
+		{
+		   $item = (array) $item;
+		});
 
-			$classes = $this->resultsModel->getClassNames($classIds);
+		$classIds = array_column($query, 'class_id');
+		$classes  = $this->resultsModel->getClassNames($classIds);	
 
+		array_walk($classes, function(&$item , $key)
+		{
+		   $item = (array) $item;
+		});
+
+		$classNames = [];
+
+		foreach ($classes as $i => $class) {
+			$class_id = $class['id'];
+			$count = count($this->resultsModel->getUserCount($id, $class_id));
 			
 
-			array_walk($classes, function(&$item , $key)
-			{
-			   $item = (array) $item;
-			});
-
-			$classNames = [];
-
-			foreach ($classes as $i => $class) {
-				$class_id = $class['id'];
-				$count = count($this->resultsModel->getUserCount($id, $class_id));
-				
-
-				$classNames[$i] = $class;
-				$classNames[$i]['count'] = $count;
-			}
-
-			return $this->output->set_content_type('application/json')->set_output(json_encode($classNames));
+			$classNames[$i] = $class;
+			$classNames[$i]['count'] = $count;
 		}
-		return json_encode('Not teacher');
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($classNames));
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Result extends CI_Controller
 	 */
 	public function getClassResults()
 	{
-		if($this->input->method() === 'post')
+		if($this->input->method() === 'post' && $this->session->userdata('user_type') == 1)
 		{
 			$array = json_decode(file_get_contents('php://input'), true);
 
@@ -111,11 +111,13 @@ class Result extends CI_Controller
 
 			return $this->output->set_content_type('application/json')->set_output(json_encode($userinfo));
 		}
+
+		return false;
 	}
 
 	public function getUserCount()
 	{
-		if($this->input->method() === 'post')
+		if($this->input->method() === 'post' && $this->session->userdata('user_type') == 1)
 		{
 			$array = json_decode(file_get_contents('php://input'), true);
 
@@ -126,11 +128,13 @@ class Result extends CI_Controller
 
 			return $this->output->set_content_type('application/json')->set_output(json_encode($count));
 		}
+
+		return false;
 	}
 
 	public function getUserResults($quiz_id)
 	{
-		if(is_numeric($quiz_id))
+		if(is_numeric($quiz_id) && $this->session->userdata('user_type') == 1)
 		{
 			$leaderboard        = $this->resultsModel->getUserResults($quiz_id);
 			$results            = [];
@@ -189,6 +193,10 @@ class Result extends CI_Controller
 
 	public function getUserResult($user_quiz_id) 
 	{
+		if (!is_numeric($user_quiz_id) && !$this->session->userdata('user_type') == 1) {
+			return false;
+		}
+
 		$result = $this->db
 			->where('id', $user_quiz_id)
 			->get('user_quiz')
@@ -200,15 +208,12 @@ class Result extends CI_Controller
 
 	public function getUserAnswers($user_quiz_id)
 	{
+		if (!is_numeric($user_quiz_id) && !$this->session->userdata('user_type') == 1) {
+			return false;
+		}
+
 		$answer_ids = $this->resultsModel->getUserAnswers($user_quiz_id);
 		
 		return $this->output->set_content_type('application/json')->set_output(json_encode($answer_ids));
 	}
 }
-
-
-
-
-
-
-
