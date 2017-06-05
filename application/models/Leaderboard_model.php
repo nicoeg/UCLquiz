@@ -7,7 +7,7 @@ class Leaderboard_Model extends CI_Model
 	/**
 	 * use this to get the user_quiz_id, user_id, quiz_id, time
 	 * @param  int $quizid id of quiz you want leaderboards for
-	 * @return obj         returns user quiz id, user id, quiz id and time
+	 * @return array         returns user quiz id, user id, quiz id and time
 	 */
 	
 
@@ -38,6 +38,14 @@ class Leaderboard_Model extends CI_Model
 			->row('correct');
 	}
 
+
+	/**
+	 * gets username based on user quiz id
+	 * @param  int $user_quiz_id 
+	 * @return array               
+	 */
+	
+
 	public function getName($user_quiz_id)
 	{
 		return $this->db
@@ -51,7 +59,7 @@ class Leaderboard_Model extends CI_Model
 	/**
 	 * Gets question count based on quiz id
 	 * @param  int $quiz_id 
-	 * @return int          amoutn of questions
+	 * @return int          amount of questions
 	 */
 	
 

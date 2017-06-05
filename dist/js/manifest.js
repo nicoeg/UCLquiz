@@ -87,7 +87,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "dist/js/" + ({"0":"dist/js/vendor","1":"dist/js/CreateQuiz","2":"dist/js/Quiz","3":"dist/js/TeacherResult","4":"dist/js/Overview","5":"dist/js/UserQuizResult"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "dist/js/" + ({"0":"dist/js/vendor","1":"dist/js/CreateQuiz","2":"dist/js/Quiz","3":"dist/js/UserQuizResult","4":"dist/js/TeacherResult","5":"dist/js/Overview"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {

@@ -30,13 +30,31 @@ class Student extends CI_Controller {
         $this->load->view('footer');
     }
 
+
+    /**
+     * Show a single quiz
+     * @param  int $id Id of quiz
+     * @return bool     Returns true on success
+     */
     public function quiz($id)
     {
-        $this->load->view('header', [
-            'logged_in' => $this->session->userdata('logged_in')
-        ]);
+        if(is_numeric($id))
+        {
+            $safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
-        $this->load->view('quiz_show', ['quizId' => $id]);
-        $this->load->view('footer');
+            $this->load->view('header', [
+                'logged_in' => $this->session->userdata('logged_in')
+            ]);
+
+            $this->load->view('quiz_show', [
+                'quizId' => $safeId
+            ]);
+            
+            $this->load->view('footer');
+
+            return true;
+        }
+
+        return false;
     }
 }

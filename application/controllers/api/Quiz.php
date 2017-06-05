@@ -21,46 +21,50 @@ class Quiz extends CI_Controller
 	 */
 	
 
-	public function getSingle(int $id)
+	public function getSingle($id)
 	{
+		if(!is_numeric($id))
+		{
+			return false;
+		}
+
+		$safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
 		if($this->session->userdata('logged_in') === true)
 		{	
 			if($this->session->userdata('user_type') == 0)
 			{
-				$quizId = $id;
-				$data   = $this->quizModel->getQuizById($quizId);
+				$data      = $this->quizModel->getQuizById($safeId);
+				$questions = $this->questionModel->getQuestionsByQuizId($safeId);
 
-				$questions = $this->questionModel->getQuestionsByQuizId($quizId);
-
-				foreach ($questions as $key => $question) {
+				foreach($questions as $key => $question) 
+				{
 				    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
-	                $questions[$key]->answers = array_map(function($answer) {
+	                $questions[$key]->answers = array_map(function($answer) 
+	                {
 	                    unset($answer->correct);
-
 	                    return $answer;
 	                }, $answers);
 	            }
 
 	            $data->questions = $questions;
-
-				$dataJSON = json_encode($data);
+				$dataJSON        = json_encode($data);
 			}
 
-			$quizId = $id;
-			$data   = $this->quizModel->getQuizById($quizId);
+			$data      = $this->quizModel->getQuizById($safeId);
+			$questions = $this->questionModel->getQuestionsByQuizId($safeId);
 
-			$questions = $this->questionModel->getQuestionsByQuizId($quizId);
-
-			foreach ($questions as $key => $question) {
+			foreach($questions as $key => $question) 
+			{
 			    $answers = $this->answerModel->getAnswersByQuestionId($question->id);
-	                $questions[$key]->answers = array_map(function($answer) {
+	                $questions[$key]->answers = array_map(function($answer) 
+	                {
 						return $answer;
 	                }, $answers);
             }
 
             $data->questions = $questions;
-
-			$dataJSON = json_encode($data);
+			$dataJSON        = json_encode($data);
 		} 
 		else 
 		{
@@ -74,37 +78,41 @@ class Quiz extends CI_Controller
 	}
 
     public function saveResult($quiz_id) {
-        if ($this->input->method() != 'post') {
+        if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true) 
+        {
             redirect('404');
         }
 
-        $request_data = json_decode(file_get_contents('php://input'), true);
+        if(is_numeric($quiz_id))
+        {
+        	$safeId       = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+            $request_data = json_decode(file_get_contents('php://input'), true);
+          	$user_quiz_id = $this->quizModel->saveUserResult($safeId, $this->session->userdata('uid'), $request_data['time']); 
 
-      	$user_quiz_id = $this->quizModel->saveUserResult($quiz_id, $this->session->userdata('uid'), $request_data['time']); 
+            $this->answerModel
+        	    ->saveUserAnswers(
+        	    	$this->session->userdata('uid'), 
+        	    	$request_data['answers'], 
+        	    	$user_quiz_id
+        	   	); 
 
-        $this->answerModel
-    	    ->saveUserAnswers(
-    	    	$this->session->userdata('uid'), 
-    	    	$request_data['answers'], 
-    	    	$user_quiz_id
-    	   	); 
-
-        return $this->output
-    	    ->set_content_type('application/json')
-    	    ->set_output(json_encode($this->quizModel
-    	    ->getCorrectAnswers($quiz_id)));
+            return $this->output
+        	    ->set_content_type('application/json')
+        	    ->set_output(json_encode($this->quizModel
+        	    ->getCorrectAnswers($safeId)));
+        }
 	}
 
 	public function createQuiz($id = null)
 	{
-		if($this->input->method() != 'post')
+		if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true)
 		{
 			return false;
 		}
 		
-		$receivedData = json_decode(file_get_contents('php://input'), true);
+		$data = json_decode(file_get_contents('php://input'), true);
 
-		if(!is_string($receivedData['title']) || !is_numeric($receivedData['course_id']) || !is_numeric($receivedData['level']) || !is_array($receivedData['questions'])) 
+		if(!is_string($data['title']) || !is_numeric($data['course_id']) || !is_numeric($data['level']) || !is_array($data['questions'])) 
 		{
 			return false;
 		}
@@ -113,19 +121,22 @@ class Quiz extends CI_Controller
 		 * Needs to be sanitized
 		 */
 		
-		$title     = $receivedData['title'];
-		$course    = $receivedData['course_id'];
-		$level     = $receivedData['level'];
-		$questions = $receivedData['questions'];
+		$title     = filter_var($data['title'], FILTER_SANITIZE_STRING);
+		$course    = filter_var($data['course_id'], FILTER_SANITIZE_NUMBER_INT);
+		$level     = filter_var($data['level'], FILTER_SANITIZE_NUMBER_INT);
+		$questions = $data['questions'];
 
-		if ($id !== null) {
+		if($id !== null) 
+		{
 			$quizId = $this->quizModel->updateQuiz(
 				$id,
 				$course, 
 				$level,
 				$title
 			);
-		} else {
+		} 
+		else 
+		{
 			$quizId = $this->quizModel->setQuiz(
 				$course, 
 				$level,
@@ -137,18 +148,13 @@ class Quiz extends CI_Controller
 		{
 			if(!is_string($question['question']) || !is_numeric($question['type']) || !is_string($question['hint']))
 			{
-				//Delete quiz here
 				return false;
 			}
 
-			/**
-			 * Needs to be sanitized
-			 */
-
-			$qString  = $question['question'];
-			$type     = $question['type'];
-			$hint     = $question['hint'];
-			$qId      = $quizId;
+			$qString  = filter_var($question['question'], FILTER_SANITIZE_STRING);
+			$type     = filter_var($question['type'], FILTER_SANITIZE_NUMBER_INT);
+			$hint     = filter_var($question['hint'], FILTER_SANITIZE_STRING);
+			$qId      = filter_var($quizId, FILTER_SANITIZE_NUMBER_INT);
 			$answers  = $question['answers'];
 
 			$questionId = $this->quizModel->setQuestions(
@@ -162,16 +168,11 @@ class Quiz extends CI_Controller
 			{
 				if(!is_string($answer['answer']) || !is_numeric($answer['correct']))
 				{
-					//Delete quiz here
 					return false;
 				}
 
-				/**
-				 * Needs to be sanitized
-				 */
-
-				$aString = $answer['answer'];
-				$correct = $answer['correct'];
+				$aString = filter_var($answer['answer'], FILTER_SANITIZE_STRING);
+				$correct = filter_var($answer['correct'], FILTER_SANITIZE_NUMBER_INT);
 
 				$this->quizModel->setAnswers($questionId, $aString, $correct);
 			}
@@ -180,50 +181,66 @@ class Quiz extends CI_Controller
 
 	public function updateQuiz($id)
 	{
-		if($this->input->method() != 'post')
+		if($this->input->method() != 'post' || !$this->session->userdata('logged_in') == true)
 		{
 			return false;
 		}
 
-		$answer_ids = $this->db
-			->select('answers.id')
-			->join('answers', 'answers.question_id = questions.id')
-			->where('quiz_id', $id)
-			->get('questions')
-			->result(); 
+		if(is_numeric($id))
+		{
+			$safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
-		foreach ($answer_ids as $answer_id) {
-			$this->quizModel->deleteAnswer($answer_id->id);
+			$answer_ids = $this->db
+				->select('answers.id')
+				->join('answers', 'answers.question_id = questions.id')
+				->where('quiz_id', $safeId)
+				->get('questions')
+				->result(); 
+
+			foreach($answer_ids as $answer_id) 
+			{
+				$this->quizModel->deleteAnswer($answer_id->id);
+			}
+
+			$question_ids = $this->db
+				->select('id')
+				->where('quiz_id', $safeId)
+				->get('questions')
+				->result();
+
+			foreach($question_ids as $question_id) 
+			{
+				$this->quizModel->deleteQuestion($question_id->id);
+			}
+
+			$user_answer_ids = $this->db
+				->select('user_answer.id')
+				->join('user_answer', 'user_answer.user_quiz_id = user_quiz.id')
+				->where('quiz_id', $safeId)
+				->get('user_quiz')
+				->result(); 
+
+			foreach($user_answer_ids as $user_answer_id) 
+			{
+				$this->quizModel->deleteUserAnswer($user_answer_id->id);
+			}
+
+			$this->quizModel->deleteUserQuiz($safeId);
+
+			$this->createQuiz($safeId);
+
+			return true;
 		}
 
-		$question_ids = $this->db
-			->select('id')
-			->where('quiz_id', $id)
-			->get('questions')
-			->result();
-
-		foreach ($question_ids as $question_id) {
-			$this->quizModel->deleteQuestion($question_id->id);
-		}
-
-		$user_answer_ids = $this->db
-			->select('user_answer.id')
-			->join('user_answer', 'user_answer.user_quiz_id = user_quiz.id')
-			->where('quiz_id', $id)
-			->get('user_quiz')
-			->result(); 
-
-		foreach ($user_answer_ids as $user_answer_id) {
-			$this->quizModel->deleteUserAnswer($user_answer_id->id);
-		}
-
-		$this->quizModel->deleteUserQuiz($id);
-
-		$this->createQuiz($id);
+		return false;
 	}
 
 	public function getCourses()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+
 		$courses = $this->quizModel->getCourses();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($courses));
@@ -231,6 +248,10 @@ class Quiz extends CI_Controller
 
 	public function getQuizzes()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+
 		$quizzes = $this->quizModel->get();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($quizzes));
@@ -238,20 +259,36 @@ class Quiz extends CI_Controller
 
 	public function getNewQuizzes($limit)
 	{
-		$new = $this->quizModel->getNew($limit);
+		if(is_numeric($limit) && !$this->session->userdata('logged_in') == true)
+		{
+			$safeLimit = filter_var($limit, FILTER_SANITIZE_NUMBER_INT);
+			$new = $this->quizModel->getNew($safeLimit);
 
-		return $this->output->set_content_type('application/json')->set_output(json_encode($new));
+			return $this->output->set_content_type('application/json')->set_output(json_encode($new));
+		}
+
+		return false;
 	}
 
 	public function getQuizzesByCourse($id)
 	{
-		$quizByCourse = $this->quizModel->getByCourse($id);
+		if(is_numeric($id) && !$this->session->userdata('logged_in') == true)
+		{
+			$safeId       = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+			$quizByCourse = $this->quizModel->getByCourse($safeId);
 
-		return $this->output->set_content_type('application/json')->set_output(json_encode($quizByCourse));
+			return $this->output->set_content_type('application/json')->set_output(json_encode($quizByCourse));
+		}
+
+		return false;
 	}
 
 	public function getCompletedQuizzes()
 	{
+		if (!$this->session->userdata('logged_in') == true) {
+			return false;
+		}
+		
 		$completed = $this->quizModel->getCompleted();
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($completed));

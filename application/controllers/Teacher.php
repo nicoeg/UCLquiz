@@ -25,33 +25,84 @@ class Teacher extends CI_Controller {
         $this->load->view('footer');
     }
 
+
+    /**
+     * Edit a single quiz
+     * @param  int $id Quiz id
+     * @return bool     Returns true on success
+     */
+    
+
     public function edit($id) {
-        $this->load->view('header', [
-            'logged_in' => $this->session->userdata('logged_in')
-        ]);
-        $this->load->view('quiz_create', [
-            'quiz_id' => $id
-        ]);
-        $this->load->view('footer');
+        if(is_numeric($id))
+        {
+            $safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+            $this->load->view('header', [
+                'logged_in' => $this->session->userdata('logged_in')
+            ]);
+            $this->load->view('quiz_create', [
+                'quiz_id' => $safeId
+            ]);
+            $this->load->view('footer');
+
+            return true;
+        }
+
+        return false;
     }
+
+
+    /**
+     * Shows all results for a quiz
+     * @param  int $id quiz id
+     * @return bool     Returns true on success
+     */
+    
 
     public function results($id) {
-        $this->load->view('header', [
-            'logged_in' => $this->session->userdata('logged_in')
-        ]);
-        $this->load->view('quiz_result', [
-            'quiz_id' => $id
-        ]);
-        $this->load->view('footer');
+        if(is_numeric($id))
+        {
+            $safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+            $this->load->view('header', [
+                'logged_in' => $this->session->userdata('logged_in')
+            ]);
+            $this->load->view('quiz_result', [
+                'quiz_id' => $safeId
+            ]);
+            $this->load->view('footer');
+
+            return true;
+        }
+
+        return false;
     }
 
+
+    /**
+     * Show results for one quiz
+     * @param  int $user_quiz_id User quiz id
+     * @return bool               Returns true on success
+     */
+    
+
     public function userResults($user_quiz_id) {
-        $this->load->view('header', [
-            'logged_in' => $this->session->userdata('logged_in')
-        ]);
-        $this->load->view('quiz_user_result', [
-            'user_quiz_id' => $user_quiz_id
-        ]);
-        $this->load->view('footer');
+        if(is_numeric($user_quiz_id))
+        {
+            $safeId = filter_var($user_quiz_id, FILTER_SANITIZE_NUMBER_INT);
+
+            $this->load->view('header', [
+                'logged_in' => $this->session->userdata('logged_in')
+            ]);
+            $this->load->view('quiz_user_result', [
+                'user_quiz_id' => $safeId
+            ]);
+            $this->load->view('footer');
+
+            return true;
+        }
+
+        return false;
     }
 }
