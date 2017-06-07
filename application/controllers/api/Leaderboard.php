@@ -32,6 +32,7 @@ class Leaderboard extends CI_Controller
 			$results     = [];
 			$count       = $this->leaderboardModel->getQuestionCount($safeId);
 
+			//saves the results in an array where each result set has the key userId{$item->user_id}
 			foreach($leaderboard as $item)
 			{
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
@@ -55,18 +56,25 @@ class Leaderboard extends CI_Controller
 			}
 			
 			$userResult = key_exists('userId'.$userId, $results) ? $results['userId'.$userId] : null;
+			//average score
 			$score = array_sum(array_column($results, 'correct_answers_count')) / count($results);
+			//average time
 			$time = array_sum(array_column($results, 'time_seconds')) / count($results);
 
+			//sort by highest correct answer then lowest time
 			usort($results, function ($item1, $item2) {
 				if (($item2['correct_answers_count'] <=> $item1['correct_answers_count']) == 0) {
 					return $item1['time_seconds'] <=> $item2['time_seconds'];
 				}
 			    return $item2['correct_answers_count'] <=> $item1['correct_answers_count'];
 			});
+
+			//after the sorted list we slice all but the top 5
 			$topFive = array_slice($results, 0, 5, true);
+			//checks if the user is part of top 5
 			$userInTopFive = array_search($userId, array_column($topFive, 'user_id'));
 
+			//if user is in top 5 slice the top 6 in otherwise top 5 because we always show the users score in the frontend
 			if (count($results) < 6) {
 				$topFive = $results;
 			} 

@@ -25,20 +25,25 @@ class Result extends CI_Controller
 
 		$safeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 		
+		//get list of classes with students who has taken the quiz with $safeId
 		$query = $this->resultsModel->getClassList($safeId);
 
 		if(count($query) == 0) {
 			return false;
 		}
 
+		//querybuilder returns as array with objects for each database row, this converts the objects to assoc arrays
 		array_walk($query, function(&$item , $key)
 		{
 		   $item = (array) $item;
 		});
 
 		$classIds = array_column($query, 'class_id');
+
+		//get class rows from database where id matches an id from the array $classIds
 		$classes  = $this->resultsModel->getClassNames($classIds);	
 
+		//convert querybuilder objects to arrays
 		array_walk($classes, function(&$item , $key)
 		{
 		   $item = (array) $item;
@@ -46,6 +51,7 @@ class Result extends CI_Controller
 
 		$classNames = [];
 
+		//sets the class rows from db to $classNames and also adds a count key with the amount of students from that class who has taken this quiz atleast once
 		foreach ($classes as $i => $class) {
 			$class_id = $class['id'];
 			$count = count($this->resultsModel->getUserCount($id, $class_id));
@@ -67,32 +73,43 @@ class Result extends CI_Controller
 		{
 			$array = json_decode(file_get_contents('php://input'), true);
 
+			//gets class id and quiz id from POST
 			$class_id = $array['class_id'];
 			$quiz_id = $array['quiz_id'];
 
+			//selects id's of users where class id matches $class_id
 			$userIds = $this->resultsModel->classUsers($class_id);
 
+			//convert object to array
 			array_walk($userIds, function(&$item , $key)
 			{
 			   $item = (array) $item;
 			});
 
+			//save all ids only
 			$userIds = array_column($userIds, 'id');
 
+			//takes array of user ids and gets the first user quiz id for each user to avoid multiple values per user
 			$userQuizIds = $this->resultsModel->getUserQuizByUserId($userIds);
 
 			$ids = [];
 
+			//push all ids to an empty array
 			foreach ($userQuizIds as $id) {
 				array_push($ids, $id->id);
 			}
+
+			//gets the user_quiz row where quiz id and id matches the passed in values, note $ids is an array so it is for each of them
 			$userResults = $this->resultsModel->getUserResults($quiz_id, $ids);
 
 			$userinfo = [];
 
+
 			foreach($userResults as $item)
 			{
+				//gets amount of correct answers for this user_quiz 
 				$correct_answers = $this->leaderboardModel->getStats($item->id);
+				//gets username of person who took this user quiz
 				$name = $this->leaderboardModel->getName($item->id);
 
 				$info = [
@@ -103,13 +120,18 @@ class Result extends CI_Controller
 					'time_seconds'          => $item->time
 				];
 
+				//push above info to an associative array for each userresult
 				array_push($userinfo, $info);		
 			}
 
+			//sort by highest correct, if same correct then lowest time
 			usort($userinfo, function ($item1, $item2) {
+				//if item1 and item2 has the same amount of correct answers
 				if (($item2['correct_answers_count'] <=> $item1['correct_answers_count']) == 0) {
+					//sort $userinfo by time_seconds property ascending
 					return $item1['time_seconds'] <=> $item2['time_seconds'];
 				}
+				//sort $userinfo by correct_answer_count property descending
 			    return $item2['correct_answers_count'] <=> $item1['correct_answers_count'];
 			});
 
